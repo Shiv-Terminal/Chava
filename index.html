@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -31,46 +32,6 @@
     overflow-x: hidden;
   }
 
-  /* * BUG FIX 1: Only hide the native cursor if the user actually has a mouse.
-   * This prevents mobile devices from acting weirdly on touch.
-   */
-  @media (hover: hover) and (pointer: fine) {
-    body, .col-card, .product-card, .product-add, .newsletter-btn {
-      cursor: none;
-    }
-  }
-
-  /* Custom Cursor - Hidden by default on mobile devices */
-  .cursor, .cursor-ring { display: none; }
-  
-  @media (hover: hover) and (pointer: fine) {
-    .cursor {
-      display: block;
-      width: 8px; height: 8px;
-      background: var(--gold);
-      border-radius: 50%;
-      position: fixed;
-      top: 0; left: 0;
-      pointer-events: none;
-      z-index: 9999;
-      transition: transform 0.15s ease;
-      mix-blend-mode: difference;
-    }
-    .cursor-ring {
-      display: block;
-      width: 36px; height: 36px;
-      border: 1px solid var(--gold);
-      border-radius: 50%;
-      position: fixed;
-      top: 0; left: 0;
-      pointer-events: none;
-      z-index: 9998;
-      transition: transform 0.4s cubic-bezier(0.2,1,0.2,1), opacity 0.3s;
-      opacity: 0.6;
-      will-change: transform; /* Hardware acceleration */
-    }
-  }
-
   /* Scrollbar */
   ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: var(--obsidian); }
@@ -88,7 +49,7 @@
   }
   nav.scrolled {
     background: rgba(12,12,14,0.92);
-    backdrop-filter: blur(10px); /* Reduced blur slightly for mobile performance */
+    backdrop-filter: blur(20px);
     padding: 20px 60px;
     border-bottom: 1px solid var(--border);
   }
@@ -138,6 +99,7 @@
     text-decoration: none;
     font-weight: 500;
     transition: all 0.3s;
+    cursor: pointer;
   }
   .nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
 
@@ -155,19 +117,6 @@
     background:
       radial-gradient(ellipse 60% 80% at 70% 50%, rgba(200,169,110,0.06) 0%, transparent 70%),
       radial-gradient(ellipse 40% 60% at 10% 80%, rgba(196,160,154,0.04) 0%, transparent 60%);
-  }
-
-  /* * BUG FIX 2: Fixed the catastrophic SVG Grain Animation!
-   * Shrunk to 100% size, removed the endless animation. 
-   * Provides the exact same premium look without destroying the phone's GPU.
-   */
-  .grain {
-    position: fixed; inset: 0;
-    width: 100vw; height: 100vh;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 1;
-    opacity: 0.25;
   }
 
   .hero-left {
@@ -239,6 +188,7 @@
     transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
     position: relative;
     overflow: hidden;
+    cursor: pointer;
   }
   .btn-primary::before {
     content: '';
@@ -259,6 +209,7 @@
     letter-spacing: 0.25em;
     text-transform: uppercase;
     transition: color 0.3s;
+    cursor: pointer;
   }
   .btn-ghost:hover { color: var(--gold); }
   .btn-ghost svg { transition: transform 0.3s; }
@@ -288,20 +239,17 @@
     animation: fadeIn 1.2s ease 0.6s forwards;
   }
 
-  /* Animated jewel shape */
+  /* Animated jewel shape - Optimized to use transform only */
   .jewel-scene {
     width: 260px; height: 260px;
     position: relative;
     display: flex; align-items: center; justify-content: center;
   }
-  
-  /* BUG FIX 3: Added will-change for hardware acceleration */
   .jewel-ring {
     position: absolute;
     border-radius: 50%;
     border: 1px solid;
     animation: rotateRing 12s linear infinite;
-    will-change: transform; 
   }
   .jewel-ring:nth-child(1) {
     width: 200px; height: 200px;
@@ -328,7 +276,6 @@
     width: 70px; height: 70px;
     position: relative;
     animation: gemPulse 4s ease-in-out infinite;
-    will-change: transform, opacity;
   }
   .jewel-center::before, .jewel-center::after {
     content: '';
@@ -373,9 +320,9 @@
     background: var(--gold);
     display: flex; align-items: center; justify-content: center;
     text-align: center;
+    animation: float 6s ease-in-out infinite;
     opacity: 0;
     animation: float 6s ease-in-out infinite, fadeIn 1s ease 1.2s forwards;
-    will-change: transform;
   }
   .badge-text {
     font-family: 'Cormorant Garamond', serif;
@@ -404,7 +351,6 @@
     width: 1px; height: 60px;
     background: linear-gradient(to bottom, var(--gold), transparent);
     animation: scrollLine 2s ease-in-out infinite;
-    will-change: transform;
   }
   @keyframes scrollLine {
     0% { transform: scaleY(0); transform-origin: top; }
@@ -431,7 +377,6 @@
     display: flex; gap: 60px;
     animation: marquee 30s linear infinite;
     white-space: nowrap;
-    will-change: transform; /* Hardware Acceleration for Marquee */
   }
   .marquee-item {
     display: flex; align-items: center; gap: 60px;
@@ -492,6 +437,7 @@
     display: flex; align-items: center; gap: 10px;
     transition: gap 0.3s;
     flex-shrink: 0;
+    cursor: pointer;
   }
   .section-link:hover { gap: 18px; }
 
@@ -506,7 +452,7 @@
   .col-card {
     position: relative;
     overflow: hidden;
-    group: true;
+    cursor: pointer;
   }
   .col-card:first-child {
     grid-row: 1 / 3;
@@ -537,17 +483,7 @@
     position: absolute; inset: 0;
     transition: transform 0.8s cubic-bezier(0.4,0,0.2,1);
   }
-  
-  /* Use fine pointer media query to disable hover effects on mobile */
-  @media (hover: hover) and (pointer: fine) {
-    .col-card:hover .col-bg { transform: scale(1.06); }
-    .col-card:hover .col-illustration { opacity: 0.8; transform: scale(1.04); }
-    .col-card:hover .col-info { transform: translateY(0); }
-    .col-card:hover .col-hover-cta {
-      opacity: 1;
-      transform: translate(-50%, -50%);
-    }
-  }
+  .col-card:hover .col-bg { transform: scale(1.06); }
 
   /* Decorative collection backgrounds */
   .col-bg-1 {
@@ -574,6 +510,7 @@
     opacity: 0.5;
     transition: opacity 0.4s, transform 0.6s;
   }
+  .col-card:hover .col-illustration { opacity: 0.8; transform: scale(1.04); }
 
   .col-info {
     position: absolute;
@@ -583,6 +520,7 @@
     transform: translateY(10px);
     transition: transform 0.4s ease;
   }
+  .col-card:hover .col-info { transform: translateY(0); }
 
   .col-name {
     font-family: 'Cormorant Garamond', serif;
@@ -614,6 +552,12 @@
     text-transform: uppercase;
     white-space: nowrap;
     font-weight: 500;
+    cursor: pointer;
+    border: none;
+  }
+  .col-card:hover .col-hover-cta {
+    opacity: 1;
+    transform: translate(-50%, -50%);
   }
 
   /* ─── FEATURED PRODUCTS ─── */
@@ -633,14 +577,9 @@
     position: relative;
     overflow: hidden;
     transition: transform 0.4s ease;
+    cursor: pointer;
   }
-  
-  @media (hover: hover) and (pointer: fine) {
-    .product-card:hover { z-index: 2; }
-    .product-card:hover .product-img-bg { transform: scale(1.08); }
-    .product-card:hover .product-wishlist { opacity: 1; }
-    .product-card:hover .jewel-svg { transform: scale(1.1) rotate(5deg); }
-  }
+  .product-card:hover { z-index: 2; }
 
   .product-img {
     aspect-ratio: 1;
@@ -655,6 +594,7 @@
     position: absolute; inset: 0;
     transition: transform 0.6s ease;
   }
+  .product-card:hover .product-img-bg { transform: scale(1.08); }
 
   .product-badge {
     position: absolute;
@@ -677,7 +617,9 @@
     opacity: 0;
     transition: opacity 0.3s;
     background: rgba(12,12,14,0.8);
+    cursor: pointer;
   }
+  .product-card:hover .product-wishlist { opacity: 1; }
 
   .product-info {
     padding: 24px;
@@ -713,6 +655,7 @@
     font-size: 18px;
     transition: all 0.3s;
     background: transparent;
+    cursor: pointer;
   }
   .product-add:hover {
     background: var(--gold);
@@ -727,6 +670,7 @@
     z-index: 1;
     transition: transform 0.4s ease;
   }
+  .product-card:hover .jewel-svg { transform: scale(1.1) rotate(5deg); }
 
   /* ─── ABOUT / STORY ─── */
   .story {
@@ -891,7 +835,7 @@
     letter-spacing: 3px;
   }
 
-  /* ─── NEWSLETTER ─── */
+  /* ─── CONTACT/WHATSAPP (Replaced Newsletter) ─── */
   .newsletter {
     padding: 160px 60px;
     text-align: center;
@@ -928,33 +872,92 @@
     max-width: 480px;
     margin: 0 auto;
     position: relative;
-    border: 1px solid var(--border);
+    justify-content: center;
   }
-  .newsletter-input {
-    flex: 1;
-    background: transparent;
-    border: none;
-    padding: 18px 24px;
-    color: var(--ivory);
-    font-family: 'Jost', sans-serif;
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    outline: none;
-  }
-  .newsletter-input::placeholder { color: var(--text-muted); }
   .newsletter-btn {
-    background: var(--gold);
-    border: none;
-    padding: 18px 32px;
-    color: var(--obsidian);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: transparent;
+    border: 1px solid var(--gold);
+    padding: 18px 40px;
+    color: var(--gold);
     font-family: 'Jost', sans-serif;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 0.3em;
     text-transform: uppercase;
     font-weight: 500;
-    transition: background 0.3s;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
   }
-  .newsletter-btn:hover { background: var(--gold-light); }
+  .newsletter-btn:hover { 
+    background: var(--gold); 
+    color: var(--obsidian);
+  }
+
+  /* ─── API ORDER MODAL ─── */
+  .modal-overlay {
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(12,12,14,0.92);
+    backdrop-filter: blur(8px);
+    z-index: 2000;
+    display: none; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .modal-overlay.active { display: flex; opacity: 1; }
+  
+  .modal-content {
+    background: var(--obsidian);
+    border: 1px solid var(--gold);
+    padding: 50px 40px;
+    width: 90%; max-width: 500px;
+    position: relative;
+    transform: translateY(30px); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  }
+  .modal-overlay.active .modal-content { transform: translateY(0); }
+  
+  .modal-close {
+    position: absolute; top: 20px; right: 20px;
+    background: transparent; border: none; color: var(--gold);
+    font-size: 28px; cursor: pointer; transition: transform 0.3s;
+  }
+  .modal-close:hover { transform: rotate(90deg); }
+  
+  .modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px; font-weight: 300; color: var(--ivory);
+    margin-bottom: 8px; text-align: center;
+  }
+  .modal-subtitle {
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); text-align: center; margin-bottom: 32px;
+  }
+  
+  .modal-form { display: flex; flex-direction: column; gap: 20px; }
+  .modal-input {
+    background: transparent; border: 1px solid var(--border);
+    padding: 16px 20px; color: var(--ivory);
+    font-family: 'Jost', sans-serif; font-size: 13px;
+    outline: none; transition: border-color 0.3s;
+  }
+  .modal-input:focus { border-color: var(--gold); }
+  .modal-input::placeholder { color: var(--text-muted); }
+  
+  .modal-btn {
+    background: var(--gold); color: var(--obsidian);
+    border: none; padding: 18px;
+    font-family: 'Jost', sans-serif; font-size: 11px;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    font-weight: 500; cursor: pointer; transition: all 0.3s;
+    margin-top: 10px;
+  }
+  .modal-btn:hover { background: var(--gold-light); transform: translateY(-2px); }
+  
+  .modal-response {
+    margin-top: 20px; font-size: 12px; color: var(--gold); text-align: center; font-weight: 500;
+  }
 
   /* ─── FOOTER ─── */
   footer {
@@ -987,6 +990,7 @@
     text-decoration: none;
     font-size: 13px;
     transition: all 0.3s;
+    cursor: pointer;
   }
   .social-link:hover { border-color: var(--gold); color: var(--gold); }
 
@@ -1005,6 +1009,7 @@
     text-decoration: none;
     transition: color 0.3s;
     letter-spacing: 0.03em;
+    cursor: pointer;
   }
   .footer-links a:hover { color: var(--gold); }
 
@@ -1034,7 +1039,6 @@
     opacity: 0;
     transform: translateY(40px);
     transition: opacity 0.8s ease, transform 0.8s ease;
-    will-change: opacity, transform; /* Hardware Acceleration */
   }
   .reveal.visible {
     opacity: 1;
@@ -1066,10 +1070,21 @@
 </head>
 <body>
 
-<!-- Custom cursor -->
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-<div class="grain"></div>
+<!-- Order API Modal -->
+<div class="modal-overlay" id="orderModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <h3 class="modal-title">Request Piece</h3>
+    <p class="modal-subtitle">Direct to Artisan</p>
+    
+    <form class="modal-form" id="apiOrderForm">
+      <input type="text" id="modalNameInput" class="modal-input" placeholder="Your Name" required>
+      <textarea id="modalMessageInput" class="modal-input" rows="4" placeholder="Which piece are you interested in?" required></textarea>
+      <button type="submit" class="modal-btn">Submit Request</button>
+    </form>
+    <p id="responseMessage" class="modal-response"></p>
+  </div>
+</div>
 
 <!-- NAV -->
 <nav id="navbar">
@@ -1080,7 +1095,8 @@
     <li><a href="#story">Our Story</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="#new" class="nav-cta">Shop Now</a>
+  <!-- Added openModal trigger -->
+  <a href="javascript:void(0)" class="nav-cta" onclick="openModal('New Collection')">Shop Now</a>
 </nav>
 
 <!-- HERO -->
@@ -1095,7 +1111,8 @@
     </h1>
     <p class="hero-motto">Bring out your elegance</p>
     <div class="hero-actions">
-      <a href="#collections" class="btn-primary"><span>Explore Collections</span></a>
+      <!-- Added openModal trigger -->
+      <a href="javascript:void(0)" class="btn-primary" onclick="openModal('Full Collection')"><span>Explore Collections</span></a>
       <a href="#story" class="btn-ghost">
         Our Story
         <svg width="20" height="10" viewBox="0 0 20 10" fill="none">
@@ -1186,7 +1203,8 @@
           <div class="col-name">Lumière Collection</div>
           <div class="col-count">28 Pieces</div>
         </div>
-        <div class="col-hover-cta">Explore</div>
+        <!-- Trigger Modal -->
+        <button class="col-hover-cta" onclick="openModal('Lumière Collection')">Explore</button>
       </div>
     </div>
 
@@ -1206,7 +1224,7 @@
           <div class="col-name">Eternal Rings</div>
           <div class="col-count">16 Pieces</div>
         </div>
-        <div class="col-hover-cta">Explore</div>
+        <button class="col-hover-cta" onclick="openModal('Eternal Rings')">Explore</button>
       </div>
     </div>
 
@@ -1223,7 +1241,7 @@
           <div class="col-name">Gem Pendants</div>
           <div class="col-count">22 Pieces</div>
         </div>
-        <div class="col-hover-cta">Explore</div>
+        <button class="col-hover-cta" onclick="openModal('Gem Pendants')">Explore</button>
       </div>
     </div>
 
@@ -1241,7 +1259,7 @@
           <div class="col-name">Silk Scarves</div>
           <div class="col-count">12 Pieces</div>
         </div>
-        <div class="col-hover-cta">Explore</div>
+        <button class="col-hover-cta" onclick="openModal('Silk Scarves')">Explore</button>
       </div>
     </div>
 
@@ -1260,7 +1278,7 @@
           <div class="col-name">Gold Bracelets</div>
           <div class="col-count">18 Pieces</div>
         </div>
-        <div class="col-hover-cta">Explore</div>
+        <button class="col-hover-cta" onclick="openModal('Gold Bracelets')">Explore</button>
       </div>
     </div>
   </div>
@@ -1291,18 +1309,14 @@
           <line x1="60" y1="16" x2="60" y2="25" stroke="#C8A96E" stroke-width="0.8"/>
         </svg>
         <div class="product-badge">New</div>
-        <div class="product-wishlist">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M7 12L2 7C0.5 5.5 0.5 3 2 1.5C3.5 0 6 0.5 7 2C8 0.5 10.5 0 12 1.5C13.5 3 13.5 5.5 12 7L7 12Z" stroke="#C8A96E" stroke-width="0.8"/>
-          </svg>
-        </div>
       </div>
       <div class="product-info">
         <div class="product-category">Necklaces</div>
         <div class="product-name">Seraphine<br>Diamond Drop</div>
         <div class="product-footer">
           <div class="product-price">$420</div>
-          <button class="product-add">+</button>
+          <!-- Trigger Modal -->
+          <button class="product-add" onclick="openModal('Seraphine Diamond Drop Necklace')">+</button>
         </div>
       </div>
     </div>
@@ -1318,18 +1332,14 @@
           <circle cx="60" cy="32" r="5" fill="#C8A96E"/>
           <circle cx="60" cy="60" r="8" fill="rgba(200,169,110,0.15)" stroke="#C8A96E" stroke-width="0.8"/>
         </svg>
-        <div class="product-wishlist">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M7 12L2 7C0.5 5.5 0.5 3 2 1.5C3.5 0 6 0.5 7 2C8 0.5 10.5 0 12 1.5C13.5 3 13.5 5.5 12 7L7 12Z" stroke="#C8A96E" stroke-width="0.8"/>
-          </svg>
-        </div>
       </div>
       <div class="product-info">
         <div class="product-category">Rings</div>
         <div class="product-name">Aurore<br>Gold Ring</div>
         <div class="product-footer">
           <div class="product-price">$280</div>
-          <button class="product-add">+</button>
+          <!-- Trigger Modal -->
+          <button class="product-add" onclick="openModal('Aurore Gold Ring')">+</button>
         </div>
       </div>
     </div>
@@ -1347,18 +1357,14 @@
           <ellipse cx="90" cy="60" rx="5" ry="3" fill="#C8A96E" opacity="0.5"/>
         </svg>
         <div class="product-badge">Sale</div>
-        <div class="product-wishlist">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M7 12L2 7C0.5 5.5 0.5 3 2 1.5C3.5 0 6 0.5 7 2C8 0.5 10.5 0 12 1.5C13.5 3 13.5 5.5 12 7L7 12Z" stroke="#C8A96E" stroke-width="0.8"/>
-          </svg>
-        </div>
       </div>
       <div class="product-info">
         <div class="product-category">Bracelets</div>
         <div class="product-name">Céleste<br>Bangle Set</div>
         <div class="product-footer">
           <div class="product-price">$195</div>
-          <button class="product-add">+</button>
+          <!-- Trigger Modal -->
+          <button class="product-add" onclick="openModal('Céleste Bangle Set')">+</button>
         </div>
       </div>
     </div>
@@ -1372,18 +1378,14 @@
           <polygon points="60,30 70,55 95,55 74,68 81,93 60,78 39,93 46,68 25,55 50,55" stroke="#C8A96E" stroke-width="0.3" opacity="0.4"/>
           <circle cx="60" cy="60" r="8" fill="rgba(200,169,110,0.2)"/>
         </svg>
-        <div class="product-wishlist">
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M7 12L2 7C0.5 5.5 0.5 3 2 1.5C3.5 0 6 0.5 7 2C8 0.5 10.5 0 12 1.5C13.5 3 13.5 5.5 12 7L7 12Z" stroke="#C8A96E" stroke-width="0.8"/>
-          </svg>
-        </div>
       </div>
       <div class="product-info">
         <div class="product-category">Earrings</div>
         <div class="product-name">Étoile<br>Star Studs</div>
         <div class="product-footer">
           <div class="product-price">$160</div>
-          <button class="product-add">+</button>
+          <!-- Trigger Modal -->
+          <button class="product-add" onclick="openModal('Étoile Star Studs')">+</button>
         </div>
       </div>
     </div>
@@ -1447,8 +1449,6 @@
           <div class="feature-desc">18k & 24k gold with authenticity guarantee</div>
         </div>
       </div>
-
-      <a href="#" class="btn-primary"><span>Our Philosophy</span></a>
     </div>
   </div>
 </section>
@@ -1497,17 +1497,22 @@
   </div>
 </div>
 
-<!-- NEWSLETTER -->
+<!-- DIRECT WHATSAPP CONTACT -->
 <section class="newsletter">
   <div class="newsletter-bg"></div>
-  <p class="section-label" style="justify-content:center;" class="reveal">Stay in the Know</p>
+  <p class="section-label reveal" style="justify-content:center;">Direct Support</p>
   <h2 class="newsletter-title reveal" style="margin-top:12px;">
-    First Access to<br><em>New Pieces</em>
+    Speak to Our<br><em>Artisans</em>
   </h2>
-  <p class="newsletter-sub reveal">Join our inner circle. Be the first to discover new collections, exclusive events, and private offers.</p>
+  <p class="newsletter-sub reveal">Skip the forms and wait times. Chat directly with our team on WhatsApp to place a custom order or inquire about a piece.</p>
+  
   <div class="newsletter-form reveal">
-    <input type="email" class="newsletter-input" placeholder="Your email address">
-    <button class="newsletter-btn">Subscribe</button>
+    <a href="https://wa.me/918391063294?text=Hi%20Chava!%20I%20am%20interested%20in%20your%20jewelry." target="_blank" class="newsletter-btn">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+      </svg>
+      Chat & Order on WhatsApp
+    </a>
   </div>
 </section>
 
@@ -1562,36 +1567,6 @@
 </footer>
 
 <script>
-  // BUG FIX 2: Only run custom cursor logic if device has a physical mouse
-  if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-    const cursor = document.getElementById('cursor');
-    const ring = document.getElementById('cursorRing');
-    let mx = 0, my = 0, rx = 0, ry = 0;
-
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      cursor.style.transform = `translate(${mx - 4}px, ${my - 4}px)`;
-    });
-
-    function animateRing() {
-      rx += (mx - rx) * 0.12;
-      ry += (my - ry) * 0.12;
-      ring.style.transform = `translate(${rx - 18}px, ${ry - 18}px)`;
-      requestAnimationFrame(animateRing);
-    }
-    animateRing();
-
-    document.querySelectorAll('a, button').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        cursor.style.transform += ' scale(2)';
-        ring.style.opacity = '0.3';
-      });
-      el.addEventListener('mouseleave', () => {
-        ring.style.opacity = '0.6';
-      });
-    });
-  }
-
   // Navbar scroll effect
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
@@ -1609,6 +1584,62 @@
     });
   }, { threshold: 0.1 });
   reveals.forEach(el => observer.observe(el));
+
+  /* ─── API MODAL LOGIC ─── */
+  const modal = document.getElementById('orderModal');
+  const messageInput = document.getElementById('modalMessageInput');
+  const nameInput = document.getElementById('modalNameInput');
+  const responseMessage = document.getElementById('responseMessage');
+  const apiOrderForm = document.getElementById('apiOrderForm');
+
+  // Open Modal and Pre-fill text
+  function openModal(productName) {
+    modal.classList.add('active');
+    messageInput.value = `I am interested in ordering the ${productName}.`;
+    responseMessage.innerText = "";
+  }
+
+  // Close Modal
+  function closeModal() {
+    modal.classList.remove('active');
+  }
+
+  // Connect Form to Termux Python Server
+  apiOrderForm.addEventListener('submit', async (e) => {
+    e.preventDefault(); 
+    
+    responseMessage.style.color = "var(--gold)";
+    responseMessage.innerText = "Sending request securely to server...";
+
+    try {
+      const response = await fetch('http://127.0.0.1:5000/order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: nameInput.value, message: messageInput.value })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        responseMessage.style.color = "#25D366"; // Green success text
+        responseMessage.innerText = data.reply;
+        setTimeout(() => {
+          closeModal();
+          apiOrderForm.reset();
+        }, 2500); // Closes automatically after 2.5 seconds
+      } else {
+        responseMessage.style.color = "#ff4d4d";
+        responseMessage.innerText = "Error: Could not reach the server.";
+      }
+    } catch (error) {
+      responseMessage.style.color = "#ff4d4d";
+      responseMessage.innerText = "Error: Is your Termux Python server running on port 5000?";
+      console.error(error);
+    }
+  });
 </script>
 </body>
 </html>
+
+
+```
+
