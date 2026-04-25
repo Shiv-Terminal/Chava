@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chava | Secret Admin Panel</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        input, button { padding: 10px; margin: 5px 0; width: 100%; box-sizing: border-box; border: 1px solid #ccc; border-radius: 5px; }
+        .product-item { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; background: #fafafa;}
+        .btn { background: #28a745; color: white; border: none; cursor: pointer; font-weight: bold; font-size: 16px; }
+        .btn-danger { background: #dc3545; width: auto; padding: 5px 15px; border-radius: 5px; }
+        hr { border: 0; border-top: 1px solid #eee; margin: 20px 0; }
+        #statusMessage { font-weight: bold; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>👑 Chava Secret Admin</h2>
+    
+    <label><b>Admin PIN:</b></label>
+    <input type="password" id="adminPassword" placeholder="Enter your secret PIN from PythonAnywhere">
+    
+    <hr>
+    <h3>📦 Current Inventory</h3>
+    <div id="productList">Loading catalog from cloud...</div>
+    
+    <hr>
+    <h3>➕ Add New Product</h3>
+    <input type="text" id="newName" placeholder="Product Name (e.g., Black Silk Shirt)">
+    <input type="number" id="newPrice" placeholder="Price (₹)">
+    <input type="number" id="newStock" placeholder="Pieces Left in Stock">
+    <button class="btn" onclick="addProduct()">+ Add to List</button>
+
+    <hr>
+    <button class="btn" style="background: #007bff;" onclick="saveToCloud()">☁️ Save Changes to Cloud</button>
+    <p id="statusMessage"></p>
+</div>
+
+<script>
+    // Link to your PythonAnywhere brain
+    const API_URL = "https://Shivale.pythonanywhere.com";
+    let catalog = [];
+
+    // 1. Fetch current products when page loads
+    async function loadCatalog() {
+        try {
+            let response = await fetch(API_URL + "/catalog");
+            catalog = await response.json();
+            renderCatalog();
+        } catch (e) {
+            document.getElementById("productList").innerText = "❌ Error connecting to server.";
+        }
+    }
+
+    // 2. Draw the products on the screen
+    function renderCatalog() {
+        let list = document.getElementById("productList");
+        list.innerHTML = "";
+        
+        if (catalog.length === 0) {
+            list.innerHTML = "<p>No products yet. Add one below!</p>";
+            return;
+        }
+
+        catalog.forEach((item, index) => {
+            list.innerHTML += `
+                <div class="product-item">
+                    <div>
+                        <strong>${item.name}</strong><br>
+                        Price: ₹${item.price} | <b>Stock: ${item.stock} left</b>
+                    </div>
+                    <button class="btn-danger" onclick="removeProduct(${index})">Delete</button>
+                </div>
+            `;
+        });
+    }
+
+    // 3. Add a new item to the temporary list
+    function addProduct() {
+        let name = document.getElementById("newName").value;
+        let price = document.getElementById("newPrice").value;
+        let stock = document.getElementById("newStock").value;
+        
+        if(!name || !price || !stock) {
+            alert("Please fill in all fields!");
+            return;
+        }
+
+        catalog.push({
+            id: Date.now(), // Creates a unique ID number
+            name: name,
+            price: parseInt(price),
+            stock: parseInt(stock)
+        });
+        
+        // Clear the text boxes
+        document.getElementById("newName").value = "";
+        document.getElementById("newPrice").value = "";
+        document.getElementById("newStock").value = "";
+        
+        renderCatalog();
+    }
+
+    // 4. Remove an item from the temporary list
+    function removeProduct(index) {
+        catalog.splice(index, 1);
+        renderCatalog();
+    }
+
+    // 5. Send the final list securely to PythonAnywhere
+    async function saveToCloud() {
+        let pwd = document.getElementById("adminPassword").value;
+        let status = document.getElementById("statusMessage");
+        
+        if(!pwd) {
+            alert("You must enter your Admin PIN to save changes!");
+            return;
+        }
+        
+        status.innerText = "Syncing with cloud...";
+        status.style.color = "blue";
+
+        try {
+            let response = await fetch(API_URL + "/admin/update", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({
+                    password: pwd,
+                    catalog: catalog
+                })
+            });
+            
+            let result = await response.json();
+            
+            if(result.status === "success") {
+                status.innerText = "✅ Inventory updated successfully!";
+                status.style.color = "green";
+            } else {
+                status.innerText = "❌ Error: " + result.message;
+                status.style.color = "red";
+            }
+        } catch (e) {
+            status.innerText = "❌ Network Error! Could not reach server.";
+            status.style.color = "red";
+        }
+    }
+
+    // Boot up
+    loadCatalog();
+</script>
+</body>
+</html>
+
