@@ -1284,23 +1284,15 @@
   </div>
 </section>
 
-<!-- DYNAMIC FEATURED PRODUCTS -->
-<section class="section featured" id="new">
-  <div class="section-header reveal">
-    <div>
-      <p class="section-label">New Arrivals</p>
-      <h2 class="section-title">Just <em>Arrived</em></h2>
-    </div>
-    <a href="#" class="section-link">View All →</a>
-  </div>
-
-  <!-- This Grid will be populated by PythonAnywhere automatically -->
-  <div class="products-grid" id="dynamicProductsGrid">
-    <div style="padding: 60px; grid-column: 1 / -1; text-align: center; color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 24px; font-style: italic;">
+<!-- DYNAMIC STOREFRONT SECTIONS -->
+<div id="new">
+  <!-- This Container will be dynamically filled by JavaScript -->
+  <section class="section featured">
+    <div style="padding: 100px 60px; text-align: center; color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 24px; font-style: italic;">
       Curating latest collection...
     </div>
-  </div>
-</section>
+  </section>
+</div>
 
 <!-- STORY -->
 <section class="section" id="story">
@@ -1483,8 +1475,7 @@
     navbar.classList.toggle('scrolled', window.scrollY > 60);
   });
 
-  // Scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
+  // Scroll reveal setup
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry, i) => {
       if (entry.isIntersecting) {
@@ -1493,73 +1484,131 @@
       }
     });
   }, { threshold: 0.1 });
-  reveals.forEach(el => observer.observe(el));
+  
+  // Observe static reveal elements
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
   /* ─── DYNAMIC STOREFRONT API FETCH ─── */
   const API_URL = "https://Shivale.pythonanywhere.com";
 
   async function loadStorefront() {
-    const grid = document.getElementById("dynamicProductsGrid");
+    const container = document.getElementById("new");
+    
     try {
         let response = await fetch(API_URL + "/catalog");
         let catalog = await response.json();
         
-        grid.innerHTML = ""; // Clear loading text
+        container.innerHTML = ""; // Clear loading text
         
-        if (catalog.length === 0) {
-            grid.innerHTML = "<div style='padding:60px; grid-column: 1/-1; text-align:center; color:var(--text-muted); font-size:16px;'>New collection dropping soon!</div>";
+        // 1. Visibility Filtering & Grouping
+        const groupedCatalog = {};
+        let visibleCount = 0;
+
+        catalog.forEach((item) => {
+            // Strictly ignore hidden items
+            if (item.visible === false) return; 
+
+            const cat = item.category || 'New Arrival';
+            if (!groupedCatalog[cat]) {
+                groupedCatalog[cat] = [];
+            }
+            groupedCatalog[cat].push(item);
+            visibleCount++;
+        });
+
+        // 2. Empty Database Check
+        if (visibleCount === 0) {
+            container.innerHTML = `
+                <section class="section featured">
+                    <div style='padding:60px; grid-column: 1/-1; text-align:center; color:var(--text-muted); font-size:16px;'>
+                        New collection dropping soon!
+                    </div>
+                </section>`;
             return;
         }
 
-        // Loop through products and build the premium HTML cards
-        catalog.forEach((item) => {
-            let isSoldOut = item.stock <= 0;
+        // 3. Auto-Generate Sections Dynamically
+        for (const [categoryName, items] of Object.entries(groupedCatalog)) {
             
-            // Check if user uploaded a real image in the Admin Panel
-            let visualContent = '';
-            if (item.image && item.image !== "") {
-                visualContent = `<img src="${item.image}" style="width:100%; height:100%; object-fit:cover; position:relative; z-index:1;" alt="${item.name}">`;
-            } else {
-                // The premium SVG Fallback if no image is provided
-                visualContent = `
-                    <svg class="jewel-svg" viewBox="0 0 120 120" fill="none">
-                      <circle cx="60" cy="60" r="35" stroke="#C8A96E" stroke-width="0.8"/>
-                      <path d="M60 25 L85 55 L75 95 L45 95 L35 55 Z" stroke="#C8A96E" stroke-width="1" fill="rgba(200,169,110,0.08)"/>
-                      <circle cx="60" cy="12" r="4" fill="#C8A96E" opacity="0.8"/>
-                    </svg>`;
-            }
-
-            // Display Sold Out badge instead of 'New'
-            let badgeHTML = isSoldOut ? `<div class="product-badge" style="background:#dc3545; color:white;">Sold Out</div>` : `<div class="product-badge">New</div>`;
-            
-            // Prepare the safe string for the onclick function
-            let safeName = item.name.replace(/'/g, "\\'");
-
-            grid.innerHTML += `
-                <div class="product-card reveal visible" style="opacity:1; transform:translateY(0);">
-                  <div class="product-img">
-                    <div class="product-img-bg" style="background: radial-gradient(ellipse at 50% 30%, rgba(200,169,110,0.08) 0%, transparent 70%);"></div>
-                    ${visualContent}
-                    ${badgeHTML}
-                    <div class="product-wishlist">
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                        <path d="M7 12L2 7C0.5 5.5 0.5 3 2 1.5C3.5 0 6 0.5 7 2C8 0.5 10.5 0 12 1.5C13.5 3 13.5 5.5 12 7L7 12Z" stroke="#C8A96E" stroke-width="0.8"/>
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="product-info">
-                    <div class="product-category">${isSoldOut ? 'Out of stock' : item.stock + ' pieces left'}</div>
-                    <div class="product-name">${item.name}</div>
-                    <div class="product-footer">
-                      <div class="product-price">₹${item.price}</div>
-                      <button class="product-add" ${isSoldOut ? 'disabled style="opacity:0.3;cursor:not-allowed;"' : `onclick="openModal('${safeName}')"`}>+</button>
-                    </div>
-                  </div>
+            // Generate Section Header
+            let sectionHTML = `
+            <section class="section featured">
+              <div class="section-header reveal">
+                <div>
+                  <p class="section-label">${categoryName}</p>
+                  <h2 class="section-title"><em>${categoryName}</em></h2>
                 </div>
+                <a href="#" class="section-link">View All →</a>
+              </div>
+              <div class="products-grid">
             `;
-        });
+
+            // Build Product Cards for this Category
+            items.forEach((item) => {
+                let isSoldOut = item.stock <= 0;
+                
+                // Handle Image Fallback
+                let visualContent = '';
+                if (item.image && item.image !== "") {
+                    visualContent = `<img src="${item.image}" style="width:100%; height:100%; object-fit:cover; position:relative; z-index:1;" alt="${item.name}">`;
+                } else {
+                    visualContent = `
+                        <svg class="jewel-svg" viewBox="0 0 120 120" fill="none">
+                          <circle cx="60" cy="60" r="35" stroke="#C8A96E" stroke-width="0.8"/>
+                          <path d="M60 25 L85 55 L75 95 L45 95 L35 55 Z" stroke="#C8A96E" stroke-width="1" fill="rgba(200,169,110,0.08)"/>
+                          <circle cx="60" cy="12" r="4" fill="#C8A96E" opacity="0.8"/>
+                        </svg>`;
+                }
+
+                // Handle Badges & Security formatting
+                let badgeHTML = isSoldOut ? `<div class="product-badge" style="background:#dc3545; color:white;">Sold Out</div>` : `<div class="product-badge">New</div>`;
+                let safeName = item.name ? item.name.replace(/'/g, "\\'") : 'Unknown';
+
+                // Add the card to the section
+                sectionHTML += `
+                    <div class="product-card reveal">
+                      <div class="product-img">
+                        <div class="product-img-bg" style="background: radial-gradient(ellipse at 50% 30%, rgba(200,169,110,0.08) 0%, transparent 70%);"></div>
+                        ${visualContent}
+                        ${badgeHTML}
+                        <div class="product-wishlist">
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <path d="M7 12L2 7C0.5 5.5 0.5 3 2 1.5C3.5 0 6 0.5 7 2C8 0.5 10.5 0 12 1.5C13.5 3 13.5 5.5 12 7L7 12Z" stroke="#C8A96E" stroke-width="0.8"/>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="product-info">
+                        <div class="product-category">${isSoldOut ? 'Out of stock' : item.stock + ' pieces left'}</div>
+                        <div class="product-name">${item.name}</div>
+                        <div class="product-footer">
+                          <div class="product-price">₹${item.price}</div>
+                          <button class="product-add" ${isSoldOut ? 'disabled style="opacity:0.3;cursor:not-allowed;"' : `onclick="openModal('${safeName}')"`}>+</button>
+                        </div>
+                      </div>
+                    </div>
+                `;
+            });
+
+            // Close the section and grid
+            sectionHTML += `
+              </div>
+            </section>
+            `;
+
+            // Append to the dynamic container
+            container.innerHTML += sectionHTML;
+        }
+
+        // Re-attach IntersectionObserver so the dynamic elements get scroll animations
+        document.querySelectorAll('#new .reveal').forEach(el => observer.observe(el));
+
     } catch (e) {
-        grid.innerHTML = "<div style='padding:60px; grid-column: 1/-1; text-align:center; color:#ff4d4d;'>Could not connect to live inventory. Please try again later.</div>";
+        container.innerHTML = `
+            <section class="section featured">
+                <div style='padding:60px; text-align:center; color:#ff4d4d;'>
+                    Could not connect to live inventory. Please try again later.
+                </div>
+            </section>`;
     }
   }
 

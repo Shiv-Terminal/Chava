@@ -3,212 +3,388 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chava | Secret Admin</title>
+    <title>Chava | Command Center</title>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 20px; background-color: #f0f2f5; margin: 0; }
-        .container { max-width: 700px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        h2, h3 { margin-top: 0; color: #333; }
-        input, button { padding: 12px; margin: 8px 0; width: 100%; box-sizing: border-box; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; }
-        input[type="file"] { padding: 8px; background: #fafafa; }
+        :root {
+            --bg-dark: #121212; --bg-card: #1e1e1e;
+            --gold: #C8A96E; --gold-hover: #DFC088;
+            --text-main: #f4f4f4; --text-muted: #a0a0a0;
+            --danger: #ff4d4d; --success: #25D366;
+            --border: #333;
+        }
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background-color: var(--bg-dark); color: var(--text-main); margin: 0; padding: 0; padding-bottom: 100px; }
         
-        .product-item { border: 1px solid #eee; padding: 15px; margin-bottom: 12px; border-radius: 8px; display: flex; align-items: center; background: #fff; gap: 15px; }
-        .product-img { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; background: #eee; }
-        .product-details { flex-grow: 1; }
-        .product-actions { display: flex; gap: 8px; flex-direction: column; }
+        .header { background: var(--bg-card); padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
+        .header h1 { margin: 0; font-size: 20px; color: var(--gold); letter-spacing: 2px; text-transform: uppercase; }
+        .pin-container { display: flex; gap: 10px; align-items: center; }
+        .pin-container input { padding: 8px 12px; border-radius: 4px; border: 1px solid var(--border); background: var(--bg-dark); color: white; width: 150px; }
+
+        .container { max-width: 1000px; margin: 20px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+        @media (max-width: 768px) { .container { grid-template-columns: 1fr; } }
         
-        .btn { background: #1a1a1a; color: white; border: none; cursor: pointer; font-weight: bold; transition: 0.2s; }
-        .btn:hover { background: #333; }
-        .btn-edit { background: #f0ad4e; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; }
-        .btn-danger { background: #dc3545; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; }
+        .card { background: var(--bg-card); border-radius: 8px; padding: 20px; border: 1px solid var(--border); }
+        h3 { margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 10px; color: var(--gold); }
         
-        .editor-box { background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px dashed #ccc; }
-        hr { border: 0; border-top: 1px solid #eee; margin: 25px 0; }
-        #statusMessage { font-weight: bold; text-align: center; margin-top: 15px; }
+        /* Form Styles */
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+        input[type="text"], input[type="number"], select { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-dark); color: white; font-size: 15px; }
+        input[type="file"] { width: 100%; padding: 10px; background: var(--bg-dark); border-radius: 6px; border: 1px dashed var(--gold); color: var(--text-muted); }
+        
+        .image-preview { width: 100%; height: 150px; background: var(--bg-dark); margin-top: 10px; border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid var(--border); }
+        .image-preview img { width: 100%; height: 100%; object-fit: contain; }
+        
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-primary { background: var(--gold); color: var(--bg-dark); }
+        .btn-primary:hover { background: var(--gold-hover); }
+        .btn-cancel { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); margin-top: 10px; }
+        
+        /* List Styles */
+        .inventory-list { display: flex; flex-direction: column; gap: 10px; }
+        .item-row { display: flex; background: var(--bg-dark); border: 1px solid var(--border); border-radius: 6px; padding: 10px; align-items: center; gap: 15px; transition: 0.2s; }
+        .item-row.hidden-item { opacity: 0.5; border-style: dashed; }
+        .item-img { width: 50px; height: 50px; border-radius: 4px; object-fit: cover; background: var(--bg-card); }
+        .item-details { flex-grow: 1; }
+        .item-name { font-weight: bold; font-size: 16px; margin-bottom: 4px; }
+        .item-meta { font-size: 12px; color: var(--text-muted); }
+        .item-meta span { color: var(--gold); }
+        
+        .controls { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+        .icon-btn { background: var(--bg-card); border: 1px solid var(--border); color: white; width: 32px; height: 32px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: 0.2s; }
+        .icon-btn:hover { border-color: var(--gold); color: var(--gold); }
+        .icon-btn.danger:hover { border-color: var(--danger); color: var(--danger); }
+
+        /* Sync Bar */
+        .sync-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card); padding: 15px 20px; border-top: 1px solid var(--gold); display: flex; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
+        .unsaved-badge { background: var(--danger); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; display: none; }
+        #statusMsg { font-size: 14px; }
     </style>
 </head>
 <body>
 
+<div class="header">
+    <h1>CHAVA Admin</h1>
+    <div class="pin-container">
+        <input type="password" id="adminPin" placeholder="Admin PIN" autocomplete="new-password">
+    </div>
+</div>
+
 <div class="container">
-    <h2>👑 Chava Command Center</h2>
-    
-    <label><b>Admin PIN:</b></label>
-    <input type="password" id="adminPassword" placeholder="Enter your secret PIN">
-    
-    <hr>
-    <h3>📦 Live Website Inventory</h3>
-    <div id="productList">Loading catalog from cloud...</div>
-    
-    <hr>
-    <div class="editor-box">
-        <h3 id="formTitle">➕ Add New Product</h3>
-        <input type="hidden" id="editId" value="">
-        <input type="text" id="newName" placeholder="Product Name (e.g., Silk Shirt)">
-        <input type="number" id="newPrice" placeholder="Price (₹)">
-        <input type="number" id="newStock" placeholder="Pieces Left in Stock">
+    <!-- LEFT: EDITOR FORM -->
+    <div class="card">
+        <h3 id="formTitle">➕ Create Product</h3>
+        <input type="hidden" id="editId">
         
-        <label style="font-size: 14px; color: #555; display:block; margin-top:10px;"><b>Upload Product Image:</b></label>
-        <input type="file" id="newImage" accept="image/*">
+        <div class="form-group">
+            <label>Product Name</label>
+            <input type="text" id="itemName" placeholder="e.g., Onyx Ring">
+        </div>
         
-        <button class="btn" id="saveItemBtn" onclick="saveToLocalList()">+ Add to List</button>
-        <button class="btn" id="cancelEditBtn" style="display:none; background:#6c757d;" onclick="cancelEdit()">Cancel Edit</button>
+        <div class="form-group">
+            <label>Category (For Storefront Filtering)</label>
+            <select id="itemCategory">
+                <option value="New Arrival">New Arrival</option>
+                <option value="Rings">Rings</option>
+                <option value="Necklaces">Necklaces</option>
+                <option value="Earrings">Earrings</option>
+                <option value="Bracelets">Bracelets</option>
+                <option value="Collections">Collections</option>
+            </select>
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+            <div class="form-group" style="flex: 1;">
+                <label>Price (₹)</label>
+                <input type="number" id="itemPrice" placeholder="0">
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label>Stock Count</label>
+                <input type="number" id="itemStock" placeholder="0">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Visibility Status</label>
+            <select id="itemVisible">
+                <option value="true">👁️ Public (Visible on Website)</option>
+                <option value="false">🙈 Hidden (Draft / Out of Season)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Product Image (Auto-Compresses)</label>
+            <input type="file" id="itemImage" accept="image/*">
+            <div class="image-preview" id="imagePreviewBox">
+                <span style="color: var(--text-muted); font-size: 12px;">No Image Selected</span>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" id="saveBtn" onclick="saveToLocal()">💾 Save to List</button>
+        <button class="btn btn-cancel" id="cancelBtn" style="display:none;" onclick="resetForm()">✖ Cancel Edit</button>
     </div>
 
-    <hr>
-    <button class="btn" style="background: #28a745; font-size: 18px; padding: 15px;" onclick="syncToCloud()">☁️ PUBLISH TO LIVE WEBSITE</button>
-    <p id="statusMessage"></p>
+    <!-- RIGHT: INVENTORY LIST -->
+    <div class="card">
+        <h3>📦 Inventory Database (<span id="totalItems">0</span>)</h3>
+        <div class="inventory-list" id="inventoryList">
+            <p style="text-align: center; color: var(--text-muted);">Loading database...</p>
+        </div>
+    </div>
+</div>
+
+<!-- BOTTOM SYNC BAR -->
+<div class="sync-bar">
+    <div>
+        <span class="unsaved-badge" id="unsavedBadge">UNSAVED CHANGES!</span>
+        <span id="statusMsg" style="margin-left: 10px; color: var(--text-muted);">Database synced.</span>
+    </div>
+    <button class="btn btn-primary" style="width: auto; padding: 12px 30px;" onclick="syncWithCloud()">🚀 PUBLISH TO CLOUD</button>
 </div>
 
 <script>
     const API_URL = "https://Shivale.pythonanywhere.com";
     let catalog = [];
-    let imageBase64 = "";
+    let currentImageBase64 = "";
+    let hasUnsavedChanges = false;
 
-    // Handle Image Selection
-    document.getElementById('newImage').addEventListener('change', function(e) {
+    // --- 1. SMART IMAGE COMPRESSION ---
+    // If you upload a 5MB photo, this shrinks it to ~100kb so the server doesn't crash
+    document.getElementById('itemImage').addEventListener('change', function(e) {
         const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                imageBase64 = event.target.result; // Saves image as text temporarily
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const img = new Image();
+            img.onload = function() {
+                // Resize logic: Max width/height 800px
+                const canvas = document.createElement('canvas');
+                let width = img.width;
+                let height = img.height;
+                const MAX_SIZE = 800;
+
+                if (width > height && width > MAX_SIZE) {
+                    height *= MAX_SIZE / width;
+                    width = MAX_SIZE;
+                } else if (height > MAX_SIZE) {
+                    width *= MAX_SIZE / height;
+                    height = MAX_SIZE;
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // Compress to JPEG at 70% quality
+                currentImageBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                document.getElementById('imagePreviewBox').innerHTML = `<img src="${currentImageBase64}">`;
             };
-            reader.readAsDataURL(file);
-        }
+            img.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
     });
 
+    // --- 2. LOAD DATA ---
     async function loadCatalog() {
         try {
-            let response = await fetch(API_URL + "/catalog");
-            catalog = await response.json();
-            renderCatalog();
+            let res = await fetch(API_URL + "/catalog");
+            catalog = await res.json();
+            renderList();
         } catch (e) {
-            document.getElementById("productList").innerText = "❌ Error connecting to server.";
+            document.getElementById('inventoryList').innerHTML = `<p style="color:var(--danger)">Connection Error.</p>`;
         }
     }
 
-    function renderCatalog() {
-        let list = document.getElementById("productList");
+    // --- 3. RENDER LIST ---
+    function renderList() {
+        const list = document.getElementById('inventoryList');
+        document.getElementById('totalItems').innerText = catalog.length;
         list.innerHTML = "";
-        
+
         if (catalog.length === 0) {
-            list.innerHTML = "<p>No products yet.</p>";
+            list.innerHTML = "<p style='color: var(--text-muted); text-align:center;'>Database is empty.</p>";
             return;
         }
 
         catalog.forEach((item, index) => {
-            let imgSrc = item.image ? item.image : 'https://via.placeholder.com/60?text=No+Img';
+            // Support legacy items that don't have new fields
+            const cat = item.category || 'New Arrival';
+            const isHidden = item.visible === false; 
+            const imgSrc = item.image || 'https://via.placeholder.com/50?text=No+Img';
+
             list.innerHTML += `
-                <div class="product-item">
-                    <img src="${imgSrc}" class="product-img" alt="Product">
-                    <div class="product-details">
-                        <strong style="font-size:16px;">${item.name}</strong><br>
-                        <span style="color:#28a745; font-weight:bold;">₹${item.price}</span> | Stock: <b>${item.stock}</b>
+                <div class="item-row ${isHidden ? 'hidden-item' : ''}">
+                    <img src="${imgSrc}" class="item-img">
+                    <div class="item-details">
+                        <div class="item-name">${item.name} ${isHidden ? '🙈' : ''}</div>
+                        <div class="item-meta">
+                            <span>₹${item.price}</span> | Stock: <b>${item.stock}</b> | [${cat}]
+                        </div>
                     </div>
-                    <div class="product-actions">
-                        <button class="btn-edit" onclick="editProduct(${item.id})">✏️ Edit</button>
-                        <button class="btn-danger" onclick="removeProduct(${item.id})">🗑️ Delete</button>
+                    <div class="controls">
+                        <button class="icon-btn" onclick="moveItem(${index}, -1)" title="Move Up">↑</button>
+                        <button class="icon-btn" onclick="moveItem(${index}, 1)" title="Move Down">↓</button>
+                        <button class="icon-btn" onclick="editItem('${item.id}')" title="Edit">✏️</button>
+                        <button class="icon-btn danger" onclick="deleteItem('${item.id}')" title="Delete">🗑️</button>
                     </div>
                 </div>
             `;
         });
     }
 
-    function saveToLocalList() {
-        let id = document.getElementById("editId").value;
-        let name = document.getElementById("newName").value;
-        let price = document.getElementById("newPrice").value;
-        let stock = document.getElementById("newStock").value;
-        
-        if(!name || !price || !stock) return alert("Fill out Name, Price, and Stock!");
+    // --- 4. CRUD LOGIC ---
+    function saveToLocal() {
+        const id = document.getElementById('editId').value;
+        const name = document.getElementById('itemName').value;
+        const price = document.getElementById('itemPrice').value;
+        const stock = document.getElementById('itemStock').value;
+        const category = document.getElementById('itemCategory').value;
+        const visible = document.getElementById('itemVisible').value === "true";
+
+        if (!name || !price || !stock) return alert("Name, Price, and Stock are required.");
 
         if (id) {
-            // Updating existing item
-            let index = catalog.findIndex(i => i.id == id);
-            catalog[index].name = name;
-            catalog[index].price = parseInt(price);
-            catalog[index].stock = parseInt(stock);
-            if (imageBase64) catalog[index].image = imageBase64;
+            // Update Existing
+            const idx = catalog.findIndex(i => i.id == id);
+            catalog[idx].name = name;
+            catalog[idx].price = parseInt(price);
+            catalog[idx].stock = parseInt(stock);
+            catalog[idx].category = category;
+            catalog[idx].visible = visible;
+            if (currentImageBase64) catalog[idx].image = currentImageBase64;
         } else {
-            // Adding new item
-            catalog.push({
-                id: Date.now(),
+            // Create New
+            catalog.unshift({ // Adds to the top of the list
+                id: Date.now().toString(),
                 name: name,
                 price: parseInt(price),
                 stock: parseInt(stock),
-                image: imageBase64
+                category: category,
+                visible: visible,
+                image: currentImageBase64
             });
         }
-        
-        cancelEdit(); // Reset form
-        renderCatalog();
+
+        markUnsaved();
+        resetForm();
+        renderList();
     }
 
-    function editProduct(id) {
-        let item = catalog.find(i => i.id == id);
+    function editItem(id) {
+        const item = catalog.find(i => i.id == id);
         if(!item) return;
 
-        document.getElementById("editId").value = item.id;
-        document.getElementById("newName").value = item.name;
-        document.getElementById("newPrice").value = item.price;
-        document.getElementById("newStock").value = item.stock;
-        imageBase64 = ""; // Clear pending image
+        document.getElementById('editId').value = item.id;
+        document.getElementById('itemName').value = item.name;
+        document.getElementById('itemPrice').value = item.price;
+        document.getElementById('itemStock').value = item.stock;
+        document.getElementById('itemCategory').value = item.category || 'New Arrival';
+        document.getElementById('itemVisible').value = item.visible === false ? "false" : "true";
         
-        document.getElementById("formTitle").innerText = "✏️ Editing: " + item.name;
-        document.getElementById("saveItemBtn").innerText = "💾 Save Changes";
-        document.getElementById("cancelEditBtn").style.display = "block";
-        window.scrollTo(0, document.body.scrollHeight);
+        currentImageBase64 = "";
+        document.getElementById('itemImage').value = "";
+        if(item.image) {
+            document.getElementById('imagePreviewBox').innerHTML = `<img src="${item.image}">`;
+        } else {
+            document.getElementById('imagePreviewBox').innerHTML = `<span style="color:var(--text-muted); font-size:12px;">No Image</span>`;
+        }
+
+        document.getElementById('formTitle').innerText = `✏️ Editing: ${item.name}`;
+        document.getElementById('saveBtn').innerText = `💾 Update Item`;
+        document.getElementById('cancelBtn').style.display = 'block';
+        window.scrollTo(0, 0);
     }
 
-    function cancelEdit() {
-        document.getElementById("editId").value = "";
-        document.getElementById("newName").value = "";
-        document.getElementById("newPrice").value = "";
-        document.getElementById("newStock").value = "";
-        document.getElementById("newImage").value = "";
-        imageBase64 = "";
-        
-        document.getElementById("formTitle").innerText = "➕ Add New Product";
-        document.getElementById("saveItemBtn").innerText = "+ Add to List";
-        document.getElementById("cancelEditBtn").style.display = "none";
-    }
-
-    function removeProduct(id) {
-        if(confirm("Are you sure you want to delete this item?")) {
+    function deleteItem(id) {
+        if(confirm("Are you sure? This removes it from the list. (Click 'Publish' to make it permanent).")) {
             catalog = catalog.filter(i => i.id != id);
-            renderCatalog();
+            markUnsaved();
+            renderList();
         }
     }
 
-    async function syncToCloud() {
-        let pwd = document.getElementById("adminPassword").value;
-        let status = document.getElementById("statusMessage");
+    function moveItem(index, direction) {
+        if (index + direction < 0 || index + direction >= catalog.length) return; // Out of bounds
         
-        if(!pwd) return alert("Enter your Admin PIN!");
+        // Swap array elements
+        const temp = catalog[index];
+        catalog[index] = catalog[index + direction];
+        catalog[index + direction] = temp;
         
-        status.innerText = "⏳ Uploading images and syncing with cloud...";
-        status.style.color = "blue";
+        markUnsaved();
+        renderList();
+    }
+
+    function resetForm() {
+        document.getElementById('editId').value = "";
+        document.getElementById('itemName').value = "";
+        document.getElementById('itemPrice').value = "";
+        document.getElementById('itemStock').value = "";
+        document.getElementById('itemCategory').value = "New Arrival";
+        document.getElementById('itemVisible').value = "true";
+        document.getElementById('itemImage').value = "";
+        document.getElementById('imagePreviewBox').innerHTML = `<span style="color:var(--text-muted); font-size:12px;">No Image Selected</span>`;
+        currentImageBase64 = "";
+
+        document.getElementById('formTitle').innerText = "➕ Create Product";
+        document.getElementById('saveBtn').innerText = "💾 Save to List";
+        document.getElementById('cancelBtn').style.display = "none";
+    }
+
+    // --- 5. SYNC WITH CLOUD ---
+    function markUnsaved() {
+        hasUnsavedChanges = true;
+        document.getElementById('unsavedBadge').style.display = 'inline-block';
+        document.getElementById('statusMsg').innerText = "Pending changes...";
+    }
+
+    async function syncWithCloud() {
+        const pin = document.getElementById('adminPin').value;
+        const status = document.getElementById('statusMsg');
+
+        if (!pin) return alert("Admin PIN is required to publish!");
+
+        status.style.color = "var(--gold)";
+        status.innerText = "⏳ Pushing to cloud server...";
 
         try {
-            let response = await fetch(API_URL + "/admin/update", {
+            const response = await fetch(API_URL + "/admin/update", {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({ password: pwd, catalog: catalog })
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ password: pin, catalog: catalog })
             });
-            let result = await response.json();
-            
-            if(result.status === "success") {
-                status.innerText = "✅ " + result.message;
-                status.style.color = "green";
-                loadCatalog(); // Refresh to get proper image URLs back from server
+
+            const result = await response.json();
+
+            if (response.ok && result.status === "success") {
+                status.style.color = "var(--success)";
+                status.innerText = "✅ Live on Website!";
+                hasUnsavedChanges = false;
+                document.getElementById('unsavedBadge').style.display = 'none';
+                
+                // Reload to get new image URLs from the server
+                setTimeout(() => { loadCatalog(); }, 1000); 
             } else {
-                status.innerText = "❌ Error: " + result.message;
-                status.style.color = "red";
+                status.style.color = "var(--danger)";
+                status.innerText = "❌ " + (result.message || "Invalid PIN");
             }
         } catch (e) {
-            status.innerText = "❌ Network Error!";
-            status.style.color = "red";
+            status.style.color = "var(--danger)";
+            status.innerText = "❌ Network error. Try again.";
         }
     }
 
+    // Warn before leaving if unsaved
+    window.addEventListener('beforeunload', function (e) {
+        if (hasUnsavedChanges) {
+            e.preventDefault();
+            e.returnValue = '';
+        }
+    });
+
+    // Boot
     loadCatalog();
 </script>
 </body>
