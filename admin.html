@@ -3,48 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chava | Secret Admin Panel</title>
+    <title>Chava | Secret Admin</title>
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; }
-        .container { max-width: 600px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        input, button { padding: 10px; margin: 5px 0; width: 100%; box-sizing: border-box; border: 1px solid #ccc; border-radius: 5px; }
-        .product-item { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; background: #fafafa;}
-        .btn { background: #28a745; color: white; border: none; cursor: pointer; font-weight: bold; font-size: 16px; }
-        .btn-danger { background: #dc3545; width: auto; padding: 5px 15px; border-radius: 5px; }
-        hr { border: 0; border-top: 1px solid #eee; margin: 20px 0; }
-        #statusMessage { font-weight: bold; text-align: center; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 20px; background-color: #f0f2f5; margin: 0; }
+        .container { max-width: 700px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        h2, h3 { margin-top: 0; color: #333; }
+        input, button { padding: 12px; margin: 8px 0; width: 100%; box-sizing: border-box; border: 1px solid #ddd; border-radius: 8px; font-size: 15px; }
+        input[type="file"] { padding: 8px; background: #fafafa; }
+        
+        .product-item { border: 1px solid #eee; padding: 15px; margin-bottom: 12px; border-radius: 8px; display: flex; align-items: center; background: #fff; gap: 15px; }
+        .product-img { width: 60px; height: 60px; object-fit: cover; border-radius: 6px; background: #eee; }
+        .product-details { flex-grow: 1; }
+        .product-actions { display: flex; gap: 8px; flex-direction: column; }
+        
+        .btn { background: #1a1a1a; color: white; border: none; cursor: pointer; font-weight: bold; transition: 0.2s; }
+        .btn:hover { background: #333; }
+        .btn-edit { background: #f0ad4e; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; }
+        .btn-danger { background: #dc3545; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; }
+        
+        .editor-box { background: #f8f9fa; padding: 15px; border-radius: 8px; border: 1px dashed #ccc; }
+        hr { border: 0; border-top: 1px solid #eee; margin: 25px 0; }
+        #statusMessage { font-weight: bold; text-align: center; margin-top: 15px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>👑 Chava Secret Admin</h2>
+    <h2>👑 Chava Command Center</h2>
     
     <label><b>Admin PIN:</b></label>
-    <input type="password" id="adminPassword" placeholder="Enter your secret PIN from PythonAnywhere">
+    <input type="password" id="adminPassword" placeholder="Enter your secret PIN">
     
     <hr>
-    <h3>📦 Current Inventory</h3>
+    <h3>📦 Live Website Inventory</h3>
     <div id="productList">Loading catalog from cloud...</div>
     
     <hr>
-    <h3>➕ Add New Product</h3>
-    <input type="text" id="newName" placeholder="Product Name (e.g., Black Silk Shirt)">
-    <input type="number" id="newPrice" placeholder="Price (₹)">
-    <input type="number" id="newStock" placeholder="Pieces Left in Stock">
-    <button class="btn" onclick="addProduct()">+ Add to List</button>
+    <div class="editor-box">
+        <h3 id="formTitle">➕ Add New Product</h3>
+        <input type="hidden" id="editId" value="">
+        <input type="text" id="newName" placeholder="Product Name (e.g., Silk Shirt)">
+        <input type="number" id="newPrice" placeholder="Price (₹)">
+        <input type="number" id="newStock" placeholder="Pieces Left in Stock">
+        
+        <label style="font-size: 14px; color: #555; display:block; margin-top:10px;"><b>Upload Product Image:</b></label>
+        <input type="file" id="newImage" accept="image/*">
+        
+        <button class="btn" id="saveItemBtn" onclick="saveToLocalList()">+ Add to List</button>
+        <button class="btn" id="cancelEditBtn" style="display:none; background:#6c757d;" onclick="cancelEdit()">Cancel Edit</button>
+    </div>
 
     <hr>
-    <button class="btn" style="background: #007bff;" onclick="saveToCloud()">☁️ Save Changes to Cloud</button>
+    <button class="btn" style="background: #28a745; font-size: 18px; padding: 15px;" onclick="syncToCloud()">☁️ PUBLISH TO LIVE WEBSITE</button>
     <p id="statusMessage"></p>
 </div>
 
 <script>
-    // Link to your PythonAnywhere brain
     const API_URL = "https://Shivale.pythonanywhere.com";
     let catalog = [];
+    let imageBase64 = "";
 
-    // 1. Fetch current products when page loads
+    // Handle Image Selection
+    document.getElementById('newImage').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                imageBase64 = event.target.result; // Saves image as text temporarily
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
     async function loadCatalog() {
         try {
             let response = await fetch(API_URL + "/catalog");
@@ -55,102 +85,131 @@
         }
     }
 
-    // 2. Draw the products on the screen
     function renderCatalog() {
         let list = document.getElementById("productList");
         list.innerHTML = "";
         
         if (catalog.length === 0) {
-            list.innerHTML = "<p>No products yet. Add one below!</p>";
+            list.innerHTML = "<p>No products yet.</p>";
             return;
         }
 
         catalog.forEach((item, index) => {
+            let imgSrc = item.image ? item.image : 'https://via.placeholder.com/60?text=No+Img';
             list.innerHTML += `
                 <div class="product-item">
-                    <div>
-                        <strong>${item.name}</strong><br>
-                        Price: ₹${item.price} | <b>Stock: ${item.stock} left</b>
+                    <img src="${imgSrc}" class="product-img" alt="Product">
+                    <div class="product-details">
+                        <strong style="font-size:16px;">${item.name}</strong><br>
+                        <span style="color:#28a745; font-weight:bold;">₹${item.price}</span> | Stock: <b>${item.stock}</b>
                     </div>
-                    <button class="btn-danger" onclick="removeProduct(${index})">Delete</button>
+                    <div class="product-actions">
+                        <button class="btn-edit" onclick="editProduct(${item.id})">✏️ Edit</button>
+                        <button class="btn-danger" onclick="removeProduct(${item.id})">🗑️ Delete</button>
+                    </div>
                 </div>
             `;
         });
     }
 
-    // 3. Add a new item to the temporary list
-    function addProduct() {
+    function saveToLocalList() {
+        let id = document.getElementById("editId").value;
         let name = document.getElementById("newName").value;
         let price = document.getElementById("newPrice").value;
         let stock = document.getElementById("newStock").value;
         
-        if(!name || !price || !stock) {
-            alert("Please fill in all fields!");
-            return;
-        }
+        if(!name || !price || !stock) return alert("Fill out Name, Price, and Stock!");
 
-        catalog.push({
-            id: Date.now(), // Creates a unique ID number
-            name: name,
-            price: parseInt(price),
-            stock: parseInt(stock)
-        });
+        if (id) {
+            // Updating existing item
+            let index = catalog.findIndex(i => i.id == id);
+            catalog[index].name = name;
+            catalog[index].price = parseInt(price);
+            catalog[index].stock = parseInt(stock);
+            if (imageBase64) catalog[index].image = imageBase64;
+        } else {
+            // Adding new item
+            catalog.push({
+                id: Date.now(),
+                name: name,
+                price: parseInt(price),
+                stock: parseInt(stock),
+                image: imageBase64
+            });
+        }
         
-        // Clear the text boxes
+        cancelEdit(); // Reset form
+        renderCatalog();
+    }
+
+    function editProduct(id) {
+        let item = catalog.find(i => i.id == id);
+        if(!item) return;
+
+        document.getElementById("editId").value = item.id;
+        document.getElementById("newName").value = item.name;
+        document.getElementById("newPrice").value = item.price;
+        document.getElementById("newStock").value = item.stock;
+        imageBase64 = ""; // Clear pending image
+        
+        document.getElementById("formTitle").innerText = "✏️ Editing: " + item.name;
+        document.getElementById("saveItemBtn").innerText = "💾 Save Changes";
+        document.getElementById("cancelEditBtn").style.display = "block";
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function cancelEdit() {
+        document.getElementById("editId").value = "";
         document.getElementById("newName").value = "";
         document.getElementById("newPrice").value = "";
         document.getElementById("newStock").value = "";
+        document.getElementById("newImage").value = "";
+        imageBase64 = "";
         
-        renderCatalog();
+        document.getElementById("formTitle").innerText = "➕ Add New Product";
+        document.getElementById("saveItemBtn").innerText = "+ Add to List";
+        document.getElementById("cancelEditBtn").style.display = "none";
     }
 
-    // 4. Remove an item from the temporary list
-    function removeProduct(index) {
-        catalog.splice(index, 1);
-        renderCatalog();
+    function removeProduct(id) {
+        if(confirm("Are you sure you want to delete this item?")) {
+            catalog = catalog.filter(i => i.id != id);
+            renderCatalog();
+        }
     }
 
-    // 5. Send the final list securely to PythonAnywhere
-    async function saveToCloud() {
+    async function syncToCloud() {
         let pwd = document.getElementById("adminPassword").value;
         let status = document.getElementById("statusMessage");
         
-        if(!pwd) {
-            alert("You must enter your Admin PIN to save changes!");
-            return;
-        }
+        if(!pwd) return alert("Enter your Admin PIN!");
         
-        status.innerText = "Syncing with cloud...";
+        status.innerText = "⏳ Uploading images and syncing with cloud...";
         status.style.color = "blue";
 
         try {
             let response = await fetch(API_URL + "/admin/update", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
-                body: JSON.stringify({
-                    password: pwd,
-                    catalog: catalog
-                })
+                body: JSON.stringify({ password: pwd, catalog: catalog })
             });
-            
             let result = await response.json();
             
             if(result.status === "success") {
-                status.innerText = "✅ Inventory updated successfully!";
+                status.innerText = "✅ " + result.message;
                 status.style.color = "green";
+                loadCatalog(); // Refresh to get proper image URLs back from server
             } else {
                 status.innerText = "❌ Error: " + result.message;
                 status.style.color = "red";
             }
         } catch (e) {
-            status.innerText = "❌ Network Error! Could not reach server.";
+            status.innerText = "❌ Network Error!";
             status.style.color = "red";
         }
     }
 
-    // Boot up
     loadCatalog();
 </script>
 </body>
 </html>
-
