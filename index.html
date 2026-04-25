@@ -1581,7 +1581,7 @@
                         <div class="product-category">${isSoldOut ? 'Out of stock' : item.stock + ' pieces left'}</div>
                         <div class="product-name">${item.name}</div>
                         <div class="product-footer">
-                          <div class="product-price">₹${item.price}</div>
+                          <div class="product-price">$${item.price}</div>
                           <button class="product-add" ${isSoldOut ? 'disabled style="opacity:0.3;cursor:not-allowed;"' : `onclick="openModal('${safeName}')"`}>+</button>
                         </div>
                       </div>
@@ -1678,3 +1678,5 @@
 </script>
 </body>
 </html>
+
+

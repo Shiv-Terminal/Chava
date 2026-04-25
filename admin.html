@@ -95,7 +95,7 @@
 
         <div style="display: flex; gap: 10px;">
             <div class="form-group" style="flex: 1;">
-                <label>Price (₹)</label>
+                <label>Price ($)</label>
                 <input type="number" id="itemPrice" placeholder="0">
             </div>
             <div class="form-group" style="flex: 1;">
@@ -220,7 +220,7 @@
                     <div class="item-details">
                         <div class="item-name">${item.name} ${isHidden ? '🙈' : ''}</div>
                         <div class="item-meta">
-                            <span>₹${item.price}</span> | Stock: <b>${item.stock}</b> | [${cat}]
+                            <span>$${item.price}</span> | Stock: <b>${item.stock}</b> | [${cat}]
                         </div>
                     </div>
                     <div class="controls">
@@ -389,3 +389,4 @@
 </script>
 </body>
 </html>
+
