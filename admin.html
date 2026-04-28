@@ -20,18 +20,25 @@
         .pin-container { display: flex; gap: 10px; align-items: center; }
         .pin-container input { padding: 8px 12px; border-radius: 4px; border: 1px solid var(--border); background: var(--bg-dark); color: white; width: 150px; }
 
-        .container { max-width: 1000px; margin: 20px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
-        @media (max-width: 768px) { .container { grid-template-columns: 1fr; } }
+        /* Tabs */
+        .tabs { max-width: 1000px; margin: 20px auto 0; padding: 0 20px; display: flex; gap: 10px; }
+        .tab-btn { padding: 12px 24px; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; border-radius: 8px 8px 0 0; font-weight: bold; border-bottom: none; font-size: 15px; }
+        .tab-btn.active { background: var(--gold); color: var(--bg-dark); border-color: var(--gold); }
+
+        .container { max-width: 1000px; margin: 0 auto 20px; padding: 20px; }
+        .grid-layout { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; }
+        @media (max-width: 768px) { .grid-layout { grid-template-columns: 1fr; } }
         
-        .card { background: var(--bg-card); border-radius: 8px; padding: 20px; border: 1px solid var(--border); }
+        .card { background: var(--bg-card); border-radius: 8px; padding: 20px; border: 1px solid var(--border); margin-bottom: 20px; }
         h3 { margin-top: 0; border-bottom: 1px solid var(--border); padding-bottom: 10px; color: var(--gold); }
         
         /* Form Styles */
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 5px; font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-        input[type="text"], input[type="number"], select { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-dark); color: white; font-size: 15px; }
+        input[type="text"], input[type="number"], select, textarea { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-dark); color: white; font-size: 15px; font-family: inherit; resize: vertical; }
         input[type="file"] { width: 100%; padding: 10px; background: var(--bg-dark); border-radius: 6px; border: 1px dashed var(--gold); color: var(--text-muted); }
-        
+        textarea { min-height: 80px; }
+
         .image-preview { width: 100%; height: 150px; background: var(--bg-dark); margin-top: 10px; border-radius: 6px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid var(--border); }
         .image-preview img { width: 100%; height: 100%; object-fit: contain; }
         
@@ -59,6 +66,10 @@
         .sync-bar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg-card); padding: 15px 20px; border-top: 1px solid var(--gold); display: flex; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); }
         .unsaved-badge { background: var(--danger); color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; display: none; }
         #statusMsg { font-size: 14px; }
+
+        /* Hide logic */
+        .view-section { display: none; }
+        .view-section.active { display: block; }
     </style>
 </head>
 <body>
@@ -70,70 +81,83 @@
     </div>
 </div>
 
-<div class="container">
-    <!-- LEFT: EDITOR FORM -->
-    <div class="card">
-        <h3 id="formTitle">➕ Create Product</h3>
-        <input type="hidden" id="editId">
-        
-        <div class="form-group">
-            <label>Product Name</label>
-            <input type="text" id="itemName" placeholder="e.g., Onyx Ring">
-        </div>
-        
-        <div class="form-group">
-            <label>Category (For Storefront Filtering)</label>
-            <select id="itemCategory">
-                <option value="New Arrival">New Arrival</option>
-                <option value="Rings">Rings</option>
-                <option value="Necklaces">Necklaces</option>
-                <option value="Earrings">Earrings</option>
-                <option value="Bracelets">Bracelets</option>
-                <option value="Collections">Collections</option>
-            </select>
-        </div>
+<div class="tabs">
+    <button class="tab-btn active" id="tabBtn-products" onclick="switchView('products')">📦 Products</button>
+    <button class="tab-btn" id="tabBtn-content" onclick="switchView('content')">📝 Website Text</button>
+</div>
 
-        <div style="display: flex; gap: 10px;">
-            <div class="form-group" style="flex: 1;">
-                <label>Price ($)</label>
-                <input type="number" id="itemPrice" placeholder="0">
+<!-- VIEW 1: PRODUCTS -->
+<div id="view-products" class="container view-section active">
+    <div class="grid-layout">
+        <div class="card">
+            <h3 id="formTitle">➕ Create Product</h3>
+            <input type="hidden" id="editId">
+            
+            <div class="form-group">
+                <label>Product Name</label>
+                <input type="text" id="itemName" placeholder="e.g., Onyx Ring">
             </div>
-            <div class="form-group" style="flex: 1;">
-                <label>Stock Count</label>
-                <input type="number" id="itemStock" placeholder="0">
+            
+            <div class="form-group">
+                <label>Category</label>
+                <select id="itemCategory">
+                    <option value="New Arrival">Novedades</option>
+                    <option value="Rings">Anillos</option>
+                    <option value="Necklaces">Collares</option>
+                    <option value="Earrings">Aretes</option>
+                    <option value="Bracelets">Pulseras</option>
+                    <option value="Collections">Colecciones</option>
+                </select>
             </div>
-        </div>
 
-        <div class="form-group">
-            <label>Visibility Status</label>
-            <select id="itemVisible">
-                <option value="true">👁️ Public (Visible on Website)</option>
-                <option value="false">🙈 Hidden (Draft / Out of Season)</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label>Product Image (Auto-Compresses)</label>
-            <input type="file" id="itemImage" accept="image/*">
-            <div class="image-preview" id="imagePreviewBox">
-                <span style="color: var(--text-muted); font-size: 12px;">No Image Selected</span>
+            <div style="display: flex; gap: 10px;">
+                <div class="form-group" style="flex: 1;">
+                    <label>Price ($ MXN)</label>
+                    <input type="number" id="itemPrice" placeholder="0">
+                </div>
+                <div class="form-group" style="flex: 1;">
+                    <label>Stock Count</label>
+                    <input type="number" id="itemStock" placeholder="0">
+                </div>
             </div>
+
+            <div class="form-group">
+                <label>Visibility Status</label>
+                <select id="itemVisible">
+                    <option value="true">👁️ Public (Visible on Website)</option>
+                    <option value="false">🙈 Hidden (Draft / Out of Season)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Product Image (Auto-Compresses)</label>
+                <input type="file" id="itemImage" accept="image/*">
+                <div class="image-preview" id="imagePreviewBox">
+                    <span style="color: var(--text-muted); font-size: 12px;">No Image Selected</span>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" id="saveBtn" onclick="saveToLocal()">💾 Save to List</button>
+            <button class="btn btn-cancel" id="cancelBtn" style="display:none;" onclick="resetForm()">✖ Cancel Edit</button>
         </div>
 
-        <button class="btn btn-primary" id="saveBtn" onclick="saveToLocal()">💾 Save to List</button>
-        <button class="btn btn-cancel" id="cancelBtn" style="display:none;" onclick="resetForm()">✖ Cancel Edit</button>
-    </div>
-
-    <!-- RIGHT: INVENTORY LIST -->
-    <div class="card">
-        <h3>📦 Inventory Database (<span id="totalItems">0</span>)</h3>
-        <div class="inventory-list" id="inventoryList">
-            <p style="text-align: center; color: var(--text-muted);">Loading database...</p>
+        <div class="card">
+            <h3>📦 Inventory Database (<span id="totalItems">0</span>)</h3>
+            <div class="inventory-list" id="inventoryList">
+                <p style="text-align: center; color: var(--text-muted);">Loading database...</p>
+            </div>
         </div>
     </div>
 </div>
 
-<!-- BOTTOM SYNC BAR -->
+<!-- VIEW 2: SITE CONTENT (CMS) -->
+<div id="view-content" class="container view-section">
+    <div style="margin-bottom: 20px; color: var(--text-muted); font-size: 14px;">
+        <em>Note: HTML tags like &lt;br&gt; or &lt;em&gt; can be used in these fields to style your text.</em>
+    </div>
+    <div id="contentEditorBox"></div>
+</div>
+
 <div class="sync-bar">
     <div>
         <span class="unsaved-badge" id="unsavedBadge">UNSAVED CHANGES!</span>
@@ -144,12 +168,56 @@
 
 <script>
     const API_URL = "https://Shivale.pythonanywhere.com";
+    
+    // Core Data
     let catalog = [];
     let currentImageBase64 = "";
     let hasUnsavedChanges = false;
+    let siteContent = {};
+
+    // Fallback Content Dictionary (Pre-filled with your current Mexican Spanish text)
+    const defaultSiteContent = {
+        "nav_logo_sub": "lo vales",
+        "nav_link_1": "Colecciones", "nav_link_2": "Novedades", "nav_link_3": "Nuestra Historia", "nav_link_4": "Contacto", "nav_btn": "Comprar Ahora",
+        "hero_eyebrow": "Nueva Colección 2026", "hero_title": "Viste Tu<br><em>Valor</em>", "hero_motto": "Resalta tu elegancia",
+        "hero_btn_1": "Explorar Colecciones", "hero_btn_2": "Nuestra Historia", "hero_card_tag": "Collar<br>Seraphine", "hero_card_price": "Desde $420", "hero_badge": "Nueva<br>Temporada", "hero_scroll": "Deslizar",
+        "marquee_1": "Joyería Artesanal", "marquee_2": "Accesorios Finos", "marquee_3": "Origen Ético", "marquee_4": "Hecho para Ti", "marquee_5": "Resalta Tu Elegancia", "marquee_6": "Oro y Gemas", "marquee_7": "Piezas Atemporales", "marquee_8": "Calidad Premium",
+        "col_sec_label": "Curado Para Ti", "col_sec_title": "Nuestras <em>Colecciones</em>", "col_sec_link": "Ver Todo →",
+        "col_1_name": "Colección Lumière", "col_1_count": "28 Piezas", "col_1_btn": "Explorar",
+        "col_2_name": "Anillos Eternos", "col_2_count": "16 Piezas", "col_2_btn": "Explorar",
+        "col_3_name": "Dijes de Gemas", "col_3_count": "22 Piezas", "col_3_btn": "Explorar",
+        "col_4_name": "Mascadas de Seda", "col_4_count": "12 Piezas", "col_4_btn": "Explorar",
+        "col_5_name": "Pulseras de Oro", "col_5_count": "18 Piezas", "col_5_btn": "Explorar",
+        "story_img_label": "Elaborado con Precisión", "story_stat_num": "12+", "story_stat_label": "Años de<br>Arte Artesanal",
+        "story_sec_label": "Nuestra Historia", "story_sec_title": "Nacido de la <em>Pasión</em>",
+        "story_p1": "En <strong>CHAVA lo vales</strong>, creemos que toda mujer merece brillar a su manera. Nuestras piezas no son solo joyería — son declaraciones. Cada una está <strong>hecha a mano con intención</strong>, diseñada para celebrar la elegancia que ya existe en ti.",
+        "story_p2": "Solo utilizamos los metales más finos y gemas obtenidas éticamente, trabajando junto a maestros artesanos que vierten décadas de experiencia en cada broche, cada engaste, cada superficie resplandeciente.",
+        "story_feat1_title": "Origen Ético", "story_feat1_desc": "Cada gema con trazabilidad de origen responsable",
+        "story_feat2_title": "Hecho a Mano", "story_feat2_desc": "Cada pieza elaborada por manos de expertos artesanos",
+        "story_feat3_title": "Cuidado de por Vida", "story_feat3_desc": "Limpieza y ajustes gratis, para siempre",
+        "story_feat4_title": "Oro Certificado", "story_feat4_desc": "Oro de 18k y 24k con garantía de autenticidad",
+        "testi_sec_label": "Lo Que Dicen", "testi_sec_title": "Voces de <em>Elegancia</em>",
+        "testi_1_text": "\"Usé mi collar CHAVA en la boda de mi hija y recibí cumplidos todo el día. No es solo joyería — es un sentimiento.\"", "testi_1_avatar": "M", "testi_1_name": "María Elena R.", "testi_1_role": "Clienta Leal, 4 años",
+        "testi_2_text": "\"La artesanía es impresionante. Puedes sentir el cuidado en cada detalle. Mi anillo Aurore se ha convertido en mi pieza distintiva.\"", "testi_2_avatar": "S", "testi_2_name": "Sofía A.", "testi_2_role": "Entusiasta de la Joyería",
+        "testi_3_text": "\"CHAVA captura algo raro — la intersección del diseño moderno y la belleza atemporal. Se lo regalo a cada mujer que admiro.\"", "testi_3_avatar": "L", "testi_3_name": "Laura C.", "testi_3_role": "Estilista y Coleccionista",
+        "contact_sec_label": "Soporte Directo", "contact_sec_title": "Habla con Nuestros<br><em>Artesanos</em>", "contact_sec_sub": "Olvídate de los formularios y tiempos de espera. Chatea directamente con nuestro equipo por WhatsApp para hacer un pedido personalizado o preguntar por una pieza.", "contact_btn": "Chatear y Ordenar por WhatsApp",
+        "modal_title": "Solicitar Pieza", "modal_sub": "Directo al Artesano", "modal_btn": "Enviar Solicitud",
+        "footer_logo_sub": "lo vales", "footer_tagline": "Resalta tu elegancia. Joyería y accesorios artesanales para la mujer que conoce su valor.",
+        "footer_col1_title": "Colecciones", "footer_link1_1": "Lumière", "footer_link1_2": "Anillos Eternos", "footer_link1_3": "Dijes de Gemas", "footer_link1_4": "Pulseras", "footer_link1_5": "Aretes",
+        "footer_col2_title": "Compañía", "footer_link2_1": "Nuestra Historia", "footer_link2_2": "Artesanos", "footer_link2_3": "Sustentabilidad", "footer_link2_4": "Prensa", "footer_link2_5": "Bolsa de Trabajo",
+        "footer_col3_title": "Soporte", "footer_link3_1": "Guía de Tallas", "footer_link3_2": "Guía de Cuidado", "footer_link3_3": "Envíos y Devoluciones", "footer_link3_4": "Contáctanos", "footer_link3_5": "Preguntas Frecuentes",
+        "footer_copy": "© 2026 <span>CHAVA lo vales</span>. Todos los derechos reservados.", "footer_legal": "Hecho con amor · Aviso de Privacidad · Términos"
+    };
+
+    // --- VIEW SWITCHER ---
+    function switchView(viewName) {
+        document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+        document.getElementById('view-' + viewName).classList.add('active');
+        document.getElementById('tabBtn-' + viewName).classList.add('active');
+    }
 
     // --- 1. SMART IMAGE COMPRESSION ---
-    // If you upload a 5MB photo, this shrinks it to ~100kb so the server doesn't crash
     document.getElementById('itemImage').addEventListener('change', function(e) {
         const file = e.target.files[0];
         if (!file) return;
@@ -158,26 +226,14 @@
         reader.onload = function(event) {
             const img = new Image();
             img.onload = function() {
-                // Resize logic: Max width/height 800px
                 const canvas = document.createElement('canvas');
-                let width = img.width;
-                let height = img.height;
-                const MAX_SIZE = 800;
+                let width = img.width; let height = img.height; const MAX_SIZE = 800;
 
-                if (width > height && width > MAX_SIZE) {
-                    height *= MAX_SIZE / width;
-                    width = MAX_SIZE;
-                } else if (height > MAX_SIZE) {
-                    width *= MAX_SIZE / height;
-                    height = MAX_SIZE;
-                }
+                if (width > height && width > MAX_SIZE) { height *= MAX_SIZE / width; width = MAX_SIZE; } 
+                else if (height > MAX_SIZE) { width *= MAX_SIZE / height; height = MAX_SIZE; }
 
-                canvas.width = width;
-                canvas.height = height;
-                const ctx = canvas.getContext('2d');
-                ctx.drawImage(img, 0, 0, width, height);
-
-                // Compress to JPEG at 70% quality
+                canvas.width = width; canvas.height = height;
+                const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
                 currentImageBase64 = canvas.toDataURL('image/jpeg', 0.7);
                 document.getElementById('imagePreviewBox').innerHTML = `<img src="${currentImageBase64}">`;
             };
@@ -186,18 +242,81 @@
         reader.readAsDataURL(file);
     });
 
-    // --- 2. LOAD DATA ---
-    async function loadCatalog() {
+    // --- 2. LOAD DATA (Catalog AND Content) ---
+    async function loadData() {
+        // Load Catalog
         try {
             let res = await fetch(API_URL + "/catalog");
             catalog = await res.json();
-            renderList();
         } catch (e) {
             document.getElementById('inventoryList').innerHTML = `<p style="color:var(--danger)">Connection Error.</p>`;
         }
+
+        // Load Content
+        try {
+            let contentRes = await fetch(API_URL + "/content");
+            if(contentRes.ok) {
+                let fetchedContent = await contentRes.json();
+                siteContent = { ...defaultSiteContent, ...fetchedContent };
+            } else {
+                siteContent = { ...defaultSiteContent };
+            }
+        } catch (e) {
+            // Fallback to default if backend isn't ready for content yet
+            siteContent = { ...defaultSiteContent };
+        }
+
+        renderList();
+        renderContentEditor();
     }
 
-    // --- 3. RENDER LIST ---
+    // --- 3. RENDER CMS EDITOR ---
+    function renderContentEditor() {
+        const container = document.getElementById('contentEditorBox');
+        container.innerHTML = "";
+
+        // Groups help organize the 100+ text fields
+        const groups = {
+            "📱 Navigation & Popups": ["nav", "modal"],
+            "🌟 Hero & Marquee": ["hero", "marquee"],
+            "💍 Collections Grid": ["col"],
+            "📖 Our Story": ["story"],
+            "💬 Testimonials & Contact": ["testi", "contact"],
+            "⬇️ Footer": ["footer"]
+        };
+
+        for (const [groupName, prefixes] of Object.entries(groups)) {
+            let html = `<div class="card"><h3>${groupName}</h3><div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(300px, 1fr)); gap:15px;">`;
+            
+            for (const key in siteContent) {
+                if (prefixes.some(p => key.startsWith(p))) {
+                    let val = siteContent[key];
+                    let isLong = val.length > 45 || val.includes('<br>');
+                    
+                    html += `
+                    <div class="form-group" style="margin:0;">
+                        <label style="color:var(--gold-dim);">${key.replace(/_/g, ' ')}</label>
+                        ${isLong 
+                            ? `<textarea class="cms-input" data-key="${key}">${val}</textarea>` 
+                            : `<input type="text" class="cms-input" data-key="${key}" value="${val.replace(/"/g, '&quot;')}">`
+                        }
+                    </div>`;
+                }
+            }
+            html += `</div></div>`;
+            container.innerHTML += html;
+        }
+
+        // Attach event listeners to detect typing
+        document.querySelectorAll('.cms-input').forEach(input => {
+            input.addEventListener('input', (e) => {
+                siteContent[e.target.dataset.key] = e.target.value;
+                markUnsaved();
+            });
+        });
+    }
+
+    // --- 4. RENDER INVENTORY LIST ---
     function renderList() {
         const list = document.getElementById('inventoryList');
         document.getElementById('totalItems').innerText = catalog.length;
@@ -209,7 +328,6 @@
         }
 
         catalog.forEach((item, index) => {
-            // Support legacy items that don't have new fields
             const cat = item.category || 'New Arrival';
             const isHidden = item.visible === false; 
             const imgSrc = item.image || 'https://via.placeholder.com/50?text=No+Img';
@@ -220,7 +338,7 @@
                     <div class="item-details">
                         <div class="item-name">${item.name} ${isHidden ? '🙈' : ''}</div>
                         <div class="item-meta">
-                            <span>$${item.price}</span> | Stock: <b>${item.stock}</b> | [${cat}]
+                            <span>$${item.price} MXN</span> | Stock: <b>${item.stock}</b> | [${cat}]
                         </div>
                     </div>
                     <div class="controls">
@@ -234,7 +352,7 @@
         });
     }
 
-    // --- 4. CRUD LOGIC ---
+    // --- 5. INVENTORY CRUD LOGIC ---
     function saveToLocal() {
         const id = document.getElementById('editId').value;
         const name = document.getElementById('itemName').value;
@@ -246,30 +364,17 @@
         if (!name || !price || !stock) return alert("Name, Price, and Stock are required.");
 
         if (id) {
-            // Update Existing
             const idx = catalog.findIndex(i => i.id == id);
-            catalog[idx].name = name;
-            catalog[idx].price = parseInt(price);
-            catalog[idx].stock = parseInt(stock);
-            catalog[idx].category = category;
-            catalog[idx].visible = visible;
+            catalog[idx].name = name; catalog[idx].price = parseInt(price); catalog[idx].stock = parseInt(stock);
+            catalog[idx].category = category; catalog[idx].visible = visible;
             if (currentImageBase64) catalog[idx].image = currentImageBase64;
         } else {
-            // Create New
-            catalog.unshift({ // Adds to the top of the list
-                id: Date.now().toString(),
-                name: name,
-                price: parseInt(price),
-                stock: parseInt(stock),
-                category: category,
-                visible: visible,
-                image: currentImageBase64
+            catalog.unshift({
+                id: Date.now().toString(), name: name, price: parseInt(price), stock: parseInt(stock),
+                category: category, visible: visible, image: currentImageBase64
             });
         }
-
-        markUnsaved();
-        resetForm();
-        renderList();
+        markUnsaved(); resetForm(); renderList();
     }
 
     function editItem(id) {
@@ -283,57 +388,41 @@
         document.getElementById('itemCategory').value = item.category || 'New Arrival';
         document.getElementById('itemVisible').value = item.visible === false ? "false" : "true";
         
-        currentImageBase64 = "";
-        document.getElementById('itemImage').value = "";
-        if(item.image) {
-            document.getElementById('imagePreviewBox').innerHTML = `<img src="${item.image}">`;
-        } else {
-            document.getElementById('imagePreviewBox').innerHTML = `<span style="color:var(--text-muted); font-size:12px;">No Image</span>`;
-        }
+        currentImageBase64 = ""; document.getElementById('itemImage').value = "";
+        document.getElementById('imagePreviewBox').innerHTML = item.image ? `<img src="${item.image}">` : `<span style="color:var(--text-muted); font-size:12px;">No Image</span>`;
 
         document.getElementById('formTitle').innerText = `✏️ Editing: ${item.name}`;
         document.getElementById('saveBtn').innerText = `💾 Update Item`;
         document.getElementById('cancelBtn').style.display = 'block';
-        window.scrollTo(0, 0);
+        switchView('products'); window.scrollTo(0, 0);
     }
 
     function deleteItem(id) {
         if(confirm("Are you sure? This removes it from the list. (Click 'Publish' to make it permanent).")) {
             catalog = catalog.filter(i => i.id != id);
-            markUnsaved();
-            renderList();
+            markUnsaved(); renderList();
         }
     }
 
     function moveItem(index, direction) {
-        if (index + direction < 0 || index + direction >= catalog.length) return; // Out of bounds
-        
-        // Swap array elements
+        if (index + direction < 0 || index + direction >= catalog.length) return;
         const temp = catalog[index];
         catalog[index] = catalog[index + direction];
         catalog[index + direction] = temp;
-        
-        markUnsaved();
-        renderList();
+        markUnsaved(); renderList();
     }
 
     function resetForm() {
-        document.getElementById('editId').value = "";
-        document.getElementById('itemName').value = "";
-        document.getElementById('itemPrice').value = "";
-        document.getElementById('itemStock').value = "";
-        document.getElementById('itemCategory').value = "New Arrival";
-        document.getElementById('itemVisible').value = "true";
-        document.getElementById('itemImage').value = "";
+        document.getElementById('editId').value = ""; document.getElementById('itemName').value = "";
+        document.getElementById('itemPrice').value = ""; document.getElementById('itemStock').value = "";
+        document.getElementById('itemCategory').value = "New Arrival"; document.getElementById('itemVisible').value = "true";
+        document.getElementById('itemImage').value = ""; currentImageBase64 = "";
         document.getElementById('imagePreviewBox').innerHTML = `<span style="color:var(--text-muted); font-size:12px;">No Image Selected</span>`;
-        currentImageBase64 = "";
-
         document.getElementById('formTitle').innerText = "➕ Create Product";
-        document.getElementById('saveBtn').innerText = "💾 Save to List";
-        document.getElementById('cancelBtn').style.display = "none";
+        document.getElementById('saveBtn').innerText = "💾 Save to List"; document.getElementById('cancelBtn').style.display = "none";
     }
 
-    // --- 5. SYNC WITH CLOUD ---
+    // --- 6. SYNC WITH CLOUD ---
     function markUnsaved() {
         hasUnsavedChanges = true;
         document.getElementById('unsavedBadge').style.display = 'inline-block';
@@ -347,13 +436,14 @@
         if (!pin) return alert("Admin PIN is required to publish!");
 
         status.style.color = "var(--gold)";
-        status.innerText = "⏳ Pushing to cloud server...";
+        status.innerText = "⏳ Pushing Products and Text to cloud...";
 
         try {
+            // Notice: We are now sending BOTH catalog AND content in the payload!
             const response = await fetch(API_URL + "/admin/update", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ password: pin, catalog: catalog })
+                body: JSON.stringify({ password: pin, catalog: catalog, content: siteContent })
             });
 
             const result = await response.json();
@@ -363,9 +453,7 @@
                 status.innerText = "✅ Live on Website!";
                 hasUnsavedChanges = false;
                 document.getElementById('unsavedBadge').style.display = 'none';
-                
-                // Reload to get new image URLs from the server
-                setTimeout(() => { loadCatalog(); }, 1000); 
+                setTimeout(() => { loadData(); }, 1000); 
             } else {
                 status.style.color = "var(--danger)";
                 status.innerText = "❌ " + (result.message || "Invalid PIN");
@@ -376,17 +464,12 @@
         }
     }
 
-    // Warn before leaving if unsaved
     window.addEventListener('beforeunload', function (e) {
-        if (hasUnsavedChanges) {
-            e.preventDefault();
-            e.returnValue = '';
-        }
+        if (hasUnsavedChanges) { e.preventDefault(); e.returnValue = ''; }
     });
 
     // Boot
-    loadCatalog();
+    loadData();
 </script>
 </body>
 </html>
-

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es-MX">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CHAVA lo vales — Bring Out Your Elegance</title>
+<title>CHAVA lo vales — Resalta tu Elegancia</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -1075,15 +1075,15 @@
 <div class="modal-overlay" id="orderModal">
   <div class="modal-content">
     <button class="modal-close" onclick="closeModal()">×</button>
-    <h3 class="modal-title">Request Piece</h3>
-    <p class="modal-subtitle" id="modalSubtitle">Direct to Artisan</p>
+    <h3 class="modal-title" data-editable="modal_title">Solicitar Pieza</h3>
+    <p class="modal-subtitle" id="modalSubtitle" data-editable="modal_sub">Directo al Artesano</p>
     
     <form class="modal-form" id="apiOrderForm">
       <!-- Hidden input added here to capture the specific item name for Telegram -->
       <input type="hidden" id="modalItemInput">
-      <input type="text" id="modalNameInput" class="modal-input" placeholder="Your Name" required>
-      <textarea id="modalMessageInput" class="modal-input" rows="4" placeholder="Any special requests or shipping details?"></textarea>
-      <button type="submit" class="modal-btn">Submit Request</button>
+      <input type="text" id="modalNameInput" class="modal-input" placeholder="Tu Nombre" required>
+      <textarea id="modalMessageInput" class="modal-input" rows="4" placeholder="¿Alguna petición especial o detalles de envío?"></textarea>
+      <button type="submit" class="modal-btn" data-editable="modal_btn">Enviar Solicitud</button>
     </form>
     <p id="responseMessage" class="modal-response"></p>
   </div>
@@ -1091,14 +1091,14 @@
 
 <!-- NAV -->
 <nav id="navbar">
-  <a href="#" class="nav-logo">CHAVA <span>lo vales</span></a>
+  <a href="#" class="nav-logo">CHAVA <span data-editable="nav_logo_sub">lo vales</span></a>
   <ul class="nav-links">
-    <li><a href="#collections">Collections</a></li>
-    <li><a href="#new">New Arrivals</a></li>
-    <li><a href="#story">Our Story</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#collections" data-editable="nav_link_1">Colecciones</a></li>
+    <li><a href="#new" data-editable="nav_link_2">Novedades</a></li>
+    <li><a href="#story" data-editable="nav_link_3">Nuestra Historia</a></li>
+    <li><a href="#contact" data-editable="nav_link_4">Contacto</a></li>
   </ul>
-  <a href="javascript:void(0)" class="nav-cta" onclick="openModal('New Collection')">Shop Now</a>
+  <a href="javascript:void(0)" class="nav-cta" onclick="openModal('Nueva Colección')" data-editable="nav_btn">Comprar Ahora</a>
 </nav>
 
 <!-- HERO -->
@@ -1106,16 +1106,16 @@
   <div class="hero-bg"></div>
 
   <div class="hero-left">
-    <p class="hero-eyebrow">New Collection 2026</p>
-    <h1 class="hero-title">
-      Wear Your<br>
-      <em>Worth</em>
+    <p class="hero-eyebrow" data-editable="hero_eyebrow">Nueva Colección 2026</p>
+    <h1 class="hero-title" data-editable="hero_title">
+      Viste Tu<br>
+      <em>Valor</em>
     </h1>
-    <p class="hero-motto">Bring out your elegance</p>
+    <p class="hero-motto" data-editable="hero_motto">Resalta tu elegancia</p>
     <div class="hero-actions">
-      <a href="#collections" class="btn-primary"><span>Explore Collections</span></a>
+      <a href="#collections" class="btn-primary"><span data-editable="hero_btn_1">Explorar Colecciones</span></a>
       <a href="#story" class="btn-ghost">
-        Our Story
+        <span data-editable="hero_btn_2">Nuestra Historia</span>
         <svg width="20" height="10" viewBox="0 0 20 10" fill="none">
           <path d="M0 5H18M14 1L18 5L14 9" stroke="currentColor" stroke-width="1"/>
         </svg>
@@ -1133,19 +1133,19 @@
           <div class="jewel-center"></div>
         </div>
         <div class="hero-card-label">
-          <div class="card-tag">Seraphine<br>Necklace</div>
-          <div class="card-price">From $420</div>
+          <div class="card-tag" data-editable="hero_card_tag">Collar<br>Seraphine</div>
+          <div class="card-price" data-editable="hero_card_price">Desde $420</div>
         </div>
       </div>
       <div class="hero-float-badge">
-        <p class="badge-text">New<br>Season</p>
+        <p class="badge-text" data-editable="hero_badge">Nueva<br>Temporada</p>
       </div>
     </div>
   </div>
 
   <div class="hero-scroll">
     <div class="scroll-line"></div>
-    <p class="scroll-text">Scroll</p>
+    <p class="scroll-text" data-editable="hero_scroll">Deslizar</p>
   </div>
 </section>
 
@@ -1153,24 +1153,24 @@
 <div class="marquee-section">
   <div class="marquee-track">
     <div class="marquee-item">
-      <span>Handcrafted Jewelry</span><div class="marquee-dot"></div>
-      <span>Fine Accessories</span><div class="marquee-dot"></div>
-      <span>Ethically Sourced</span><div class="marquee-dot"></div>
-      <span>Made for You</span><div class="marquee-dot"></div>
-      <span>Bring Out Your Elegance</span><div class="marquee-dot"></div>
-      <span>Gold & Gemstones</span><div class="marquee-dot"></div>
-      <span>Timeless Pieces</span><div class="marquee-dot"></div>
-      <span>Premium Quality</span><div class="marquee-dot"></div>
+      <span data-editable="marquee_1">Joyería Artesanal</span><div class="marquee-dot"></div>
+      <span data-editable="marquee_2">Accesorios Finos</span><div class="marquee-dot"></div>
+      <span data-editable="marquee_3">Origen Ético</span><div class="marquee-dot"></div>
+      <span data-editable="marquee_4">Hecho para Ti</span><div class="marquee-dot"></div>
+      <span data-editable="marquee_5">Resalta Tu Elegancia</span><div class="marquee-dot"></div>
+      <span data-editable="marquee_6">Oro y Gemas</span><div class="marquee-dot"></div>
+      <span data-editable="marquee_7">Piezas Atemporales</span><div class="marquee-dot"></div>
+      <span data-editable="marquee_8">Calidad Premium</span><div class="marquee-dot"></div>
     </div>
     <div class="marquee-item" aria-hidden="true">
-      <span>Handcrafted Jewelry</span><div class="marquee-dot"></div>
-      <span>Fine Accessories</span><div class="marquee-dot"></div>
-      <span>Ethically Sourced</span><div class="marquee-dot"></div>
-      <span>Made for You</span><div class="marquee-dot"></div>
-      <span>Bring Out Your Elegance</span><div class="marquee-dot"></div>
-      <span>Gold & Gemstones</span><div class="marquee-dot"></div>
-      <span>Timeless Pieces</span><div class="marquee-dot"></div>
-      <span>Premium Quality</span><div class="marquee-dot"></div>
+      <span data-editable="marquee_1">Joyería Artesanal</span><div class="marquee-dot"></div>
+      <span data-editable="marquee_2">Accesorios Finos</span><div class="marquee-dot"></div>
+      <span data-editable="marquee_3">Origen Ético</span><div class="marquee-dot"></div>
+      <span data-editable="marquee_4">Hecho para Ti</span><div class="marquee-dot"></div>
+      <span data-editable="marquee_5">Resalta Tu Elegancia</span><div class="marquee-dot"></div>
+      <span data-editable="marquee_6">Oro y Gemas</span><div class="marquee-dot"></div>
+      <span data-editable="marquee_7">Piezas Atemporales</span><div class="marquee-dot"></div>
+      <span data-editable="marquee_8">Calidad Premium</span><div class="marquee-dot"></div>
     </div>
   </div>
 </div>
@@ -1179,10 +1179,10 @@
 <section class="section" id="collections">
   <div class="section-header reveal">
     <div>
-      <p class="section-label">Curated For You</p>
-      <h2 class="section-title">Our <em>Collections</em></h2>
+      <p class="section-label" data-editable="col_sec_label">Curado Para Ti</p>
+      <h2 class="section-title" data-editable="col_sec_title">Nuestras <em>Colecciones</em></h2>
     </div>
-    <a href="#" class="section-link">View All →</a>
+    <a href="#" class="section-link" data-editable="col_sec_link">Ver Todo →</a>
   </div>
 
   <div class="collections-grid">
@@ -1201,10 +1201,10 @@
           </svg>
         </div>
         <div class="col-info">
-          <div class="col-name">Lumière Collection</div>
-          <div class="col-count"><span class="inventory-count">28 Pieces</span></div>
+          <div class="col-name" data-editable="col_1_name">Colección Lumière</div>
+          <div class="col-count"><span class="inventory-count" data-editable="col_1_count">28 Piezas</span></div>
         </div>
-        <button class="col-hover-cta" onclick="openModal('Lumière Collection')">Explore</button>
+        <button class="col-hover-cta" onclick="openModal('Colección Lumière')" data-editable="col_1_btn">Explorar</button>
       </div>
     </div>
 
@@ -1221,10 +1221,10 @@
           </svg>
         </div>
         <div class="col-info">
-          <div class="col-name">Eternal Rings</div>
-          <div class="col-count"><span class="inventory-count">16 Pieces</span></div>
+          <div class="col-name" data-editable="col_2_name">Anillos Eternos</div>
+          <div class="col-count"><span class="inventory-count" data-editable="col_2_count">16 Piezas</span></div>
         </div>
-        <button class="col-hover-cta" onclick="openModal('Eternal Rings')">Explore</button>
+        <button class="col-hover-cta" onclick="openModal('Anillos Eternos')" data-editable="col_2_btn">Explorar</button>
       </div>
     </div>
 
@@ -1238,10 +1238,10 @@
           </svg>
         </div>
         <div class="col-info">
-          <div class="col-name">Gem Pendants</div>
-          <div class="col-count"><span class="inventory-count">22 Pieces</span></div>
+          <div class="col-name" data-editable="col_3_name">Dijes de Gemas</div>
+          <div class="col-count"><span class="inventory-count" data-editable="col_3_count">22 Piezas</span></div>
         </div>
-        <button class="col-hover-cta" onclick="openModal('Gem Pendants')">Explore</button>
+        <button class="col-hover-cta" onclick="openModal('Dijes de Gemas')" data-editable="col_3_btn">Explorar</button>
       </div>
     </div>
 
@@ -1256,10 +1256,10 @@
           </svg>
         </div>
         <div class="col-info">
-          <div class="col-name">Silk Scarves</div>
-          <div class="col-count"><span class="inventory-count">12 Pieces</span></div>
+          <div class="col-name" data-editable="col_4_name">Mascadas de Seda</div>
+          <div class="col-count"><span class="inventory-count" data-editable="col_4_count">12 Piezas</span></div>
         </div>
-        <button class="col-hover-cta" onclick="openModal('Silk Scarves')">Explore</button>
+        <button class="col-hover-cta" onclick="openModal('Mascadas de Seda')" data-editable="col_4_btn">Explorar</button>
       </div>
     </div>
 
@@ -1275,10 +1275,10 @@
           </svg>
         </div>
         <div class="col-info">
-          <div class="col-name">Gold Bracelets</div>
-          <div class="col-count"><span class="inventory-count">18 Pieces</span></div>
+          <div class="col-name" data-editable="col_5_name">Pulseras de Oro</div>
+          <div class="col-count"><span class="inventory-count" data-editable="col_5_count">18 Piezas</span></div>
         </div>
-        <button class="col-hover-cta" onclick="openModal('Gold Bracelets')">Explore</button>
+        <button class="col-hover-cta" onclick="openModal('Pulseras de Oro')" data-editable="col_5_btn">Explorar</button>
       </div>
     </div>
   </div>
@@ -1289,7 +1289,7 @@
   <!-- This Container will be dynamically filled by JavaScript -->
   <section class="section featured">
     <div style="padding: 100px 60px; text-align: center; color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 24px; font-style: italic;">
-      Curating latest collection...
+      Preparando la última colección...
     </div>
   </section>
 </div>
@@ -1310,45 +1310,45 @@
             <line x1="90" y1="10" x2="90" y2="250" stroke="#C8A96E" stroke-width="0.3" opacity="0.2"/>
             <line x1="20" y1="130" x2="160" y2="130" stroke="#C8A96E" stroke-width="0.3" opacity="0.2"/>
           </svg>
-          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:0.3em;color:var(--gold);text-transform:uppercase;margin-top:16px;">Crafted with Precision</p>
+          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:0.3em;color:var(--gold);text-transform:uppercase;margin-top:16px;" data-editable="story_img_label">Elaborado con Precisión</p>
         </div>
       </div>
       <div class="story-img-float">
-        <div class="story-stat-num">12+</div>
-        <div class="story-stat-label">Years of<br>Artisan Craft</div>
+        <div class="story-stat-num" data-editable="story_stat_num">12+</div>
+        <div class="story-stat-label" data-editable="story_stat_label">Años de<br>Arte Artesanal</div>
       </div>
     </div>
 
     <div class="story-content reveal">
-      <p class="section-label">Our Story</p>
-      <h2 class="section-title" style="margin-bottom:32px;">Born from <em>Passion</em></h2>
-      <p class="story-body">
-        At <strong>CHAVA lo vales</strong>, we believe every woman deserves to shine in her own way. Our pieces are not just jewelry — they are declarations. Each one is <strong>handcrafted with intention</strong>, designed to celebrate the elegance already within you.
+      <p class="section-label" data-editable="story_sec_label">Nuestra Historia</p>
+      <h2 class="section-title" style="margin-bottom:32px;" data-editable="story_sec_title">Nacido de la <em>Pasión</em></h2>
+      <p class="story-body" data-editable="story_p1">
+        En <strong>CHAVA lo vales</strong>, creemos que toda mujer merece brillar a su manera. Nuestras piezas no son solo joyería — son declaraciones. Cada una está <strong>hecha a mano con intención</strong>, diseñada para celebrar la elegancia que ya existe en ti.
       </p>
-      <p class="story-body">
-        We source only the finest metals and ethically-obtained gemstones, working alongside master artisans who pour decades of experience into every clasp, every setting, every gleaming surface.
+      <p class="story-body" data-editable="story_p2">
+        Solo utilizamos los metales más finos y gemas obtenidas éticamente, trabajando junto a maestros artesanos que vierten décadas de experiencia en cada broche, cada engaste, cada superficie resplandeciente.
       </p>
 
       <div class="story-features">
         <div class="story-feature">
           <div class="feature-icon">◆</div>
-          <div class="feature-name">Ethically Sourced</div>
-          <div class="feature-desc">Every gemstone traced to responsible origins</div>
+          <div class="feature-name" data-editable="story_feat1_title">Origen Ético</div>
+          <div class="feature-desc" data-editable="story_feat1_desc">Cada gema con trazabilidad de origen responsable</div>
         </div>
         <div class="story-feature">
           <div class="feature-icon">◈</div>
-          <div class="feature-name">Handcrafted</div>
-          <div class="feature-desc">Each piece made by skilled artisan hands</div>
+          <div class="feature-name" data-editable="story_feat2_title">Hecho a Mano</div>
+          <div class="feature-desc" data-editable="story_feat2_desc">Cada pieza elaborada por manos de expertos artesanos</div>
         </div>
         <div class="story-feature">
           <div class="feature-icon">◇</div>
-          <div class="feature-name">Lifetime Care</div>
-          <div class="feature-desc">Free cleaning and adjustments, forever</div>
+          <div class="feature-name" data-editable="story_feat3_title">Cuidado de por Vida</div>
+          <div class="feature-desc" data-editable="story_feat3_desc">Limpieza y ajustes gratis, para siempre</div>
         </div>
         <div class="story-feature">
           <div class="feature-icon">◉</div>
-          <div class="feature-name">Certified Gold</div>
-          <div class="feature-desc">18k & 24k gold with authenticity guarantee</div>
+          <div class="feature-name" data-editable="story_feat4_title">Oro Certificado</div>
+          <div class="feature-desc" data-editable="story_feat4_desc">Oro de 18k y 24k con garantía de autenticidad</div>
         </div>
       </div>
     </div>
@@ -1357,63 +1357,63 @@
 
 <!-- TESTIMONIALS -->
 <div class="testimonials">
-  <p class="section-label" style="justify-content:center;">What They Say</p>
-  <h2 class="section-title reveal" style="margin-top:12px;">Voices of <em>Elegance</em></h2>
+  <p class="section-label" style="justify-content:center;" data-editable="testi_sec_label">Lo Que Dicen</p>
+  <h2 class="section-title reveal" style="margin-top:12px;" data-editable="testi_sec_title">Voces de <em>Elegancia</em></h2>
 
   <div class="testimonials-track">
     <div class="testimonial-card reveal">
       <div class="testimonial-stars">★★★★★</div>
-      <p class="testimonial-text">"I wore my CHAVA necklace to my daughter's wedding and received compliments the entire day. It's not just jewelry — it's a feeling."</p>
+      <p class="testimonial-text" data-editable="testi_1_text">"Usé mi collar CHAVA en la boda de mi hija y recibí cumplidos todo el día. No es solo joyería — es un sentimiento."</p>
       <div class="testimonial-author">
-        <div class="author-avatar">M</div>
+        <div class="author-avatar" data-editable="testi_1_avatar">M</div>
         <div>
-          <div class="author-name">María Elena R.</div>
-          <div class="author-role">Loyal Client, 4 years</div>
+          <div class="author-name" data-editable="testi_1_name">María Elena R.</div>
+          <div class="author-role" data-editable="testi_1_role">Clienta Leal, 4 años</div>
         </div>
       </div>
     </div>
 
     <div class="testimonial-card reveal">
       <div class="testimonial-stars">★★★★★</div>
-      <p class="testimonial-text">"The craftsmanship is breathtaking. You can feel the care in every single detail. My Aurore ring has become my signature piece."</p>
+      <p class="testimonial-text" data-editable="testi_2_text">"La artesanía es impresionante. Puedes sentir el cuidado en cada detalle. Mi anillo Aurore se ha convertido en mi pieza distintiva."</p>
       <div class="testimonial-author">
-        <div class="author-avatar">S</div>
+        <div class="author-avatar" data-editable="testi_2_avatar">S</div>
         <div>
-          <div class="author-name">Sofía A.</div>
-          <div class="author-role">Jewelry Enthusiast</div>
+          <div class="author-name" data-editable="testi_2_name">Sofía A.</div>
+          <div class="author-role" data-editable="testi_2_role">Entusiasta de la Joyería</div>
         </div>
       </div>
     </div>
 
     <div class="testimonial-card reveal">
       <div class="testimonial-stars">★★★★★</div>
-      <p class="testimonial-text">"CHAVA captures something rare — the intersection of modern design and timeless beauty. I gift it to every woman I admire."</p>
+      <p class="testimonial-text" data-editable="testi_3_text">"CHAVA captura algo raro — la intersección del diseño moderno y la belleza atemporal. Se lo regalo a cada mujer que admiro."</p>
       <div class="testimonial-author">
-        <div class="author-avatar">L</div>
+        <div class="author-avatar" data-editable="testi_3_avatar">L</div>
         <div>
-          <div class="author-name">Laura C.</div>
-          <div class="author-role">Stylist & Collector</div>
+          <div class="author-name" data-editable="testi_3_name">Laura C.</div>
+          <div class="author-role" data-editable="testi_3_role">Estilista y Coleccionista</div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- CONTACT/WHATSAPP -->
+<!-- CONTACT/WHATSAPP (Replaced Newsletter) -->
 <section class="newsletter" id="contact">
   <div class="newsletter-bg"></div>
-  <p class="section-label reveal" style="justify-content:center;">Direct Support</p>
-  <h2 class="newsletter-title reveal" style="margin-top:12px;">
-    Speak to Our<br><em>Artisans</em>
+  <p class="section-label reveal" style="justify-content:center;" data-editable="contact_sec_label">Soporte Directo</p>
+  <h2 class="newsletter-title reveal" style="margin-top:12px;" data-editable="contact_sec_title">
+    Habla con Nuestros<br><em>Artesanos</em>
   </h2>
-  <p class="newsletter-sub reveal">Skip the forms and wait times. Chat directly with our team on WhatsApp to place a custom order or inquire about a piece.</p>
+  <p class="newsletter-sub reveal" data-editable="contact_sec_sub">Olvídate de los formularios y tiempos de espera. Chatea directamente con nuestro equipo por WhatsApp para hacer un pedido personalizado o preguntar por una pieza.</p>
   
   <div class="newsletter-form reveal" style="border: none;">
-    <a href="https://wa.me/525571175218?text=Hi%20Chava!%20I%20am%20interested%20in%20your%20jewelry." target="_blank" class="newsletter-btn">
+    <a href="https://wa.me/525571175218?text=¡Hola%20Chava!%20Estoy%20interesada%20en%20su%20joyería." target="_blank" class="newsletter-btn">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right: 8px;">
         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
       </svg>
-      Chat & Order on WhatsApp
+      <span data-editable="contact_btn">Chatear y Ordenar por WhatsApp</span>
     </a>
   </div>
 </section>
@@ -1422,8 +1422,8 @@
 <footer>
   <div class="footer-grid">
     <div class="footer-brand">
-      <a href="#" class="nav-logo" style="font-size:24px;display:block;margin-bottom:20px;">CHAVA <span style="color:var(--ivory)">lo vales</span></a>
-      <p class="footer-tagline">Bring out your elegance. Handcrafted jewelry and accessories for the woman who knows her worth.</p>
+      <a href="#" class="nav-logo" style="font-size:24px;display:block;margin-bottom:20px;">CHAVA <span style="color:var(--ivory)" data-editable="footer_logo_sub">lo vales</span></a>
+      <p class="footer-tagline" data-editable="footer_tagline">Resalta tu elegancia. Joyería y accesorios artesanales para la mujer que conoce su valor.</p>
       <div class="footer-social">
         <a href="#" class="social-link">f</a>
         <a href="#" class="social-link">in</a>
@@ -1432,43 +1432,68 @@
       </div>
     </div>
     <div class="footer-col">
-      <h4>Collections</h4>
+      <h4 data-editable="footer_col1_title">Colecciones</h4>
       <ul class="footer-links">
-        <li><a href="#">Lumière</a></li>
-        <li><a href="#">Eternal Rings</a></li>
-        <li><a href="#">Gem Pendants</a></li>
-        <li><a href="#">Bracelets</a></li>
-        <li><a href="#">Earrings</a></li>
+        <li><a href="#" data-editable="footer_link1_1">Lumière</a></li>
+        <li><a href="#" data-editable="footer_link1_2">Anillos Eternos</a></li>
+        <li><a href="#" data-editable="footer_link1_3">Dijes de Gemas</a></li>
+        <li><a href="#" data-editable="footer_link1_4">Pulseras</a></li>
+        <li><a href="#" data-editable="footer_link1_5">Aretes</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Company</h4>
+      <h4 data-editable="footer_col2_title">Compañía</h4>
       <ul class="footer-links">
-        <li><a href="#">Our Story</a></li>
-        <li><a href="#">Artisans</a></li>
-        <li><a href="#">Sustainability</a></li>
-        <li><a href="#">Press</a></li>
-        <li><a href="#">Careers</a></li>
+        <li><a href="#" data-editable="footer_link2_1">Nuestra Historia</a></li>
+        <li><a href="#" data-editable="footer_link2_2">Artesanos</a></li>
+        <li><a href="#" data-editable="footer_link2_3">Sustentabilidad</a></li>
+        <li><a href="#" data-editable="footer_link2_4">Prensa</a></li>
+        <li><a href="#" data-editable="footer_link2_5">Bolsa de Trabajo</a></li>
       </ul>
     </div>
     <div class="footer-col">
-      <h4>Support</h4>
+      <h4 data-editable="footer_col3_title">Soporte</h4>
       <ul class="footer-links">
-        <li><a href="#">Sizing Guide</a></li>
-        <li><a href="#">Care Guide</a></li>
-        <li><a href="#">Shipping & Returns</a></li>
-        <li><a href="#">Contact Us</a></li>
-        <li><a href="#">FAQ</a></li>
+        <li><a href="#" data-editable="footer_link3_1">Guía de Tallas</a></li>
+        <li><a href="#" data-editable="footer_link3_2">Guía de Cuidado</a></li>
+        <li><a href="#" data-editable="footer_link3_3">Envíos y Devoluciones</a></li>
+        <li><a href="#" data-editable="footer_link3_4">Contáctanos</a></li>
+        <li><a href="#" data-editable="footer_link3_5">Preguntas Frecuentes</a></li>
       </ul>
     </div>
   </div>
   <div class="footer-bottom">
-    <p class="footer-copy">© 2026 <span>CHAVA lo vales</span>. All rights reserved.</p>
-    <p class="footer-copy">Crafted with love · Privacy Policy · Terms</p>
+    <p class="footer-copy" data-editable="footer_copy">© 2026 <span>CHAVA lo vales</span>. Todos los derechos reservados.</p>
+    <p class="footer-copy" data-editable="footer_legal">Hecho con amor · Aviso de Privacidad · Términos</p>
   </div>
 </footer>
 
 <script>
+  /* ─── SITE CONTENT FETCHER (NEW) ─── */
+  const API_URL = "https://Shivale.pythonanywhere.com";
+
+  async function loadSiteContent() {
+      try {
+          // In the next step, we will make the admin panel save these strings to a /content endpoint.
+          let response = await fetch(API_URL + "/content"); 
+          if (response.ok) {
+              let content = await response.json();
+              document.querySelectorAll('[data-editable]').forEach(el => {
+                  let key = el.getAttribute('data-editable');
+                  if (content[key]) {
+                      el.innerHTML = content[key];
+                  }
+              });
+          }
+      } catch (e) {
+          // Fails gracefully - safely leaves the Mexican Spanish text on the screen!
+          console.log("Using default site content...");
+      }
+  }
+  
+  // Fire the text loader immediately
+  loadSiteContent();
+
   // Navbar scroll effect
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
@@ -1489,7 +1514,14 @@
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
   /* ─── DYNAMIC STOREFRONT API FETCH ─── */
-  const API_URL = "https://Shivale.pythonanywhere.com";
+  const categoryTranslations = {
+      'New Arrival': 'Novedades',
+      'Rings': 'Anillos',
+      'Necklaces': 'Collares',
+      'Earrings': 'Aretes',
+      'Bracelets': 'Pulseras',
+      'Collections': 'Colecciones'
+  };
 
   async function loadStorefront() {
     const container = document.getElementById("new");
@@ -1508,7 +1540,10 @@
             // Strictly ignore hidden items
             if (item.visible === false) return; 
 
-            const cat = item.category || 'New Arrival';
+            const rawCat = item.category || 'New Arrival';
+            // Translate the category title for the Mexican UI
+            const cat = categoryTranslations[rawCat] || rawCat;
+            
             if (!groupedCatalog[cat]) {
                 groupedCatalog[cat] = [];
             }
@@ -1521,7 +1556,7 @@
             container.innerHTML = `
                 <section class="section featured">
                     <div style='padding:60px; grid-column: 1/-1; text-align:center; color:var(--text-muted); font-size:16px;'>
-                        New collection dropping soon!
+                        ¡Nueva colección muy pronto!
                     </div>
                 </section>`;
             return;
@@ -1538,7 +1573,7 @@
                   <p class="section-label">${categoryName}</p>
                   <h2 class="section-title"><em>${categoryName}</em></h2>
                 </div>
-                <a href="#" class="section-link">View All →</a>
+                <a href="#" class="section-link">Ver Todo →</a>
               </div>
               <div class="products-grid">
             `;
@@ -1561,7 +1596,7 @@
                 }
 
                 // Handle Badges & Security formatting
-                let badgeHTML = isSoldOut ? `<div class="product-badge" style="background:#dc3545; color:white;">Sold Out</div>` : `<div class="product-badge">New</div>`;
+                let badgeHTML = isSoldOut ? `<div class="product-badge" style="background:#dc3545; color:white;">Agotado</div>` : `<div class="product-badge">Nuevo</div>`;
                 let safeName = item.name ? item.name.replace(/'/g, "\\'") : 'Unknown';
 
                 // Add the card to the section
@@ -1578,10 +1613,10 @@
                         </div>
                       </div>
                       <div class="product-info">
-                        <div class="product-category">${isSoldOut ? 'Out of stock' : item.stock + ' pieces left'}</div>
+                        <div class="product-category">${isSoldOut ? 'Agotado' : item.stock + ' piezas disponibles'}</div>
                         <div class="product-name">${item.name}</div>
                         <div class="product-footer">
-                          <div class="product-price">$${item.price}</div>
+                          <div class="product-price">$${item.price} MXN</div>
                           <button class="product-add" ${isSoldOut ? 'disabled style="opacity:0.3;cursor:not-allowed;"' : `onclick="openModal('${safeName}')"`}>+</button>
                         </div>
                       </div>
@@ -1606,7 +1641,7 @@
         container.innerHTML = `
             <section class="section featured">
                 <div style='padding:60px; text-align:center; color:#ff4d4d;'>
-                    Could not connect to live inventory. Please try again later.
+                    No se pudo conectar con el inventario en vivo. Por favor, inténtalo más tarde.
                 </div>
             </section>`;
     }
@@ -1628,7 +1663,8 @@
   function openModal(productName) {
     modal.classList.add('active');
     itemInput.value = productName; // Save item name secretly for Telegram
-    modalSubtitle.innerText = `Ordering: ${productName}`;
+    // Notice: We don't overwrite this with a hardcoded string anymore, we append the name!
+    modalSubtitle.innerText = `Ordenando: ${productName}`;
     messageInput.value = ""; 
     responseMessage.innerText = "";
   }
@@ -1643,7 +1679,7 @@
     e.preventDefault(); 
     
     responseMessage.style.color = "var(--gold)";
-    responseMessage.innerText = "Sending request securely to server...";
+    responseMessage.innerText = "Enviando solicitud de forma segura al servidor...";
 
     try {
       // Send Name, Message AND the specific Item to the Python backend
@@ -1667,11 +1703,11 @@
         }, 2500); // Closes automatically after 2.5 seconds
       } else {
         responseMessage.style.color = "#ff4d4d";
-        responseMessage.innerText = "Error: Could not reach the server.";
+        responseMessage.innerText = "Error: No se pudo conectar con el servidor.";
       }
     } catch (error) {
       responseMessage.style.color = "#ff4d4d";
-      responseMessage.innerText = "Cloud Connection Error. Check console.";
+      responseMessage.innerText = "Error de conexión en la nube. Revisa la consola.";
       console.error(error);
     }
   });
