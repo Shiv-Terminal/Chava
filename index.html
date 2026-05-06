@@ -1,1731 +1,737 @@
 <!DOCTYPE html>
 <html lang="es-MX">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CHAVA lo vales — Resalta tu Elegancia</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --obsidian: #0C0C0E;
-    --charcoal: #141418;
-    --gold: #C8A96E;
-    --gold-light: #DFC088;
-    --gold-dim: #8A7248;
-    --ivory: #F4EFE4;
-    --ivory-dark: #E8E0D0;
-    --blush: #C4A09A;
-    --text-muted: #6B6860;
-    --border: rgba(200, 169, 110, 0.2);
-  }
-
-  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--obsidian);
-    color: var(--ivory);
-    font-family: 'Jost', sans-serif;
-    font-weight: 300;
-    overflow-x: hidden;
-  }
-
-  /* Scrollbar */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--obsidian); }
-  ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
-
-  /* ─── NAV ─── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0;
-    z-index: 100;
-    padding: 28px 60px;
-    display: flex; align-items: center; justify-content: space-between;
-    background: linear-gradient(to bottom, rgba(12,12,14,0.95) 0%, transparent 100%);
-    backdrop-filter: blur(0px);
-    transition: all 0.4s ease;
-  }
-  nav.scrolled {
-    background: rgba(12,12,14,0.92);
-    backdrop-filter: blur(20px);
-    padding: 20px 60px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .nav-logo {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 22px;
-    font-weight: 300;
-    letter-spacing: 0.25em;
-    color: var(--gold);
-    text-decoration: none;
-    text-transform: uppercase;
-  }
-  .nav-logo span { color: var(--ivory); }
-
-  .nav-links {
-    display: flex; gap: 44px; list-style: none;
-  }
-  .nav-links a {
-    color: var(--ivory-dark);
-    text-decoration: none;
-    font-size: 11px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    font-weight: 400;
-    position: relative;
-    transition: color 0.3s;
-  }
-  .nav-links a::after {
-    content: '';
-    position: absolute;
-    bottom: -4px; left: 0;
-    width: 0; height: 1px;
-    background: var(--gold);
-    transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
-  }
-  .nav-links a:hover { color: var(--gold); }
-  .nav-links a:hover::after { width: 100%; }
-
-  .nav-cta {
-    font-size: 10px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--obsidian);
-    background: var(--gold);
-    padding: 10px 24px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: all 0.3s;
-    cursor: pointer;
-  }
-  .nav-cta:hover { background: var(--gold-light); transform: translateY(-1px); }
-
-  /* ─── HERO ─── */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-bg {
-    position: absolute; inset: 0;
-    background:
-      radial-gradient(ellipse 60% 80% at 70% 50%, rgba(200,169,110,0.06) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 10% 80%, rgba(196,160,154,0.04) 0%, transparent 60%);
-  }
-
-  .hero-left {
-    display: flex; flex-direction: column;
-    justify-content: flex-end;
-    padding: 0 60px 100px 60px;
-    position: relative; z-index: 2;
-  }
-
-  .hero-eyebrow {
-    font-size: 10px;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 32px;
-    opacity: 0;
-    animation: fadeUp 1s ease 0.3s forwards;
-  }
-  .hero-eyebrow::before {
-    content: '';
-    display: inline-block;
-    width: 32px; height: 1px;
-    background: var(--gold);
-    vertical-align: middle;
-    margin-right: 16px;
-  }
-
-  .hero-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(72px, 8vw, 120px);
-    font-weight: 300;
-    line-height: 0.9;
-    margin-bottom: 40px;
-    opacity: 0;
-    animation: fadeUp 1s ease 0.5s forwards;
-  }
-  .hero-title em {
-    font-style: italic;
-    color: var(--gold);
-    display: block;
-  }
-
-  .hero-motto {
-    font-size: 13px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 60px;
-    opacity: 0;
-    animation: fadeUp 1s ease 0.7s forwards;
-  }
-
-  .hero-actions {
-    display: flex; gap: 24px; align-items: center;
-    opacity: 0;
-    animation: fadeUp 1s ease 0.9s forwards;
-  }
-
-  .btn-primary {
-    display: inline-block;
-    padding: 16px 48px;
-    background: var(--gold);
-    color: var(--obsidian);
-    text-decoration: none;
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    font-weight: 500;
-    transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-  }
-  .btn-primary::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: var(--gold-light);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
-  }
-  .btn-primary:hover::before { transform: scaleX(1); }
-  .btn-primary span { position: relative; z-index: 1; }
-
-  .btn-ghost {
-    display: inline-flex; align-items: center; gap: 12px;
-    color: var(--ivory-dark);
-    text-decoration: none;
-    font-size: 10px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    transition: color 0.3s;
-    cursor: pointer;
-  }
-  .btn-ghost:hover { color: var(--gold); }
-  .btn-ghost svg { transition: transform 0.3s; }
-  .btn-ghost:hover svg { transform: translateX(6px); }
-
-  .hero-right {
-    position: relative; z-index: 2;
-    display: flex; align-items: center; justify-content: center;
-    padding: 120px 60px 60px 0;
-  }
-
-  .hero-visual {
-    position: relative;
-    width: 100%;
-    max-width: 500px;
-  }
-
-  .hero-card {
-    width: 100%;
-    aspect-ratio: 3/4;
-    background: var(--charcoal);
-    border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
-    position: relative;
-    opacity: 0;
-    animation: fadeIn 1.2s ease 0.6s forwards;
-  }
-
-  /* Animated jewel shape */
-  .jewel-scene {
-    width: 260px; height: 260px;
-    position: relative;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .jewel-ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid;
-    animation: rotateRing 12s linear infinite;
-  }
-  .jewel-ring:nth-child(1) {
-    width: 200px; height: 200px;
-    border-color: rgba(200,169,110,0.4);
-    animation-duration: 16s;
-  }
-  .jewel-ring:nth-child(2) {
-    width: 160px; height: 160px;
-    border-color: rgba(200,169,110,0.25);
-    animation-direction: reverse;
-    animation-duration: 10s;
-  }
-  .jewel-ring:nth-child(3) {
-    width: 120px; height: 120px;
-    border-color: rgba(200,169,110,0.5);
-    animation-duration: 20s;
-  }
-  @keyframes rotateRing {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
-  .jewel-center {
-    width: 70px; height: 70px;
-    position: relative;
-    animation: gemPulse 4s ease-in-out infinite;
-  }
-  .jewel-center::before, .jewel-center::after {
-    content: '';
-    position: absolute; inset: 0;
-    background: var(--gold);
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-  }
-  .jewel-center::after {
-    transform: rotate(45deg);
-    background: var(--gold-light);
-    opacity: 0.6;
-    clip-path: polygon(50% 10%, 90% 50%, 50% 90%, 10% 50%);
-  }
-  @keyframes gemPulse {
-    0%,100% { transform: scale(1) rotate(0deg); opacity: 1; }
-    50% { transform: scale(1.1) rotate(15deg); opacity: 0.8; }
-  }
-
-  .hero-card-label {
-    position: absolute;
-    bottom: 32px; left: 32px; right: 32px;
-    display: flex; justify-content: space-between; align-items: flex-end;
-  }
-  .card-tag {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 28px;
-    font-weight: 300;
-    font-style: italic;
-    color: var(--ivory);
-  }
-  .card-price {
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    color: var(--gold);
-  }
-
-  .hero-float-badge {
-    position: absolute;
-    top: -20px; right: -20px;
-    width: 100px; height: 100px;
-    border-radius: 50%;
-    background: var(--gold);
-    display: flex; align-items: center; justify-content: center;
-    text-align: center;
-    animation: float 6s ease-in-out infinite;
-    opacity: 0;
-    animation: float 6s ease-in-out infinite, fadeIn 1s ease 1.2s forwards;
-  }
-  .badge-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 11px;
-    font-weight: 400;
-    color: var(--obsidian);
-    line-height: 1.3;
-    text-align: center;
-  }
-  @keyframes float {
-    0%,100% { transform: translateY(0px) rotate(-5deg); }
-    50% { transform: translateY(-12px) rotate(5deg); }
-  }
-
-  .hero-scroll {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center; gap: 10px;
-    z-index: 2;
-    opacity: 0;
-    animation: fadeIn 1s ease 1.4s forwards;
-  }
-  .scroll-line {
-    width: 1px; height: 60px;
-    background: linear-gradient(to bottom, var(--gold), transparent);
-    animation: scrollLine 2s ease-in-out infinite;
-  }
-  @keyframes scrollLine {
-    0% { transform: scaleY(0); transform-origin: top; }
-    50% { transform: scaleY(1); transform-origin: top; }
-    50.01% { transform-origin: bottom; }
-    100% { transform: scaleY(0); transform-origin: bottom; }
-  }
-  .scroll-text {
-    font-size: 9px;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-
-  /* ─── MARQUEE ─── */
-  .marquee-section {
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    overflow: hidden;
-    padding: 18px 0;
-    background: var(--charcoal);
-  }
-  .marquee-track {
-    display: flex; gap: 60px;
-    animation: marquee 30s linear infinite;
-    white-space: nowrap;
-  }
-  .marquee-item {
-    display: flex; align-items: center; gap: 60px;
-    font-size: 10px;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    flex-shrink: 0;
-  }
-  .marquee-dot {
-    width: 4px; height: 4px;
-    background: var(--gold);
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-  @keyframes marquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-
-  /* ─── COLLECTIONS ─── */
-  .section { padding: 140px 60px; position: relative; }
-
-  .section-header {
-    display: flex; justify-content: space-between; align-items: flex-end;
-    margin-bottom: 80px;
-  }
-
-  .section-label {
-    font-size: 10px;
-    letter-spacing: 0.4em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 20px;
-    display: flex; align-items: center; gap: 16px;
-  }
-  .section-label::before {
-    content: '';
-    width: 24px; height: 1px;
-    background: var(--gold);
-  }
-
-  .section-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(40px, 5vw, 72px);
-    font-weight: 300;
-    line-height: 1;
-    color: var(--ivory);
-  }
-  .section-title em { font-style: italic; color: var(--gold); }
-
-  .section-link {
-    font-size: 10px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gold);
-    text-decoration: none;
-    display: flex; align-items: center; gap: 10px;
-    transition: gap 0.3s;
-    flex-shrink: 0;
-    cursor: pointer;
-  }
-  .section-link:hover { gap: 18px; }
-
-  /* Collections Grid */
-  .collections-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 2px;
-  }
-
-  .col-card {
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-  }
-  .col-card:first-child {
-    grid-row: 1 / 3;
-  }
-
-  .col-card-inner {
-    width: 100%;
-    height: 100%;
-    min-height: 300px;
-    background: var(--charcoal);
-    border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    position: relative;
-    transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
-    overflow: hidden;
-  }
-  .col-card:first-child .col-card-inner { min-height: 640px; }
-
-  .col-card-inner::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(12,12,14,0.9) 0%, transparent 50%);
-    z-index: 1;
-    transition: opacity 0.4s;
-  }
-
-  .col-bg {
-    position: absolute; inset: 0;
-    transition: transform 0.8s cubic-bezier(0.4,0,0.2,1);
-  }
-  .col-card:hover .col-bg { transform: scale(1.06); }
-
-  /* Decorative collection backgrounds */
-  .col-bg-1 {
-    background: radial-gradient(ellipse at 60% 40%, rgba(200,169,110,0.15) 0%, transparent 60%),
-      repeating-linear-gradient(45deg, transparent, transparent 30px, rgba(200,169,110,0.03) 30px, rgba(200,169,110,0.03) 31px);
-  }
-  .col-bg-2 {
-    background: radial-gradient(ellipse at 30% 60%, rgba(196,160,154,0.12) 0%, transparent 60%);
-  }
-  .col-bg-3 {
-    background: radial-gradient(ellipse at 70% 30%, rgba(200,169,110,0.1) 0%, transparent 60%);
-  }
-  .col-bg-4 {
-    background: radial-gradient(ellipse at 50% 50%, rgba(196,160,154,0.08) 0%, transparent 60%);
-  }
-  .col-bg-5 {
-    background: radial-gradient(ellipse at 20% 70%, rgba(200,169,110,0.12) 0%, transparent 60%);
-  }
-
-  /* Jewelry SVG illustrations inside cards */
-  .col-illustration {
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0.5;
-    transition: opacity 0.4s, transform 0.6s;
-  }
-  .col-card:hover .col-illustration { opacity: 0.8; transform: scale(1.04); }
-
-  .col-info {
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    padding: 32px;
-    z-index: 2;
-    transform: translateY(10px);
-    transition: transform 0.4s ease;
-  }
-  .col-card:hover .col-info { transform: translateY(0); }
-
-  .col-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 28px;
-    font-weight: 300;
-    color: var(--ivory);
-    margin-bottom: 6px;
-  }
-  .col-count {
-    font-size: 10px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--gold);
-  }
-
-  .col-hover-cta {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -40%);
-    z-index: 3;
-    opacity: 0;
-    transition: all 0.4s ease;
-    background: var(--gold);
-    color: var(--obsidian);
-    padding: 12px 32px;
-    font-size: 10px;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    white-space: nowrap;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-  }
-  .col-card:hover .col-hover-cta {
-    opacity: 1;
-    transform: translate(-50%, -50%);
-  }
-
-  /* ─── FEATURED PRODUCTS ─── */
-  .featured { background: var(--charcoal); }
-
-  .products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-  }
-
-  .product-card {
-    background: var(--charcoal);
-    padding: 0;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.4s ease;
-    cursor: pointer;
-  }
-  .product-card:hover { z-index: 2; }
-
-  .product-img {
-    aspect-ratio: 1;
-    display: flex; align-items: center; justify-content: center;
-    position: relative;
-    overflow: hidden;
-    background: var(--obsidian);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .product-img-bg {
-    position: absolute; inset: 0;
-    transition: transform 0.6s ease;
-  }
-  .product-card:hover .product-img-bg { transform: scale(1.08); }
-
-  .product-badge {
-    position: absolute;
-    top: 16px; right: 16px;
-    background: var(--gold);
-    color: var(--obsidian);
-    font-size: 8px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 5px 10px;
-    font-weight: 500;
-    z-index: 3;
-  }
-
-  .product-wishlist {
-    position: absolute;
-    top: 16px; left: 16px;
-    width: 32px; height: 32px;
-    border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0;
-    transition: opacity 0.3s;
-    background: rgba(12,12,14,0.8);
-    cursor: pointer;
-    z-index: 3;
-  }
-  .product-card:hover .product-wishlist { opacity: 1; }
-
-  .product-info {
-    padding: 24px;
-  }
-  .product-category {
-    font-size: 9px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--gold-dim);
-    margin-bottom: 8px;
-  }
-  .product-name {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
-    font-weight: 300;
-    color: var(--ivory);
-    margin-bottom: 12px;
-    line-height: 1.2;
-  }
-  .product-footer {
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .product-price {
-    font-size: 14px;
-    color: var(--gold);
-    letter-spacing: 0.05em;
-  }
-  .product-add {
-    width: 32px; height: 32px;
-    border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--gold);
-    font-size: 18px;
-    transition: all 0.3s;
-    background: transparent;
-    cursor: pointer;
-  }
-  .product-add:hover {
-    background: var(--gold);
-    color: var(--obsidian);
-    border-color: var(--gold);
-  }
-
-  /* Jewelry SVGs in product cards */
-  .jewel-svg {
-    width: 120px; height: 120px;
-    position: relative;
-    z-index: 1;
-    transition: transform 0.4s ease;
-  }
-  .product-card:hover .jewel-svg { transform: scale(1.1) rotate(5deg); }
-
-  /* ─── ABOUT / STORY ─── */
-  .story {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 120px;
-    align-items: center;
-  }
-
-  .story-visual {
-    position: relative;
-  }
-  .story-img-main {
-    width: 100%;
-    aspect-ratio: 3/4;
-    background: var(--charcoal);
-    border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .story-img-float {
-    position: absolute;
-    bottom: -40px; right: -40px;
-    width: 200px; height: 200px;
-    background: var(--charcoal);
-    border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    flex-direction: column;
-    gap: 8px;
-    padding: 24px;
-  }
-  .story-stat-num {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 52px;
-    font-weight: 300;
-    color: var(--gold);
-    line-height: 1;
-  }
-  .story-stat-label {
-    font-size: 9px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    text-align: center;
-    line-height: 1.6;
-  }
-
-  .story-content { padding: 40px 0; }
-
-  .story-body {
-    font-size: 15px;
-    line-height: 2;
-    color: var(--text-muted);
-    margin-bottom: 48px;
-  }
-  .story-body strong { color: var(--ivory); font-weight: 400; }
-
-  .story-features {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 32px;
-    margin-bottom: 48px;
-  }
-  .story-feature {
-    border-top: 1px solid var(--border);
-    padding-top: 20px;
-  }
-  .feature-icon {
-    color: var(--gold);
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  .feature-name {
-    font-size: 13px;
-    letter-spacing: 0.1em;
-    color: var(--ivory);
-    margin-bottom: 6px;
-    font-weight: 400;
-  }
-  .feature-desc {
-    font-size: 12px;
-    color: var(--text-muted);
-    line-height: 1.7;
-  }
-
-  /* ─── TESTIMONIALS ─── */
-  .testimonials {
-    background: var(--charcoal);
-    text-align: center;
-    padding: 120px 60px;
-  }
-
-  .testimonials-track {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px;
-    margin-top: 80px;
-    background: var(--border);
-    border: 1px solid var(--border);
-  }
-
-  .testimonial-card {
-    background: var(--charcoal);
-    padding: 48px 40px;
-    text-align: left;
-    position: relative;
-  }
-  .testimonial-card::before {
-    content: '"';
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 120px;
-    color: var(--gold);
-    opacity: 0.1;
-    position: absolute;
-    top: 0; left: 28px;
-    line-height: 1;
-  }
-
-  .testimonial-text {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 20px;
-    font-weight: 300;
-    font-style: italic;
-    color: var(--ivory-dark);
-    line-height: 1.7;
-    margin-bottom: 32px;
-    position: relative;
-  }
-
-  .testimonial-author {
-    display: flex; align-items: center; gap: 16px;
-  }
-  .author-avatar {
-    width: 44px; height: 44px;
-    border-radius: 50%;
-    background: var(--obsidian);
-    border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 18px;
-    color: var(--gold);
-  }
-  .author-name {
-    font-size: 12px;
-    letter-spacing: 0.1em;
-    color: var(--ivory);
-    font-weight: 400;
-    margin-bottom: 2px;
-  }
-  .author-role {
-    font-size: 10px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-  }
-  .testimonial-stars {
-    position: absolute;
-    top: 48px; right: 40px;
-    color: var(--gold);
-    font-size: 12px;
-    letter-spacing: 3px;
-  }
-
-  /* ─── CONTACT/WHATSAPP (Replaced Newsletter) ─── */
-  .newsletter {
-    padding: 160px 60px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .newsletter-bg {
-    position: absolute; inset: 0;
-    background:
-      radial-gradient(ellipse 70% 60% at 50% 50%, rgba(200,169,110,0.07) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .newsletter-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: clamp(48px, 6vw, 88px);
-    font-weight: 300;
-    line-height: 1;
-    margin-bottom: 24px;
-    position: relative;
-  }
-  .newsletter-title em { font-style: italic; color: var(--gold); }
-
-  .newsletter-sub {
-    font-size: 13px;
-    letter-spacing: 0.15em;
-    color: var(--text-muted);
-    margin-bottom: 60px;
-    position: relative;
-  }
-
-  .newsletter-form {
-    display: flex;
-    max-width: 480px;
-    margin: 0 auto;
-    position: relative;
-    justify-content: center;
-  }
-  .newsletter-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    background: transparent;
-    border: 1px solid var(--gold);
-    padding: 18px 40px;
-    color: var(--gold);
-    font-family: 'Jost', sans-serif;
-    font-size: 11px;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s;
-    text-decoration: none;
-  }
-  .newsletter-btn:hover { 
-    background: var(--gold); 
-    color: var(--obsidian);
-  }
-
-  /* ─── API ORDER MODAL ─── */
-  .modal-overlay {
-    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(12,12,14,0.92);
-    backdrop-filter: blur(8px);
-    z-index: 2000;
-    display: none; align-items: center; justify-content: center;
-    opacity: 0; transition: opacity 0.4s;
-  }
-  .modal-overlay.active { display: flex; opacity: 1; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CHAVA Joyería — Lo Vales</title>
   
-  .modal-content {
-    background: var(--obsidian);
-    border: 1px solid var(--gold);
-    padding: 50px 40px;
-    width: 90%; max-width: 500px;
-    position: relative;
-    transform: translateY(30px); transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-  }
-  .modal-overlay.active .modal-content { transform: translateY(0); }
+  <!-- Premium Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
   
-  .modal-close {
-    position: absolute; top: 20px; right: 20px;
-    background: transparent; border: none; color: var(--gold);
-    font-size: 28px; cursor: pointer; transition: transform 0.3s;
-  }
-  .modal-close:hover { transform: rotate(90deg); }
-  
-  .modal-title {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 36px; font-weight: 300; color: var(--ivory);
-    margin-bottom: 8px; text-align: center;
-  }
-  .modal-subtitle {
-    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--gold); text-align: center; margin-bottom: 32px;
-  }
-  
-  .modal-form { display: flex; flex-direction: column; gap: 20px; }
-  .modal-input {
-    background: transparent; border: 1px solid var(--border);
-    padding: 16px 20px; color: var(--ivory);
-    font-family: 'Jost', sans-serif; font-size: 13px;
-    outline: none; transition: border-color 0.3s;
-  }
-  .modal-input:focus { border-color: var(--gold); }
-  .modal-input::placeholder { color: var(--text-muted); }
-  
-  .modal-btn {
-    background: var(--gold); color: var(--obsidian);
-    border: none; padding: 18px;
-    font-family: 'Jost', sans-serif; font-size: 11px;
-    letter-spacing: 0.25em; text-transform: uppercase;
-    font-weight: 500; cursor: pointer; transition: all 0.3s;
-    margin-top: 10px;
-  }
-  .modal-btn:hover { background: var(--gold-light); transform: translateY(-2px); }
-  
-  .modal-response {
-    margin-top: 20px; font-size: 12px; color: var(--gold); text-align: center; font-weight: 500;
-  }
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
 
-  /* ─── FOOTER ─── */
-  footer {
-    background: var(--charcoal);
-    border-top: 1px solid var(--border);
-    padding: 80px 60px 40px;
-  }
+  <style>
+    /* --- PREMIUM THEME VARIABLES --- */
+    :root {
+      --obsidian: #0C0C0E;
+      --charcoal: #141418;
+      --gold: #C8A96E;
+      --gold-light: #DFC088;
+      --gold-dim: #8A7248;
+      --ivory: #F4EFE4;
+      --ivory-dark: #E8E0D0;
+      --blush: #C4A09A;
+      --text-muted: #888888;
+      --border: rgba(200, 169, 110, 0.2);
+    }
 
-  .footer-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr 1fr;
-    gap: 60px;
-    margin-bottom: 80px;
-  }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    
+    body {
+      background-color: var(--obsidian);
+      color: var(--ivory);
+      font-family: 'Jost', sans-serif;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-  .footer-brand .nav-logo { font-size: 26px; display: block; margin-bottom: 20px; }
-  .footer-tagline {
-    font-size: 12px;
-    color: var(--text-muted);
-    line-height: 1.8;
-    margin-bottom: 32px;
-    max-width: 260px;
-  }
-  .footer-social { display: flex; gap: 16px; }
-  .social-link {
-    width: 36px; height: 36px;
-    border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 13px;
-    transition: all 0.3s;
-    cursor: pointer;
-  }
-  .social-link:hover { border-color: var(--gold); color: var(--gold); }
+    h1, h2, h3, .serif { font-family: 'Cormorant Garamond', serif; }
 
-  .footer-col h4 {
-    font-size: 10px;
-    letter-spacing: 0.35em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 28px;
-    font-weight: 400;
-  }
-  .footer-links { list-style: none; display: flex; flex-direction: column; gap: 14px; }
-  .footer-links a {
-    font-size: 13px;
-    color: var(--text-muted);
-    text-decoration: none;
-    transition: color 0.3s;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-  }
-  .footer-links a:hover { color: var(--gold); }
+    /* --- TOP BANNER (DYNAMIC) --- */
+    .top-banner {
+      background: var(--gold);
+      color: var(--obsidian);
+      text-align: center;
+      padding: 8px 5%;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      display: none; /* Hidden by default unless CMS has content */
+    }
 
-  .footer-bottom {
-    border-top: 1px solid var(--border);
-    padding-top: 32px;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .footer-copy {
-    font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
-  }
-  .footer-copy span { color: var(--gold); }
+    /* --- NAVBAR --- */
+    header {
+      position: sticky;
+      top: 0; width: 100%;
+      background: rgba(12, 12, 14, 0.9);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 5%;
+      transition: all 0.3s ease;
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.2em;
+      text-decoration: none;
+    }
+    .cart-btn {
+      background: none;
+      border: none;
+      color: var(--ivory);
+      cursor: pointer;
+      position: relative;
+      display: flex;
+      align-items: center;
+      transition: color 0.3s ease;
+    }
+    .cart-btn:hover { color: var(--gold); }
+    .cart-badge {
+      position: absolute;
+      top: -5px; right: -8px;
+      background: var(--gold);
+      color: var(--obsidian);
+      font-size: 0.7rem;
+      font-weight: 600;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
-  /* ─── ANIMATIONS ─── */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
+    /* --- HERO SECTION --- */
+    .hero {
+      height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+      background: radial-gradient(circle at center, var(--charcoal) 0%, var(--obsidian) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+    .hero h1 {
+      font-size: 4rem;
+      color: var(--gold);
+      margin-bottom: 10px;
+      letter-spacing: 0.1em;
+      animation: fadeIn 1s ease-out;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--ivory-dark);
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      animation: fadeIn 1.5s ease-out;
+    }
+    .hero .accent-line {
+      width: 60px;
+      height: 2px;
+      background: var(--gold);
+      margin: 30px auto;
+    }
 
-  .reveal {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-  }
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
+    /* --- CATALOG GRID --- */
+    .catalog-section {
+      padding: 5rem 5%;
+      max-width: 1200px;
+      margin: 0 auto;
+      flex: 1;
+    }
+    .section-title {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 3rem;
+      color: var(--ivory);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2.5rem;
+    }
+    
+    /* Product Card */
+    .card {
+      background: var(--charcoal);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .card:hover {
+      transform: translateY(-10px);
+      border-color: var(--gold);
+      box-shadow: 0 15px 30px rgba(200, 169, 110, 0.1);
+    }
+    .card-img-container {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      background: var(--obsidian);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s ease;
+    }
+    .card:hover .card-img { transform: scale(1.05); }
+    .no-img { color: var(--text-muted); font-size: 0.8rem; letter-spacing: 0.1em; }
+    
+    .card-badge {
+      position: absolute;
+      top: 15px; left: 15px;
+      background: rgba(12, 12, 14, 0.85);
+      backdrop-filter: blur(4px);
+      color: var(--gold-light);
+      padding: 4px 10px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
 
-  /* ─── RESPONSIVE ─── */
-  @media (max-width: 900px) {
-    nav { padding: 20px 24px; }
-    nav.scrolled { padding: 16px 24px; }
-    .nav-links { display: none; }
-    .hero { grid-template-columns: 1fr; }
-    .hero-right { display: none; }
-    .hero-left { padding: 120px 24px 80px; justify-content: flex-start; }
-    .section { padding: 80px 24px; }
-    .story { grid-template-columns: 1fr; gap: 60px; }
-    .story-img-float { display: none; }
-    .collections-grid { grid-template-columns: 1fr; }
-    .col-card:first-child { grid-row: auto; }
-    .products-grid { grid-template-columns: 1fr 1fr; }
-    .testimonials-track { grid-template-columns: 1fr; }
-    .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
-    .section-header { flex-direction: column; align-items: flex-start; gap: 24px; }
-    footer { padding: 60px 24px 32px; }
-    .testimonials { padding: 80px 24px; }
-    .newsletter { padding: 100px 24px; }
-  }
-</style>
+    .card-body {
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    .card-title {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      color: var(--ivory);
+    }
+    .price-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 0.8rem;
+    }
+    .card-price {
+      font-size: 1.15rem;
+      color: var(--gold);
+      font-weight: 500;
+    }
+    .card-old-price {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-decoration: line-through;
+    }
+    .card-desc {
+      font-size: 0.85rem;
+      color: var(--ivory-dark);
+      margin-bottom: 1.5rem;
+      opacity: 0.8;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .add-to-cart {
+      margin-top: auto;
+      background: transparent;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      padding: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .add-to-cart:hover {
+      background: var(--gold);
+      color: var(--obsidian);
+      font-weight: 600;
+    }
+    .add-to-cart:disabled {
+      border-color: var(--text-muted);
+      color: var(--text-muted);
+      cursor: not-allowed;
+    }
+
+    /* --- CART SLIDE DRAWER --- */
+    .cart-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(5px);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .cart-overlay.active { opacity: 1; pointer-events: all; }
+    
+    .cart-drawer {
+      position: fixed;
+      top: 0; right: -450px;
+      width: 100%; max-width: 400px;
+      height: 100%;
+      background: var(--charcoal);
+      border-left: 1px solid var(--border);
+      z-index: 210;
+      display: flex;
+      flex-direction: column;
+      transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+    }
+    .cart-drawer.active { right: 0; }
+    
+    .cart-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cart-header h2 { color: var(--gold); font-size: 1.8rem; }
+    .close-cart { background: none; border: none; color: var(--ivory); cursor: pointer; }
+    .close-cart:hover { color: var(--gold); }
+
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+    }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .cart-item-img {
+      width: 60px; height: 60px;
+      border-radius: 4px;
+      object-fit: cover;
+      border: 1px solid var(--border);
+    }
+    .cart-item-info { flex: 1; }
+    .cart-item-title { font-size: 0.9rem; font-weight: 500; margin-bottom: 0.2rem; }
+    .cart-item-price { color: var(--gold); font-size: 0.9rem; }
+    .cart-qty-controls {
+      display: flex; align-items: center; gap: 0.8rem;
+      background: var(--obsidian);
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .qty-btn { background: none; border: none; color: var(--ivory); cursor: pointer; }
+    .qty-btn:hover { color: var(--gold); }
+
+    .cart-footer {
+      padding: 1.5rem;
+      background: var(--obsidian);
+      border-top: 1px solid var(--border);
+    }
+    .cart-total {
+      display: flex; justify-content: space-between;
+      font-size: 1.2rem; font-weight: 600;
+      margin-bottom: 1.5rem;
+    }
+    .cart-total span:last-child { color: var(--gold); }
+
+    /* --- CHECKOUT FORM --- */
+    .checkout-form { display: flex; flex-direction: column; gap: 1rem; }
+    .premium-input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      color: var(--ivory);
+      padding: 0.8rem 0;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    .premium-input:focus { border-color: var(--gold); }
+    .premium-input::placeholder { color: var(--text-muted); }
+    
+    .checkout-btn {
+      background: var(--gold);
+      color: var(--obsidian);
+      border: none;
+      padding: 1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-top: 0.5rem;
+      transition: all 0.3s ease;
+      display: flex; justify-content: center; align-items: center; gap: 0.5rem;
+    }
+    .checkout-btn:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .checkout-btn:disabled { background: var(--text-muted); cursor: not-allowed; transform: none; }
+
+    /* --- FOOTER (SOCIAL LINKS) --- */
+    .footer {
+      background: var(--charcoal);
+      border-top: 1px solid var(--border);
+      padding: 4rem 5% 2rem;
+      text-align: center;
+      margin-top: 4rem;
+    }
+    .footer-logo { font-size: 2rem; color: var(--gold); letter-spacing: 0.2em; margin-bottom: 1.5rem; }
+    .social-links { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2rem; }
+    .social-link { color: var(--ivory); transition: color 0.3s, transform 0.3s; display: flex; align-items: center; justify-content: center; }
+    .social-link:hover { color: var(--gold); transform: translateY(-3px); }
+    .footer-bottom { font-size: 0.85rem; color: var(--text-muted); }
+
+    /* --- UTILS --- */
+    .empty-msg { text-align: center; color: var(--text-muted); padding: 2rem 0; font-style: italic; }
+    .loader { animation: spin 1s linear infinite; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Mobile Adjustments */
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2.8rem; }
+      .grid { grid-template-columns: 1fr; }
+      .cart-drawer { max-width: 100%; right: -100%; }
+    }
+  </style>
 </head>
 <body>
 
-<!-- Order API Modal -->
-<div class="modal-overlay" id="orderModal">
-  <div class="modal-content">
-    <button class="modal-close" onclick="closeModal()">×</button>
-    <h3 class="modal-title" data-editable="modal_title">Solicitar Pieza</h3>
-    <p class="modal-subtitle" id="modalSubtitle" data-editable="modal_sub">Directo al Artesano</p>
-    
-    <form class="modal-form" id="apiOrderForm">
-      <!-- Hidden input added here to capture the specific item name for Telegram -->
-      <input type="hidden" id="modalItemInput">
-      <input type="text" id="modalNameInput" class="modal-input" placeholder="Tu Nombre" required>
-      <textarea id="modalMessageInput" class="modal-input" rows="4" placeholder="¿Alguna petición especial o detalles de envío?"></textarea>
-      <button type="submit" class="modal-btn" data-editable="modal_btn">Enviar Solicitud</button>
-    </form>
-    <p id="responseMessage" class="modal-response"></p>
-  </div>
-</div>
+  <!-- DYNAMIC TOP BANNER -->
+  <div id="top-banner" class="top-banner"></div>
 
-<!-- NAV -->
-<nav id="navbar">
-  <a href="#" class="nav-logo">CHAVA <span data-editable="nav_logo_sub">lo vales</span></a>
-  <ul class="nav-links">
-    <li><a href="#collections" data-editable="nav_link_1">Colecciones</a></li>
-    <li><a href="#new" data-editable="nav_link_2">Novedades</a></li>
-    <li><a href="#story" data-editable="nav_link_3">Nuestra Historia</a></li>
-    <li><a href="#contact" data-editable="nav_link_4">Contacto</a></li>
-  </ul>
-  <a href="javascript:void(0)" class="nav-cta" onclick="openModal('Nueva Colección')" data-editable="nav_btn">Comprar Ahora</a>
-</nav>
+  <!-- HEADER -->
+  <header id="header">
+    <a href="#" class="logo">CHAVA</a>
+    <button class="cart-btn" onclick="openCart()">
+      <i data-lucide="shopping-bag"></i>
+      <span class="cart-badge" id="cart-count">0</span>
+    </button>
+  </header>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg"></div>
+  <!-- HERO -->
+  <section class="hero">
+    <h1 id="hero-title">Lo vales</h1>
+    <div class="accent-line"></div>
+    <p id="hero-subtitle">Colección Exclusiva</p>
+  </section>
 
-  <div class="hero-left">
-    <p class="hero-eyebrow" data-editable="hero_eyebrow">Nueva Colección 2026</p>
-    <h1 class="hero-title">
-      <span data-editable="hero_title_1">Viste Tu</span><br>
-      <em data-editable="hero_title_2">Valor</em>
-    </h1>
-    <p class="hero-motto" data-editable="hero_motto">Resalta tu elegancia</p>
-    <div class="hero-actions">
-      <a href="#collections" class="btn-primary"><span data-editable="hero_btn_1">Explorar Colecciones</span></a>
-      <a href="#story" class="btn-ghost">
-        <span data-editable="hero_btn_2">Nuestra Historia</span>
-        <svg width="20" height="10" viewBox="0 0 20 10" fill="none">
-          <path d="M0 5H18M14 1L18 5L14 9" stroke="currentColor" stroke-width="1"/>
-        </svg>
-      </a>
-    </div>
-  </div>
-
-  <div class="hero-right">
-    <div class="hero-visual">
-      <div class="hero-card">
-        <div class="jewel-scene">
-          <div class="jewel-ring"></div>
-          <div class="jewel-ring"></div>
-          <div class="jewel-ring"></div>
-          <div class="jewel-center"></div>
-        </div>
-        <div class="hero-card-label">
-          <div class="card-tag">
-            <span data-editable="hero_card_tag_1">Collar</span><br>
-            <span data-editable="hero_card_tag_2">Seraphine</span>
-          </div>
-          <div class="card-price" data-editable="hero_card_price">Desde $420</div>
-        </div>
+  <!-- CATALOG -->
+  <section class="catalog-section" id="catalog">
+    <h2 class="section-title serif">Nuestras Piezas</h2>
+    <div class="grid" id="product-grid">
+      <!-- Products will be loaded here via JS -->
+      <div class="empty-msg" style="grid-column: 1/-1;">
+        <i data-lucide="loader-2" class="loader" style="margin-bottom: 10px;"></i>
+        <p>Cargando la colección...</p>
       </div>
-      <div class="hero-float-badge">
-        <p class="badge-text">
-          <span data-editable="hero_badge_1">Nueva</span><br>
-          <span data-editable="hero_badge_2">Temporada</span>
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <div class="hero-scroll">
-    <div class="scroll-line"></div>
-    <p class="scroll-text" data-editable="hero_scroll">Deslizar</p>
-  </div>
-</section>
-
-<!-- MARQUEE -->
-<div class="marquee-section">
-  <div class="marquee-track">
-    <div class="marquee-item">
-      <span data-editable="marquee_1">Joyería Artesanal</span><div class="marquee-dot"></div>
-      <span data-editable="marquee_2">Accesorios Finos</span><div class="marquee-dot"></div>
-      <span data-editable="marquee_3">Origen Ético</span><div class="marquee-dot"></div>
-      <span data-editable="marquee_4">Hecho para Ti</span><div class="marquee-dot"></div>
-      <span data-editable="marquee_5">Resalta Tu Elegancia</span><div class="marquee-dot"></div>
-      <span data-editable="marquee_6">Oro y Gemas</span><div class="marquee-dot"></div>
-      <span data-editable="marquee_7">Piezas Atemporales</span><div class="marquee-dot"></div>
-      <span data-editable="marquee_8">Calidad Premium</span><div class="marquee-dot"></div>
-    </div>
-    <div class="marquee-item" aria-hidden="true">
-      <span data-editable="marquee_1">Joyería Artesanal</span><div class="marquee-dot"></div>
-      <span data-editable="marquee_2">Accesorios Finos</span><div class="marquee-dot"></div>
-      <span data-editable="marquee_3">Origen Ético</span><div class="marquee-dot"></div>
-      <span data-editable="marquee_4">Hecho para Ti</span><div class="marquee-dot"></div>
-      <span data-editable="marquee_5">Resalta Tu Elegancia</span><div class="marquee-dot"></div>
-      <span data-editable="marquee_6">Oro y Gemas</span><div class="marquee-dot"></div>
-      <span data-editable="marquee_7">Piezas Atemporales</span><div class="marquee-dot"></div>
-      <span data-editable="marquee_8">Calidad Premium</span><div class="marquee-dot"></div>
-    </div>
-  </div>
-</div>
-
-<!-- COLLECTIONS -->
-<section class="section" id="collections">
-  <div class="section-header reveal">
-    <div>
-      <p class="section-label" data-editable="col_sec_label">Curado Para Ti</p>
-      <h2 class="section-title">
-        <span data-editable="col_sec_title_1">Nuestras</span> <em data-editable="col_sec_title_2">Colecciones</em>
-      </h2>
-    </div>
-    <a href="#" class="section-link" data-editable="col_sec_link">Ver Todo →</a>
-  </div>
-
-  <div class="collections-grid">
-    <!-- Card 1 - Large -->
-    <div class="col-card reveal">
-      <div class="col-card-inner">
-        <div class="col-bg col-bg-1"></div>
-        <div class="col-illustration">
-          <svg width="200" height="200" viewBox="0 0 200 200" fill="none">
-            <ellipse cx="100" cy="100" rx="60" ry="80" stroke="#C8A96E" stroke-width="0.5"/>
-            <ellipse cx="100" cy="100" rx="40" ry="55" stroke="#C8A96E" stroke-width="0.5" opacity="0.5"/>
-            <path d="M100 20 L140 100 L100 180 L60 100 Z" stroke="#C8A96E" stroke-width="1" fill="rgba(200,169,110,0.05)"/>
-            <circle cx="100" cy="100" r="15" stroke="#C8A96E" stroke-width="1" fill="rgba(200,169,110,0.1)"/>
-            <line x1="100" y1="0" x2="100" y2="200" stroke="#C8A96E" stroke-width="0.3" opacity="0.3"/>
-            <line x1="0" y1="100" x2="200" y2="100" stroke="#C8A96E" stroke-width="0.3" opacity="0.3"/>
-          </svg>
-        </div>
-        <div class="col-info">
-          <div class="col-name" data-editable="col_1_name">Colección Lumière</div>
-          <div class="col-count"><span class="inventory-count" data-editable="col_1_count">28 Piezas</span></div>
-        </div>
-        <button class="col-hover-cta" onclick="openModal('Colección Lumière')" data-editable="col_1_btn">Explorar</button>
-      </div>
-    </div>
-
-    <!-- Card 2 -->
-    <div class="col-card reveal">
-      <div class="col-card-inner">
-        <div class="col-bg col-bg-2"></div>
-        <div class="col-illustration">
-          <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
-            <circle cx="50" cy="50" r="30" stroke="#C8A96E" stroke-width="1"/>
-            <circle cx="50" cy="50" r="20" stroke="#C8A96E" stroke-width="0.5" opacity="0.6"/>
-            <path d="M50 20 A30 30 0 0 1 80 50" stroke="#C8A96E" stroke-width="1.5"/>
-            <circle cx="50" cy="20" r="4" fill="#C8A96E"/>
-          </svg>
-        </div>
-        <div class="col-info">
-          <div class="col-name" data-editable="col_2_name">Anillos Eternos</div>
-          <div class="col-count"><span class="inventory-count" data-editable="col_2_count">16 Piezas</span></div>
-        </div>
-        <button class="col-hover-cta" onclick="openModal('Anillos Eternos')" data-editable="col_2_btn">Explorar</button>
-      </div>
-    </div>
-
-    <!-- Card 3 -->
-    <div class="col-card reveal">
-      <div class="col-card-inner">
-        <div class="col-bg col-bg-3"></div>
-        <div class="col-illustration">
-          <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
-            <polygon points="50,10 61,40 90,40 68,58 76,87 50,70 24,87 32,58 10,40 39,40" stroke="#C8A96E" stroke-width="0.8" fill="rgba(200,169,110,0.05)"/>
-          </svg>
-        </div>
-        <div class="col-info">
-          <div class="col-name" data-editable="col_3_name">Dijes de Gemas</div>
-          <div class="col-count"><span class="inventory-count" data-editable="col_3_count">22 Piezas</span></div>
-        </div>
-        <button class="col-hover-cta" onclick="openModal('Dijes de Gemas')" data-editable="col_3_btn">Explorar</button>
-      </div>
-    </div>
-
-    <!-- Card 4 -->
-    <div class="col-card reveal">
-      <div class="col-card-inner">
-        <div class="col-bg col-bg-4"></div>
-        <div class="col-illustration">
-          <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
-            <path d="M20 50 Q50 20 80 50 Q50 80 20 50" stroke="#C8A96E" stroke-width="0.8" fill="rgba(200,169,110,0.05)"/>
-            <circle cx="50" cy="50" r="6" fill="#C8A96E" opacity="0.6"/>
-          </svg>
-        </div>
-        <div class="col-info">
-          <div class="col-name" data-editable="col_4_name">Mascadas de Seda</div>
-          <div class="col-count"><span class="inventory-count" data-editable="col_4_count">12 Piezas</span></div>
-        </div>
-        <button class="col-hover-cta" onclick="openModal('Mascadas de Seda')" data-editable="col_4_btn">Explorar</button>
-      </div>
-    </div>
-
-    <!-- Card 5 -->
-    <div class="col-card reveal">
-      <div class="col-card-inner">
-        <div class="col-bg col-bg-5"></div>
-        <div class="col-illustration">
-          <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
-            <rect x="25" y="35" width="50" height="30" rx="2" stroke="#C8A96E" stroke-width="0.8"/>
-            <path d="M35 35 L40 25 L60 25 L65 35" stroke="#C8A96E" stroke-width="0.8"/>
-            <circle cx="50" cy="50" r="6" stroke="#C8A96E" stroke-width="0.8"/>
-          </svg>
-        </div>
-        <div class="col-info">
-          <div class="col-name" data-editable="col_5_name">Pulseras de Oro</div>
-          <div class="col-count"><span class="inventory-count" data-editable="col_5_count">18 Piezas</span></div>
-        </div>
-        <button class="col-hover-cta" onclick="openModal('Pulseras de Oro')" data-editable="col_5_btn">Explorar</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- DYNAMIC STOREFRONT SECTIONS -->
-<div id="new">
-  <!-- This Container will be dynamically filled by JavaScript -->
-  <section class="section featured">
-    <div style="padding: 100px 60px; text-align: center; color: var(--gold); font-family: 'Cormorant Garamond', serif; font-size: 24px; font-style: italic;">
-      Preparando la última colección...
     </div>
   </section>
-</div>
 
-<!-- STORY -->
-<section class="section" id="story">
-  <div class="story">
-    <div class="story-visual reveal">
-      <div class="story-img-main">
-        <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%, rgba(200,169,110,0.08) 0%, transparent 60%)"></div>
-        <div style="text-align:center;position:relative;z-index:1;">
-          <svg width="180" height="260" viewBox="0 0 180 260" fill="none">
-            <path d="M90 10 L160 80 L160 180 L90 250 L20 180 L20 80 Z" stroke="#C8A96E" stroke-width="0.8" fill="rgba(200,169,110,0.04)"/>
-            <path d="M90 30 L145 85 L145 175 L90 230 L35 175 L35 85 Z" stroke="#C8A96E" stroke-width="0.4" opacity="0.4"/>
-            <path d="M90 60 L130 90 L130 170 L90 200 L50 170 L50 90 Z" stroke="#C8A96E" stroke-width="0.4" opacity="0.25"/>
-            <circle cx="90" cy="130" r="30" stroke="#C8A96E" stroke-width="0.8" fill="rgba(200,169,110,0.06)"/>
-            <path d="M90 100 L110 130 L90 160 L70 130 Z" stroke="#C8A96E" stroke-width="1" fill="rgba(200,169,110,0.12)"/>
-            <line x1="90" y1="10" x2="90" y2="250" stroke="#C8A96E" stroke-width="0.3" opacity="0.2"/>
-            <line x1="20" y1="130" x2="160" y2="130" stroke="#C8A96E" stroke-width="0.3" opacity="0.2"/>
-          </svg>
-          <p style="font-family:'Cormorant Garamond',serif;font-size:14px;letter-spacing:0.3em;color:var(--gold);text-transform:uppercase;margin-top:16px;" data-editable="story_img_label">Elaborado con Precisión</p>
-        </div>
-      </div>
-      <div class="story-img-float">
-        <div class="story-stat-num" data-editable="story_stat_num">12+</div>
-        <div class="story-stat-label">
-          <span data-editable="story_stat_label_1">Años de</span><br>
-          <span data-editable="story_stat_label_2">Arte Artesanal</span>
-        </div>
-      </div>
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-logo serif">CHAVA</div>
+    <div class="social-links" id="social-links">
+      <!-- Social Icons Injected Here via CMS -->
     </div>
+    <div class="footer-bottom">© 2026 CHAVA Joyería. Todos los derechos reservados.</div>
+  </footer>
 
-    <div class="story-content reveal">
-      <p class="section-label" data-editable="story_sec_label">Nuestra Historia</p>
-      <h2 class="section-title" style="margin-bottom:32px;">
-        <span data-editable="story_sec_title_1">Nacido de la</span> <em data-editable="story_sec_title_2">Pasión</em>
-      </h2>
-      <p class="story-body" data-editable="story_p1">
-        En <strong>CHAVA lo vales</strong>, creemos que toda mujer merece brillar a su manera. Nuestras piezas no son solo joyería — son declaraciones. Cada una está <strong>hecha a mano con intención</strong>, diseñada para celebrar la elegancia que ya existe en ti.
-      </p>
-      <p class="story-body" data-editable="story_p2">
-        Solo utilizamos los metales más finos y gemas obtenidas éticamente, trabajando junto a maestros artesanos que vierten décadas de experiencia en cada broche, cada engaste, cada superficie resplandeciente.
-      </p>
-
-      <div class="story-features">
-        <div class="story-feature">
-          <div class="feature-icon">◆</div>
-          <div class="feature-name" data-editable="story_feat1_title">Origen Ético</div>
-          <div class="feature-desc" data-editable="story_feat1_desc">Cada gema con trazabilidad de origen responsable</div>
-        </div>
-        <div class="story-feature">
-          <div class="feature-icon">◈</div>
-          <div class="feature-name" data-editable="story_feat2_title">Hecho a Mano</div>
-          <div class="feature-desc" data-editable="story_feat2_desc">Cada pieza elaborada por manos de expertos artesanos</div>
-        </div>
-        <div class="story-feature">
-          <div class="feature-icon">◇</div>
-          <div class="feature-name" data-editable="story_feat3_title">Cuidado de por Vida</div>
-          <div class="feature-desc" data-editable="story_feat3_desc">Limpieza y ajustes gratis, para siempre</div>
-        </div>
-        <div class="story-feature">
-          <div class="feature-icon">◉</div>
-          <div class="feature-name" data-editable="story_feat4_title">Oro Certificado</div>
-          <div class="feature-desc" data-editable="story_feat4_desc">Oro de 18k y 24k con garantía de autenticidad</div>
-        </div>
-      </div>
+  <!-- CART SIDE DRAWER -->
+  <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
+  <aside class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <h2 class="serif">Tu Bolsa</h2>
+      <button class="close-cart" onclick="closeCart()"><i data-lucide="x"></i></button>
     </div>
-  </div>
-</section>
-
-<!-- TESTIMONIALS -->
-<div class="testimonials">
-  <p class="section-label" style="justify-content:center;" data-editable="testi_sec_label">Lo Que Dicen</p>
-  <h2 class="section-title reveal" style="margin-top:12px;">
-    <span data-editable="testi_sec_title_1">Voces de</span> <em data-editable="testi_sec_title_2">Elegancia</em>
-  </h2>
-
-  <div class="testimonials-track">
-    <div class="testimonial-card reveal">
-      <div class="testimonial-stars">★★★★★</div>
-      <p class="testimonial-text" data-editable="testi_1_text">"Usé mi collar CHAVA en la boda de mi hija y recibí cumplidos todo el día. No es solo joyería — es un sentimiento."</p>
-      <div class="testimonial-author">
-        <div class="author-avatar" data-editable="testi_1_avatar">M</div>
-        <div>
-          <div class="author-name" data-editable="testi_1_name">María Elena R.</div>
-          <div class="author-role" data-editable="testi_1_role">Clienta Leal, 4 años</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="testimonial-card reveal">
-      <div class="testimonial-stars">★★★★★</div>
-      <p class="testimonial-text" data-editable="testi_2_text">"La artesanía es impresionante. Puedes sentir el cuidado en cada detalle. Mi anillo Aurore se ha convertido en mi pieza distintiva."</p>
-      <div class="testimonial-author">
-        <div class="author-avatar" data-editable="testi_2_avatar">S</div>
-        <div>
-          <div class="author-name" data-editable="testi_2_name">Sofía A.</div>
-          <div class="author-role" data-editable="testi_2_role">Entusiasta de la Joyería</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="testimonial-card reveal">
-      <div class="testimonial-stars">★★★★★</div>
-      <p class="testimonial-text" data-editable="testi_3_text">"CHAVA captura algo raro — la intersección del diseño moderno y la belleza atemporal. Se lo regalo a cada mujer que admiro."</p>
-      <div class="testimonial-author">
-        <div class="author-avatar" data-editable="testi_3_avatar">L</div>
-        <div>
-          <div class="author-name" data-editable="testi_3_name">Laura C.</div>
-          <div class="author-role" data-editable="testi_3_role">Estilista y Coleccionista</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- CONTACT/WHATSAPP (Replaced Newsletter) -->
-<section class="newsletter" id="contact">
-  <div class="newsletter-bg"></div>
-  <p class="section-label reveal" style="justify-content:center;" data-editable="contact_sec_label">Soporte Directo</p>
-  <h2 class="newsletter-title reveal" style="margin-top:12px;">
-    <span data-editable="contact_sec_title_1">Habla con Nuestros</span><br><em data-editable="contact_sec_title_2">Artesanos</em>
-  </h2>
-  <p class="newsletter-sub reveal" data-editable="contact_sec_sub">Olvídate de los formularios y tiempos de espera. Chatea directamente con nuestro equipo por WhatsApp para hacer un pedido personalizado o preguntar por una pieza.</p>
-  
-  <div class="newsletter-form reveal" style="border: none;">
-    <a href="https://wa.me/525571175218?text=¡Hola%20Chava!%20Estoy%20interesada%20en%20su%20joyería." target="_blank" class="newsletter-btn">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="display:inline-block; vertical-align:middle; margin-right: 8px;">
-        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
-      </svg>
-      <span data-editable="contact_btn">Chatear y Ordenar por WhatsApp</span>
-    </a>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-grid">
-    <div class="footer-brand">
-      <a href="#" class="nav-logo" style="font-size:24px;display:block;margin-bottom:20px;">CHAVA <span style="color:var(--ivory)" data-editable="footer_logo_sub">lo vales</span></a>
-      <p class="footer-tagline" data-editable="footer_tagline">Resalta tu elegancia. Joyería y accesorios artesanales para la mujer que conoce su valor.</p>
-      <div class="footer-social">
-        <a href="#" class="social-link">f</a>
-        <a href="#" class="social-link">in</a>
-        <a href="#" class="social-link">✦</a>
-        <a href="#" class="social-link">◉</a>
-      </div>
-    </div>
-    <div class="footer-col">
-      <h4 data-editable="footer_col1_title">Colecciones</h4>
-      <ul class="footer-links">
-        <li><a href="#" data-editable="footer_link1_1">Lumière</a></li>
-        <li><a href="#" data-editable="footer_link1_2">Anillos Eternos</a></li>
-        <li><a href="#" data-editable="footer_link1_3">Dijes de Gemas</a></li>
-        <li><a href="#" data-editable="footer_link1_4">Pulseras</a></li>
-        <li><a href="#" data-editable="footer_link1_5">Aretes</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4 data-editable="footer_col2_title">Compañía</h4>
-      <ul class="footer-links">
-        <li><a href="#" data-editable="footer_link2_1">Nuestra Historia</a></li>
-        <li><a href="#" data-editable="footer_link2_2">Artesanos</a></li>
-        <li><a href="#" data-editable="footer_link2_3">Sustentabilidad</a></li>
-        <li><a href="#" data-editable="footer_link2_4">Prensa</a></li>
-        <li><a href="#" data-editable="footer_link2_5">Bolsa de Trabajo</a></li>
-      </ul>
-    </div>
-    <div class="footer-col">
-      <h4 data-editable="footer_col3_title">Soporte</h4>
-      <ul class="footer-links">
-        <li><a href="#" data-editable="footer_link3_1">Guía de Tallas</a></li>
-        <li><a href="#" data-editable="footer_link3_2">Guía de Cuidado</a></li>
-        <li><a href="#" data-editable="footer_link3_3">Envíos y Devoluciones</a></li>
-        <li><a href="#" data-editable="footer_link3_4">Contáctanos</a></li>
-        <li><a href="#" data-editable="footer_link3_5">Preguntas Frecuentes</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <p class="footer-copy" data-editable="footer_copy">© 2026 <span>CHAVA lo vales</span>. Todos los derechos reservados.</p>
-    <p class="footer-copy" data-editable="footer_legal">Hecho con amor · Aviso de Privacidad · Términos</p>
-  </div>
-</footer>
-
-<script>
-  /* ─── SITE CONTENT FETCHER (NEW) ─── */
-  const API_URL = "https://Shivale.pythonanywhere.com";
-
-  async function loadSiteContent() {
-      try {
-          // In the next step, we will make the admin panel save these strings to a /content endpoint.
-          let response = await fetch(API_URL + "/content"); 
-          if (response.ok) {
-              let content = await response.json();
-              document.querySelectorAll('[data-editable]').forEach(el => {
-                  let key = el.getAttribute('data-editable');
-                  if (content[key]) {
-                      el.innerHTML = content[key];
-                  }
-              });
-          }
-      } catch (e) {
-          // Fails gracefully - safely leaves the Mexican Spanish text on the screen!
-          console.log("Using default site content...");
-      }
-  }
-  
-  // Fire the text loader immediately
-  loadSiteContent();
-
-  // Navbar scroll effect
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 60);
-  });
-
-  // Scroll reveal setup
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry, i) => {
-      if (entry.isIntersecting) {
-        setTimeout(() => entry.target.classList.add('visible'), i * 80);
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
-  
-  // Observe static reveal elements
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  /* ─── DYNAMIC STOREFRONT API FETCH ─── */
-  const categoryTranslations = {
-      'New Arrival': 'Novedades',
-      'Rings': 'Anillos',
-      'Necklaces': 'Collares',
-      'Earrings': 'Aretes',
-      'Bracelets': 'Pulseras',
-      'Collections': 'Colecciones'
-  };
-
-  async function loadStorefront() {
-    const container = document.getElementById("new");
     
-    try {
-        let response = await fetch(API_URL + "/catalog");
-        let catalog = await response.json();
-        
-        container.innerHTML = ""; // Clear loading text
-        
-        // 1. Visibility Filtering & Grouping
-        const groupedCatalog = {};
-        let visibleCount = 0;
+    <div class="cart-items" id="cart-items-container">
+      <!-- Cart items injected here -->
+      <p class="empty-msg">Tu bolsa está vacía.</p>
+    </div>
 
-        catalog.forEach((item) => {
-            // Strictly ignore hidden items
-            if (item.visible === false) return; 
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Total:</span>
+        <span id="cart-total-price">$0.00</span>
+      </div>
 
-            const rawCat = item.category || 'New Arrival';
-            // Translate the category title for the Mexican UI
-            const cat = categoryTranslations[rawCat] || rawCat;
-            
-            if (!groupedCatalog[cat]) {
-                groupedCatalog[cat] = [];
+      <form class="checkout-form" id="checkout-form">
+        <input type="text" id="c-name" class="premium-input" placeholder="Nombre completo" required>
+        <input type="tel" id="c-phone" class="premium-input" placeholder="Teléfono de contacto" required>
+        <input type="text" id="c-address" class="premium-input" placeholder="Dirección de envío (Opcional)">
+        <input type="text" id="c-note" class="premium-input" placeholder="Nota especial (Tallas, etc.)">
+        <button type="submit" class="checkout-btn" id="checkout-btn">
+          Enviar Pedido <i data-lucide="arrow-right" style="width: 18px;"></i>
+        </button>
+      </form>
+    </div>
+  </aside>
+
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    const API_URL = "https://Shivale.pythonanywhere.com";
+    
+    let catalog = [];
+    let cart = [];
+
+    // DOM Elements
+    const gridEl = document.getElementById('product-grid');
+    const cartOverlay = document.getElementById('cart-overlay');
+    const cartDrawer = document.getElementById('cart-drawer');
+    const cartCountEl = document.getElementById('cart-count');
+    const cartItemsEl = document.getElementById('cart-items-container');
+    const cartTotalEl = document.getElementById('cart-total-price');
+    const checkoutForm = document.getElementById('checkout-form');
+    const checkoutBtn = document.getElementById('checkout-btn');
+
+    // --- INITIALIZE SITE DATA ---
+    async function loadSiteData() {
+      // 1. Fetch CMS Content
+      try {
+        const conRes = await fetch(API_URL + '/content');
+        if (conRes.ok) {
+          const contentData = await conRes.json();
+          applyContent(contentData);
+        }
+      } catch(e) { console.warn("No custom content available"); }
+
+      // 2. Fetch Catalog
+      try {
+        const catRes = await fetch(API_URL + '/catalog');
+        if (catRes.ok) {
+          const data = await catRes.json();
+          // Hide items marked as not visible in Admin Panel
+          catalog = data.filter(item => item.visible !== false);
+          renderCatalog();
+        } else {
+          showError("Error al cargar la colección.");
+        }
+      } catch (error) {
+        showError("No se pudo conectar con el servidor.");
+      }
+    }
+
+    // Apply CMS text and social links
+    function applyContent(data) {
+      if (data.heroTitle) document.getElementById('hero-title').innerText = data.heroTitle;
+      if (data.heroSubtitle) document.getElementById('hero-subtitle').innerText = data.heroSubtitle;
+      
+      const banner = document.getElementById('top-banner');
+      if (data.banner) {
+        banner.innerText = data.banner;
+        banner.style.display = 'block';
+      }
+
+      // Build Social Links
+      const socialContainer = document.getElementById('social-links');
+      let socialHTML = '';
+      if (data.whatsapp) {
+        const cleanPhone = data.whatsapp.replace(/\D/g, '');
+        socialHTML += `<a href="https://wa.me/${cleanPhone}" target="_blank" class="social-link"><i data-lucide="message-circle"></i></a>`;
+      }
+      if (data.instagram) {
+        const cleanIg = data.instagram.replace('@', '');
+        socialHTML += `<a href="https://instagram.com/${cleanIg}" target="_blank" class="social-link"><i data-lucide="instagram"></i></a>`;
+      }
+      if (data.facebook) {
+        socialHTML += `<a href="${data.facebook}" target="_blank" class="social-link"><i data-lucide="facebook"></i></a>`;
+      }
+      if (data.tiktok) {
+        // Fallback robust SVG for TikTok if Lucide version misses it
+        socialHTML += `<a href="${data.tiktok}" target="_blank" class="social-link"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg></a>`;
+      }
+      socialContainer.innerHTML = socialHTML;
+      lucide.createIcons();
+    }
+
+    function renderCatalog() {
+      if (catalog.length === 0) {
+        gridEl.innerHTML = `<p class="empty-msg" style="grid-column: 1/-1;">Por el momento no hay piezas disponibles.</p>`;
+        return;
+      }
+
+      gridEl.innerHTML = catalog.map(item => `
+        <article class="card">
+          <div class="card-img-container">
+            ${item.image 
+              ? `<img src="${item.image}" alt="${item.name}" class="card-img" loading="lazy">` 
+              : `<span class="no-img">CHAVA</span>`
             }
-            groupedCatalog[cat].push(item);
-            visibleCount++;
+            ${item.category && item.category !== 'Otros' ? `<span class="card-badge">${item.category}</span>` : ''}
+          </div>
+          <div class="card-body">
+            <h3 class="card-title serif">${item.name}</h3>
+            
+            <div class="price-row">
+                <span class="card-price">$${parseFloat(item.price).toLocaleString('es-MX', {minimumFractionDigits: 2})}</span>
+                ${item.oldPrice ? `<span class="card-old-price">$${parseFloat(item.oldPrice).toLocaleString('es-MX', {minimumFractionDigits: 2})}</span>` : ''}
+            </div>
+
+            ${item.description ? `<p class="card-desc">${item.description}</p>` : ''}
+            
+            <button class="add-to-cart" onclick="addToCart('${item.id}')" ${item.stock <= 0 ? 'disabled' : ''}>
+              ${item.stock <= 0 ? 'Agotado' : 'Agregar a la Bolsa'}
+            </button>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function showError(msg) {
+      gridEl.innerHTML = `<p class="empty-msg" style="grid-column: 1/-1; color: var(--blush);">${msg}</p>`;
+    }
+
+    // --- CART LOGIC ---
+    function addToCart(id) {
+      const product = catalog.find(p => p.id === id);
+      if (!product || product.stock <= 0) return;
+
+      const existingItem = cart.find(i => i.id === id);
+      if (existingItem) {
+        if (existingItem.qty < product.stock) {
+          existingItem.qty += 1;
+        } else {
+          alert("Límite de inventario alcanzado para esta pieza.");
+          return;
+        }
+      } else {
+        cart.push({ ...product, qty: 1 });
+      }
+      
+      updateCartUI();
+      openCart();
+    }
+
+    function updateQty(id, delta) {
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
+
+      item.qty += delta;
+      
+      if (item.qty <= 0) {
+        cart = cart.filter(i => i.id !== id);
+      } else {
+        const product = catalog.find(p => p.id === id);
+        if (item.qty > product.stock) item.qty = product.stock;
+      }
+      
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      // Update Badge
+      const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+      cartCountEl.innerText = totalItems;
+
+      // Update Total Price
+      const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      cartTotalEl.innerText = `$${totalPrice.toLocaleString('es-MX', {minimumFractionDigits: 2})}`;
+
+      // Render Items
+      if (cart.length === 0) {
+        cartItemsEl.innerHTML = `<p class="empty-msg">Tu bolsa está vacía.</p>`;
+        checkoutBtn.disabled = true;
+      } else {
+        checkoutBtn.disabled = false;
+        cartItemsEl.innerHTML = cart.map(item => `
+          <div class="cart-item">
+            ${item.image 
+              ? `<img src="${item.image}" alt="${item.name}" class="cart-item-img">`
+              : `<div class="cart-item-img" style="background:var(--obsidian); display:flex; align-items:center; justify-content:center;"><span style="font-size:10px; color:var(--gold);">CHAVA</span></div>`
+            }
+            <div class="cart-item-info">
+              <h4 class="cart-item-title serif">${item.name}</h4>
+              <p class="cart-item-price">$${parseFloat(item.price).toLocaleString('es-MX', {minimumFractionDigits: 2})}</p>
+            </div>
+            <div class="cart-qty-controls">
+              <button class="qty-btn" onclick="updateQty('${item.id}', -1)"><i data-lucide="minus" style="width:14px;"></i></button>
+              <span style="font-size: 0.9rem;">${item.qty}</span>
+              <button class="qty-btn" onclick="updateQty('${item.id}', 1)"><i data-lucide="plus" style="width:14px;"></i></button>
+            </div>
+          </div>
+        `).join('');
+        lucide.createIcons();
+      }
+    }
+
+    // --- UI CONTROLS ---
+    function openCart() {
+      cartOverlay.classList.add('active');
+      cartDrawer.classList.add('active');
+    }
+    function closeCart() {
+      cartOverlay.classList.remove('active');
+      cartDrawer.classList.remove('active');
+    }
+
+    // --- CHECKOUT SUBMISSION ---
+    checkoutForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (cart.length === 0) return;
+
+      const originalBtnText = checkoutBtn.innerHTML;
+      checkoutBtn.innerHTML = '<i data-lucide="loader-2" class="loader"></i> Enviando...';
+      checkoutBtn.disabled = true;
+      lucide.createIcons();
+
+      // Format items for POS Inbox
+      const itemsString = cart.map(i => `${i.qty}x ${i.name}`).join(' + ');
+      const totalPrice = cart.reduce((sum, i) => sum + (i.price * i.qty), 0);
+
+      const payload = {
+        name: document.getElementById('c-name').value,
+        phone: document.getElementById('c-phone').value,
+        address: document.getElementById('c-address').value,
+        message: document.getElementById('c-note').value,
+        item: itemsString, 
+        total: totalPrice
+      };
+
+      try {
+        const response = await fetch(API_URL + '/order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
         });
 
-        // 2. Empty Database Check
-        if (visibleCount === 0) {
-            container.innerHTML = `
-                <section class="section featured">
-                    <div style='padding:60px; grid-column: 1/-1; text-align:center; color:var(--text-muted); font-size:16px;'>
-                        ¡Nueva colección muy pronto!
-                    </div>
-                </section>`;
-            return;
+        if (response.ok) {
+          alert("¡Pedido enviado con éxito! Tu pedido ha sido recibido en nuestro sistema. Nos comunicaremos contigo pronto.");
+          cart = [];
+          updateCartUI();
+          checkoutForm.reset();
+          closeCart();
+        } else {
+          alert("Hubo un problema al procesar tu pedido. Intenta de nuevo.");
         }
-
-        // 3. Auto-Generate Sections Dynamically
-        for (const [categoryName, items] of Object.entries(groupedCatalog)) {
-            
-            // Generate Section Header
-            let sectionHTML = `
-            <section class="section featured">
-              <div class="section-header reveal">
-                <div>
-                  <p class="section-label">${categoryName}</p>
-                  <h2 class="section-title"><em>${categoryName}</em></h2>
-                </div>
-                <a href="#" class="section-link">Ver Todo →</a>
-              </div>
-              <div class="products-grid">
-            `;
-
-            // Build Product Cards for this Category
-            items.forEach((item) => {
-                let isSoldOut = item.stock <= 0;
-                
-                // Handle Image Fallback
-                let visualContent = '';
-                if (item.image && item.image !== "") {
-                    visualContent = `<img src="${item.image}" style="width:100%; height:100%; object-fit:cover; position:relative; z-index:1;" alt="${item.name}">`;
-                } else {
-                    visualContent = `
-                        <svg class="jewel-svg" viewBox="0 0 120 120" fill="none">
-                          <circle cx="60" cy="60" r="35" stroke="#C8A96E" stroke-width="0.8"/>
-                          <path d="M60 25 L85 55 L75 95 L45 95 L35 55 Z" stroke="#C8A96E" stroke-width="1" fill="rgba(200,169,110,0.08)"/>
-                          <circle cx="60" cy="12" r="4" fill="#C8A96E" opacity="0.8"/>
-                        </svg>`;
-                }
-
-                // Handle Badges & Security formatting
-                let badgeHTML = isSoldOut ? `<div class="product-badge" style="background:#dc3545; color:white;">Agotado</div>` : `<div class="product-badge">Nuevo</div>`;
-                let safeName = item.name ? item.name.replace(/'/g, "\\'") : 'Unknown';
-
-                // Add the card to the section
-                sectionHTML += `
-                    <div class="product-card reveal">
-                      <div class="product-img">
-                        <div class="product-img-bg" style="background: radial-gradient(ellipse at 50% 30%, rgba(200,169,110,0.08) 0%, transparent 70%);"></div>
-                        ${visualContent}
-                        ${badgeHTML}
-                        <div class="product-wishlist">
-                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                            <path d="M7 12L2 7C0.5 5.5 0.5 3 2 1.5C3.5 0 6 0.5 7 2C8 0.5 10.5 0 12 1.5C13.5 3 13.5 5.5 12 7L7 12Z" stroke="#C8A96E" stroke-width="0.8"/>
-                          </svg>
-                        </div>
-                      </div>
-                      <div class="product-info">
-                        <div class="product-category">${isSoldOut ? 'Agotado' : item.stock + ' piezas disponibles'}</div>
-                        <div class="product-name">${item.name}</div>
-                        <div class="product-footer">
-                          <div class="product-price">$${item.price} MXN</div>
-                          <button class="product-add" ${isSoldOut ? 'disabled style="opacity:0.3;cursor:not-allowed;"' : `onclick="openModal('${safeName}')"`}>+</button>
-                        </div>
-                      </div>
-                    </div>
-                `;
-            });
-
-            // Close the section and grid
-            sectionHTML += `
-              </div>
-            </section>
-            `;
-
-            // Append to the dynamic container
-            container.innerHTML += sectionHTML;
-        }
-
-        // Re-attach IntersectionObserver so the dynamic elements get scroll animations
-        document.querySelectorAll('#new .reveal').forEach(el => observer.observe(el));
-
-    } catch (e) {
-        container.innerHTML = `
-            <section class="section featured">
-                <div style='padding:60px; text-align:center; color:#ff4d4d;'>
-                    No se pudo conectar con el inventario en vivo. Por favor, inténtalo más tarde.
-                </div>
-            </section>`;
-    }
-  }
-
-  // Fire off the API request as soon as the site loads
-  loadStorefront();
-
-  /* ─── API MODAL LOGIC ─── */
-  const modal = document.getElementById('orderModal');
-  const messageInput = document.getElementById('modalMessageInput');
-  const nameInput = document.getElementById('modalNameInput');
-  const itemInput = document.getElementById('modalItemInput'); // The new hidden input
-  const responseMessage = document.getElementById('responseMessage');
-  const modalSubtitle = document.getElementById('modalSubtitle');
-  const apiOrderForm = document.getElementById('apiOrderForm');
-
-  // Open Modal and Pre-fill text
-  function openModal(productName) {
-    modal.classList.add('active');
-    itemInput.value = productName; // Save item name secretly for Telegram
-    // Notice: We don't overwrite this with a hardcoded string anymore, we append the name!
-    modalSubtitle.innerText = `Ordenando: ${productName}`;
-    messageInput.value = ""; 
-    responseMessage.innerText = "";
-  }
-
-  // Close Modal
-  function closeModal() {
-    modal.classList.remove('active');
-  }
-
-  // Connect Form to Termux Python Server
-  apiOrderForm.addEventListener('submit', async (e) => {
-    e.preventDefault(); 
-    
-    responseMessage.style.color = "var(--gold)";
-    responseMessage.innerText = "Enviando solicitud de forma segura al servidor...";
-
-    try {
-      // Send Name, Message AND the specific Item to the Python backend
-      const response = await fetch(API_URL + '/order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ 
-            name: nameInput.value, 
-            message: messageInput.value,
-            item: itemInput.value
-        })
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        responseMessage.style.color = "#25D366"; // Green success text
-        responseMessage.innerText = data.reply;
-        setTimeout(() => {
-          closeModal();
-          apiOrderForm.reset();
-        }, 2500); // Closes automatically after 2.5 seconds
-      } else {
-        responseMessage.style.color = "#ff4d4d";
-        responseMessage.innerText = "Error: No se pudo conectar con el servidor.";
+      } catch (error) {
+        alert("Error de conexión con el servidor. Revisa tu internet.");
+      } finally {
+        checkoutBtn.innerHTML = originalBtnText;
+        checkoutBtn.disabled = (cart.length === 0);
       }
-    } catch (error) {
-      responseMessage.style.color = "#ff4d4d";
-      responseMessage.innerText = "Error de conexión en la nube. Revisa la consola.";
-      console.error(error);
-    }
-  });
-</script>
+    });
+
+    // Start App Sequence
+    loadSiteData();
+
+  </script>
 </body>
 </html>
