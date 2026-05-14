@@ -23,7 +23,7 @@
       --text-muted: #666666;
       --overlay: rgba(255, 255, 255, 0.7);
       
-      /* Brand Colors */
+      /* Brand Colors - Now dynamically overwritten by JS! */
       --gold: #C8A96E; 
       --gold-light: #DFC088; 
       --gold-dim: #8A7248;
@@ -494,7 +494,6 @@
     }
 
     function setThemeIcons(isDark) {
-        // En modo claro mostramos la luna, en modo oscuro el sol.
         const iconName = isDark ? 'sun' : 'moon';
         const desktopIcon = document.getElementById('theme-icon');
         const mobileIcon = document.getElementById('mobile-theme-icon');
@@ -549,35 +548,65 @@
         });
     }
 
-    // --- 3. DATA FETCHING ---
+    // --- 3. UPGRADED CMS DATA FETCHING ---
     async function fetchCMS() {
-      const res = await fetch(API_URL + '/content');
-      if(!res.ok) return;
-      const data = await res.json();
-      
-      if(data.heroTitle) document.getElementById('hero-title').innerText = data.heroTitle;
-      if(data.heroSubtitle) document.getElementById('hero-subtitle').innerText = data.heroSubtitle;
-      
-      if(data.banner) { const b = document.getElementById('top-banner'); b.innerText = data.banner; b.style.display = 'block'; }
+      try {
+        const res = await fetch(API_URL + '/content');
+        if(!res.ok) return;
+        const data = await res.json();
+        
+        // 1. Inject Theme Colors Dynamically
+        if(data.theme && data.theme.colors && data.theme.colors.primary) {
+            document.documentElement.style.setProperty('--gold', data.theme.colors.primary);
+        }
 
-      // Build Socials & WhatsApp Float
-      const socialContainer = document.getElementById('social-links');
-      let sHTML = '';
-      if(data.whatsapp) {
-        const phone = data.whatsapp.replace(/\D/g, '');
-        sHTML += `<a href="https://wa.me/${phone}" class="social-btn"><i data-lucide="message-circle"></i></a>`;
-        const fl = document.getElementById('float-wa');
-        fl.href = `https://wa.me/${phone}?text=¡Hola! Estoy visitando la tienda en línea y me gustaría información.`;
-        fl.style.display = 'flex';
+        // 2. Populate Hero Section
+        if(data.heroSection) {
+            if(data.heroSection.headline) document.getElementById('hero-title').innerText = data.heroSection.headline;
+            if(data.heroSection.subheadline) document.getElementById('hero-subtitle').innerText = data.heroSection.subheadline;
+        }
+        
+        // 3. Toggle Announcement Banner
+        if(data.announcementBanner) { 
+            const bannerElement = document.getElementById('top-banner');
+            if(data.announcementBanner.isVisible && data.announcementBanner.text) {
+                bannerElement.innerText = data.announcementBanner.text; 
+                bannerElement.style.display = 'block'; 
+            } else {
+                bannerElement.style.display = 'none'; 
+            }
+        }
+
+        // 4. Build Contact & Socials
+        const socialContainer = document.getElementById('social-links');
+        let sHTML = '';
+        
+        if(data.footerAndContact) {
+            // WhatsApp Integration
+            if(data.footerAndContact.whatsappNumber) {
+              const phone = data.footerAndContact.whatsappNumber.replace(/\D/g, '');
+              sHTML += `<a href="https://wa.me/${phone}" class="social-btn" target="_blank"><i data-lucide="message-circle"></i></a>`;
+              
+              // Also update the floating button
+              const floatBtn = document.getElementById('float-wa');
+              floatBtn.href = `https://wa.me/${phone}?text=¡Hola! Estoy visitando la tienda en línea y me gustaría información.`;
+              floatBtn.style.display = 'flex';
+            }
+            
+            // Instagram Integration
+            if(data.footerAndContact.instagramUrl) {
+              let igUrl = data.footerAndContact.instagramUrl;
+              if(igUrl.startsWith('@')) igUrl = `https://instagram.com/${igUrl.substring(1)}`;
+              else if(!igUrl.startsWith('http')) igUrl = `https://instagram.com/${igUrl}`;
+              sHTML += `<a href="${igUrl}" class="social-btn" target="_blank"><i data-lucide="instagram"></i></a>`;
+            }
+        }
+        
+        socialContainer.innerHTML = sHTML; 
+        lucide.createIcons();
+      } catch (err) {
+        console.error("CMS Load Error:", err);
       }
-      if(data.instagram) {
-        const ig = data.instagram.replace('@', '');
-        sHTML += `<a href="https://instagram.com/${ig}" class="social-btn"><i data-lucide="instagram"></i></a>`;
-      }
-      if(data.facebook) sHTML += `<a href="${data.facebook}" class="social-btn"><i data-lucide="facebook"></i></a>`;
-      if(data.tiktok) sHTML += `<a href="${data.tiktok}" class="social-btn"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg></a>`;
-      
-      socialContainer.innerHTML = sHTML; lucide.createIcons();
     }
 
     async function fetchCatalog() {
