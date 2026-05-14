@@ -247,6 +247,29 @@
       .floating-wa { bottom: 20px; right: 20px; }
       .btn-top { bottom: 20px; left: 20px; }
     }
+
+    /* --- MOBILE SPECIFIC: 2-COLUMN GRID --- */
+    @media (max-width: 600px) {
+      .section { padding: 3rem 3%; } /* Reclaim some screen edge space */
+      .grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; } /* Force 2 columns */
+      
+      /* Make card contents slightly smaller to fit 2 columns nicely */
+      .card-body { padding: 1rem; }
+      .card-title { font-size: 1.1rem; }
+      .price { font-size: 1rem; }
+      .old-price { font-size: 0.75rem; }
+      .card-desc { font-size: 0.75rem; margin-bottom: 10px; }
+      
+      .add-btn { 
+        padding: 10px; 
+        font-size: 0.7rem; 
+        letter-spacing: 0.05em; 
+      }
+      
+      /* Scale down hover buttons so they don't overlap heavily */
+      .action-btn { width: 35px; height: 35px; } 
+      .badge { font-size: 0.55rem; padding: 3px 6px; }
+    }
   </style>
 </head>
 <body>
