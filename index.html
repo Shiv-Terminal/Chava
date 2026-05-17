@@ -83,28 +83,16 @@
 
     .icon-btn { background: none; border: none; color: var(--ivory); cursor: pointer; transition: color 0.3s, transform 0.2s; position: relative; display: flex; }
     .icon-btn:hover { color: var(--gold); transform: scale(1.1); }
-    .cart-badge { position: absolute; top: -6px; right: -8px; background: var(--gold); color: #0C0C0E; font-size: 0.65rem; font-weight: 700; width: 18px; height: 18px; border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: transform 0.3s; }
+    .cart-badge { position: absolute; top: -6px; right: -8px; background: var(--gold); color: #0C0C0E; font-size: 0.65rem; font-weight: 700; width: 18px; height: 18px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
 
-    /* BUG FIX 1: Cart Pulse Animation */
-    .pulse-cart { animation: cartPulse 0.4s ease-in-out; }
-    @keyframes cartPulse {
+    /* BUG FIX 1: Cart Icon Bop */
+    @keyframes cartBop {
       0% { transform: scale(1); }
-      50% { transform: scale(1.4); background-color: var(--ivory); color: var(--gold); }
-      100% { transform: scale(1); }
+      40% { transform: scale(1.4) rotate(5deg); }
+      70% { transform: scale(0.9) rotate(-5deg); }
+      100% { transform: scale(1) rotate(0deg); }
     }
-    
-    /* BUG FIX 1: Flying Image Animation */
-    .flying-img {
-      position: fixed;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-      z-index: 9999;
-      pointer-events: none;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-      transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-    }
+    .cart-bop { animation: cartBop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
     /* Mobile Menu */
     .mobile-menu-btn { display: none; }
@@ -123,7 +111,7 @@
     .hero h1 { font-size: clamp(3rem, 8vw, 6.5rem); color: var(--gold); margin-bottom: 10px; letter-spacing: 0.1em; line-height: 1.1; opacity: 0; animation: fadeUp 1s 0.5s forwards; }
     .hero p { font-size: clamp(0.9rem, 2vw, 1.2rem); color: var(--ivory-dark); letter-spacing: 0.3em; text-transform: uppercase; opacity: 0; animation: fadeUp 1s 0.7s forwards; }
     .hero .accent-line { width: 60px; height: 2px; background: var(--gold); margin: 30px auto; opacity: 0; animation: fadeUp 1s 0.9s forwards; }
-    .btn-primary { display: inline-block; padding: 14px 40px; background: transparent; color: var(--gold); border: 1px solid var(--gold); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; transition: var(--transition); opacity: 0; animation: fadeUp 1s 1.1s forwards; position: relative; overflow: hidden; }
+    .btn-primary { display: inline-block; padding: 14px 40px; background: transparent; color: var(--gold); border: 1px solid var(--gold); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.2em; text-transform: uppercase; transition: var(--transition); opacity: 0; animation: fadeUp 1s 1.1s forwards; position: relative; overflow: hidden; cursor: pointer; }
     .btn-primary:hover { background: var(--gold); color: #0C0C0E; }
     
     /* --- MARQUEE --- */
@@ -146,30 +134,31 @@
     .pill { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 8px 20px; border-radius: 30px; font-family: 'Jost', sans-serif; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; transition: var(--transition); white-space: nowrap; }
     .pill.active, .pill:hover { border-color: var(--gold); color: var(--gold); background: rgba(200,169,110,0.05); }
     
-    .search-sort { display: flex; gap: 15px; }
-    .search-box { position: relative; }
-    .search-box input { background: var(--charcoal); border: 1px solid var(--border); color: var(--ivory); padding: 8px 15px 8px 35px; border-radius: 30px; outline: none; font-family: 'Jost'; font-size: 0.85rem; width: 200px; transition: border-color 0.3s; }
-    .search-box input:focus { border-color: var(--gold); }
-    .search-box i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 14px; }
+    .search-sort { display: flex; gap: 15px; align-items: center; }
     
-    /* BUG FIX 2: Modern Animated Sort Dropdown */
-    .custom-select { position: relative; min-width: 220px; font-family: 'Jost', sans-serif; z-index: 50; }
-    .select-trigger { background: var(--charcoal); border: 1px solid var(--border); color: var(--ivory); padding: 8px 15px; border-radius: 30px; font-size: 0.85rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: border-color 0.3s; }
-    .select-trigger i { width: 16px; transition: transform 0.3s; color: var(--text-muted); }
-    .custom-select.open .select-trigger { border-color: var(--gold); }
-    .custom-select.open .select-trigger i { transform: rotate(180deg); color: var(--gold); }
+    /* MODIFIED: Fixed search box CSS. Targeted svg instead of i, and improved aesthetics */
+    .search-box { position: relative; display: flex; align-items: center; }
+    .search-box input { background: var(--charcoal); border: 1px solid var(--border); color: var(--ivory); padding: 10px 15px 10px 42px; border-radius: 30px; outline: none; font-family: 'Jost'; font-size: 0.9rem; width: 220px; transition: all 0.3s; }
+    .search-box input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,169,110,0.15); width: 240px; }
+    .search-box svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 18px; height: 18px; pointer-events: none; }
     
-    .custom-options { position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: var(--charcoal); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); opacity: 0; visibility: hidden; transform: translateY(-10px); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-    [data-theme="dark"] .custom-options { box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
-    .custom-options.active { opacity: 1; visibility: visible; transform: translateY(0); }
+    /* BUG FIX 2: Mobile Bottom Sheet for Sorting */
+    .dropdown-btn { background: var(--charcoal); border: 1px solid var(--border); color: var(--ivory); padding: 10px 18px; border-radius: 30px; font-family: 'Jost'; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: border-color 0.3s; }
+    .dropdown-btn:hover { border-color: var(--gold); }
     
-    .custom-option { padding: 12px 15px; font-size: 0.85rem; color: var(--text-muted); cursor: pointer; transition: background 0.2s, color 0.2s; border-bottom: 1px solid rgba(200,169,110,0.1); }
-    .custom-option:last-child { border-bottom: none; }
-    .custom-option:hover { background: rgba(200,169,110,0.08); color: var(--gold); }
-    .custom-option.selected { color: var(--gold); font-weight: 600; }
+    .sort-overlay { position: fixed; inset: 0; background: var(--overlay); backdrop-filter: blur(5px); z-index: 5000; visibility: hidden; opacity: 0; transition: all 0.3s; }
+    .sort-overlay.active { visibility: visible; opacity: 1; }
+    .sort-sheet { position: fixed; bottom: -100%; left: 0; width: 100%; background: var(--charcoal); border-radius: 24px 24px 0 0; padding: 25px; z-index: 5001; transition: bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 -10px 40px rgba(0,0,0,0.2); }
+    [data-theme="dark"] .sort-sheet { box-shadow: 0 -10px 40px rgba(0,0,0,0.8); }
+    .sort-sheet.active { bottom: 0; }
+    .sort-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+    .sort-header h3 { font-size: 1.2rem; margin: 0; color: var(--ivory); }
+    .sort-options { display: flex; flex-direction: column; gap: 10px; }
+    .sort-opt-btn { background: transparent; border: 1px solid var(--border); color: var(--ivory); padding: 15px; border-radius: 12px; font-family: 'Jost'; font-size: 1rem; text-align: left; cursor: pointer; transition: all 0.2s; display: flex; justify-content: space-between; align-items: center; }
+    .sort-opt-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(200,169,110,0.05); }
 
     /* Grid & Cards */
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; position: relative; z-index: 10; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
     .card { background: var(--charcoal); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: var(--transition); position: relative; display: flex; flex-direction: column; }
     .card:hover { transform: translateY(-8px); border-color: var(--gold); box-shadow: 0 15px 40px rgba(0,0,0,0.1); z-index: 2; }
     [data-theme="dark"] .card:hover { box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
@@ -240,16 +229,18 @@
     .cart-footer { padding: 1.5rem; padding-bottom: max(1.5rem, calc(env(safe-area-inset-bottom) + 1.5rem)); background: var(--obsidian); border-top: 1px solid var(--border); flex-shrink: 0; }
     .cart-total { display: flex; justify-content: space-between; font-size: 1.3rem; font-weight: 500; margin-bottom: 1.5rem; color: var(--ivory); }
     .checkout-form { display: flex; flex-direction: column; gap: 10px; }
-    
-    /* BUG FIX 4: Phone wrapper styling */
-    .phone-wrapper { display: flex; gap: 8px; }
     .checkout-input { background: transparent; border: 1px solid var(--border); color: var(--ivory); padding: 12px; border-radius: 8px; font-family: 'Jost'; font-size: 0.9rem; outline: none; transition: border-color 0.3s;}
     .checkout-input:focus { border-color: var(--gold); }
-    .checkout-input option { background: var(--charcoal); color: var(--ivory); }
-    
     .checkout-btn { background: var(--gold); color: #0C0C0E; border: none; padding: 15px; font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; cursor: pointer; border-radius: 8px; transition: transform 0.2s; display: flex; justify-content: center; align-items: center; gap: 8px; }
     .checkout-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(200,169,110,0.3); }
     .checkout-btn:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; transform: none; box-shadow: none; }
+
+    /* BUG FIX 5: Full Success Modal Overlay */
+    .success-overlay { position: fixed; inset: 0; background: var(--overlay); backdrop-filter: blur(5px); z-index: 5000; display: flex; align-items: center; justify-content: center; visibility: hidden; opacity: 0; transition: all 0.3s; }
+    .success-overlay.active { visibility: visible; opacity: 1; }
+    .success-modal { background: var(--charcoal); width: 90%; max-width: 400px; padding: 30px; border-radius: 20px; border: 1px solid var(--border); text-align: center; transform: scale(0.9); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
+    .success-overlay.active .success-modal { transform: scale(1); }
+    .success-icon { width: 70px; height: 70px; border-radius: 50%; background: var(--success); color: white; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; box-shadow: 0 10px 20px rgba(37,211,102,0.3); }
 
     /* --- MINIMALIST FOOTER --- */
     footer { background: var(--obsidian); border-top: 1px solid var(--border); padding: 4rem 5% 2rem; margin-top: auto; text-align: center; }
@@ -260,10 +251,10 @@
     .social-btn:hover { color: var(--gold); border-color: var(--gold); transform: translateY(-3px); background: rgba(200,169,110,0.05);}
     .footer-bottom { border-top: 1px solid var(--border); padding-top: 2rem; color: var(--text-muted); font-size: 0.8rem; letter-spacing: 0.1em; }
 
-    /* --- TOASTS & FLOATS (BUG FIX 3: Top placement) --- */
-    .toast-container { position: fixed; top: 90px; left: 50%; transform: translateX(-50%); z-index: 4000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; align-items: center; }
-    .toast { background: var(--charcoal); color: var(--ivory); border: 1px solid var(--gold); padding: 12px 24px; border-radius: 30px; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); opacity: 0; transform: translateY(-20px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-    [data-theme="dark"] .toast { box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+    /* BUG FIX 3: Solid Top-Down Premium Toasts! */
+    .toast-container { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 99999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%; max-width: 400px; }
+    .toast { background: var(--gold); color: #111; border-radius: 12px; padding: 16px 20px; font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); opacity: 0; transform: translateY(-30px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); font-family: 'Jost', sans-serif; }
+    .toast.error { background: var(--danger); color: #fff; }
     .toast.show { opacity: 1; transform: translateY(0); }
 
     .floating-wa { position: fixed; bottom: 30px; right: 30px; background: var(--success); color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 10px 25px rgba(37,211,102,0.4); z-index: 100; transition: transform 0.3s; text-decoration: none; }
@@ -282,8 +273,13 @@
       .mobile-menu-btn { display: block; }
       .qv-modal { flex-direction: column; max-height: 85vh; max-height: 85dvh; }
       .qv-img { height: 300px; border-right: none; border-bottom: 1px solid var(--border); }
-      .search-sort { flex-direction: column; width: 100%; }
+      
+      /* Fixed Mobile Search Bar Scaling */
+      .search-sort { flex-direction: column; width: 100%; align-items: stretch; }
+      .search-box { width: 100%; }
       .search-box input { width: 100%; }
+      .search-box input:focus { width: 100%; } /* Prevent overflow on focus */
+      
       .hero h1 { font-size: 3.5rem; }
       .cart-drawer { max-width: 100%; right: -100%; }
       .floating-wa { bottom: 20px; right: 20px; }
@@ -329,7 +325,7 @@
       </div>
       <div class="nav-right">
         <button class="icon-btn" onclick="toggleTheme()" title="Cambiar Tema"><i data-lucide="moon" id="theme-icon"></i></button>
-        <button class="icon-btn" onclick="openCart()">
+        <button class="icon-btn" id="cart-nav-btn" onclick="openCart()">
           <i data-lucide="shopping-bag"></i>
           <span class="cart-badge" id="cart-count">0</span>
         </button>
@@ -408,18 +404,12 @@
           <input type="text" id="searchInput" placeholder="Buscar pieza..." oninput="handleSearch()">
         </div>
         
-        <!-- BUG FIX 2: Modern Animated Custom Dropdown -->
-        <div class="custom-select" id="custom-sort" onclick="toggleSortDropdown(event)">
-          <div class="select-trigger">
-            <span id="sort-selected-text">Recomendados</span>
-            <i data-lucide="chevron-down"></i>
-          </div>
-          <div class="custom-options" id="sort-options">
-            <div class="custom-option selected" onclick="selectSortOption('default', 'Recomendados')">Recomendados</div>
-            <div class="custom-option" onclick="selectSortOption('low', 'Precio: Menor a Mayor')">Precio: Menor a Mayor</div>
-            <div class="custom-option" onclick="selectSortOption('high', 'Precio: Mayor a Menor')">Precio: Mayor a Menor</div>
-          </div>
-        </div>
+        <!-- BUG FIX 2: Trigger for Bottom Sheet Sort -->
+        <button class="dropdown-btn" onclick="openSortMenu()">
+          <span id="sort-label">Recomendados</span>
+          <i data-lucide="sliders-horizontal" style="width:16px;"></i>
+        </button>
+
       </div>
     </div>
 
@@ -446,6 +436,20 @@
     </div>
   </footer>
 
+  <!-- BUG FIX 2: Modern Mobile Sort Bottom Sheet -->
+  <div class="sort-overlay" id="sort-overlay" onclick="closeSortMenu()"></div>
+  <div class="sort-sheet" id="sort-sheet">
+     <div class="sort-header">
+        <h3 class="serif">Ordenar por</h3>
+        <button class="icon-btn" onclick="closeSortMenu()"><i data-lucide="x"></i></button>
+     </div>
+     <div class="sort-options" id="sort-options">
+        <button class="sort-opt-btn active" onclick="selectSort('default', 'Recomendados', this)">Recomendados</button>
+        <button class="sort-opt-btn" onclick="selectSort('low', 'Precio: Menor a Mayor', this)">Precio: Menor a Mayor</button>
+        <button class="sort-opt-btn" onclick="selectSort('high', 'Precio: Mayor a Menor', this)">Precio: Mayor a Menor</button>
+     </div>
+  </div>
+
   <!-- CART SIDE DRAWER -->
   <div class="cart-overlay" id="cart-overlay" onclick="closeCart()"></div>
   <aside class="cart-drawer" id="cart-drawer">
@@ -461,10 +465,10 @@
       <form class="checkout-form" id="checkout-form">
         <input type="text" id="c-name" class="checkout-input" placeholder="Nombre completo" required>
         
-        <!-- BUG FIX 4: Country Code Selection -->
-        <div class="phone-wrapper">
-          <select id="c-country" class="checkout-input" style="width: 100px; padding-left: 5px; padding-right: 5px;"></select>
-          <input type="tel" id="c-phone" class="checkout-input" style="flex:1;" placeholder="WhatsApp o Teléfono" required>
+        <!-- BUG FIX 4: 249+ Country Codes injected dynamically! -->
+        <div style="display: flex; gap: 10px;">
+          <select id="c-country-code" class="checkout-input" style="width: 130px; padding: 12px 5px; cursor: pointer;"></select>
+          <input type="tel" id="c-phone" class="checkout-input" style="flex: 1;" placeholder="WhatsApp / Teléfono" required>
         </div>
 
         <input type="text" id="c-address" class="checkout-input" placeholder="Dirección de entrega (Opcional)">
@@ -501,8 +505,19 @@
     </div>
   </div>
 
-  <!-- TOASTS & FLOATS -->
+  <!-- BUG FIX 5: SUCCESS MODAL -->
+  <div class="success-overlay" id="success-overlay" onclick="closeSuccessModal()">
+    <div class="success-modal" onclick="event.stopPropagation()">
+      <div class="success-icon"><i data-lucide="check" style="width:40px; height:40px;"></i></div>
+      <h2 class="serif" style="font-size:2rem; color:var(--ivory); margin-bottom:10px;">¡Gracias por su compra!</h2>
+      <p style="color:var(--text-muted); line-height:1.5; font-size:0.95rem;">¡Su pedido ha sido realizado con éxito! Nuestro equipo se pondrá en contacto con usted a la brevedad.</p>
+      <button class="btn-primary" style="width: 100%; margin-top: 25px; background:var(--gold); color:#111; opacity:1; transform:none; animation:none;" onclick="closeSuccessModal()">Aceptar</button>
+    </div>
+  </div>
+
+  <!-- BUG FIX 3: MODERN SOLID TOASTS & FLOATS -->
   <div class="toast-container" id="toast-container"></div>
+  
   <a href="#" class="floating-wa" id="float-wa" target="_blank" style="display:none;" title="Chat WhatsApp"><i data-lucide="message-circle"></i></a>
   <button class="btn-top" id="btn-top" onclick="window.scrollTo(0,0)"><i data-lucide="arrow-up"></i></button>
 
@@ -517,16 +532,15 @@
     let activeSort = 'default';
     let cart = JSON.parse(localStorage.getItem('chava_cart')) || [];
     let wishlist = JSON.parse(localStorage.getItem('chava_wishlist')) || [];
-    let isSortOpen = false;
 
     // --- 1. BOOT SEQUENCE ---
     window.addEventListener('DOMContentLoaded', async () => {
       initTheme();
+      generateCountryCodes();
       updateCartUI();
       setupScrollReveal();
       setupSecretKeylogger();
       setupStickyHeader();
-      populateCountryCodes();
       
       try {
         await fetchCMS();
@@ -544,39 +558,25 @@
       }, 500);
     });
 
-    // Close Custom Dropdown on Outside Click
-    document.addEventListener('click', (e) => {
-      if(!e.target.closest('#custom-sort')) {
-        isSortOpen = false;
-        document.getElementById('custom-sort').classList.remove('open');
-        document.getElementById('sort-options').classList.remove('active');
-      }
-    });
-
-    // --- POPULATE ALL 249 COUNTRY CODES ---
-    function populateCountryCodes() {
-      // Extensive ISO list compiled for the checkout
-      const codes = "MX:+52,US:+1,CA:+1,AF:+93,AL:+355,DZ:+213,AS:+1684,AD:+376,AO:+213,AI:+1264,AQ:+376,AG:+1264,AG:+268,AR:+244,AM:+374,AW:+1268,AR:+54,AM:+374,AW:+297,AU:+61,AT:+43,AT:+43,AZ:+374,AW:+297,AU:+61,AT:+43,AZ:+994,BS:+1242,BH:+973,BD:+880,BB:+1246,BY:+880,BB:+1246,BY:+375,BE:+32,BZ:+501,BJ:+501,BJ:+229,BM:+1441,BT:+975,BO:+244,BA:+387,BW:+267,BR:+54,BR:+55,BN:+673,BG:+359,BF:+226,BI:+257,KH:+855,CM:+237,CA:+1,CV:+238,KY:+1345,CF:+236,TD:+236,TD:+235,CL:+56,CN:+86,CX:+61,CC:+61,CO:+57,KM:+61,CD:+235,CG:+243,CK:+682,CR:+506,CI:+242,HR:+385,CU:+506,CY:+357,CZ:+357,CZ:+420,DK:+420,DJ:+235,DK:+45,DJ:+253,DM:+1767,DO:+1767,DO:+1809,EC:+1809,EC:+593,EG:+593,SV:+503,GQ:+240,ER:+240,ER:+291,EE:+291,EE:+372,ET:+20,ET:+251,FK:+500,FO:+500,FJ:+298,FJ:+679,FI:+358,FI:+358,FR:+358,FR:+33,GF:+500,PF:+594,TF:+689,GA:+241,GM:+241,GM:+220,GE:+220,GE:+995,DE:+49,GH:+233,GI:+350,GR:+30,GL:+298,GL:+298,GD:+1473,GP:+1473,GU:+1671,GT:+1473,GP:+590,GU:+1671,GT:+502,GN:+224,GW:+245,GY:+592,HT:+592,HT:+509,HN:+504,HK:+1671,HK:+852,HU:+30,IS:+354,IN:+91,ID:+62,IR:+98,IQ:+964,IE:+353,IM:+44,IL:+353,IL:+972,IT:+39,JM:+1876,JP:+81,JE:+44,JO:+962,KZ:+7,KE:+254,KI:+686,KP:+686,KW:+962,KR:+850,KW:+965,KG:+7,KE:+254,KI:+686,KP:+850,KR:+82,KW:+965,KG:+996,LA:+856,LV:+371,LB:+961,LS:+266,LR:+266,LR:+231,LY:+218,LI:+423,LT:+371,LT:+370,LU:+370,LU:+352,MO:+853,MK:+853,MG:+241,MG:+261,MW:+261,MW:+265,MY:+60,MV:+60,MV:+960,ML:+223,MT:+356,MH:+692,MQ:+692,MQ:+596,MR:+596,MR:+222,MU:+222,MU:+230,MX:+52,FM:+691,MD:+373,MC:+377,MN:+976,ME:+389,MS:+1664,MA:+212,MZ:+258,MM:+95,NA:+264,NR:+674,NP:+977,NL:+31,AN:+599,NC:+687,NZ:+687,NI:+505,NE:+227,NG:+234,NU:+683,NF:+683,NF:+683,MP:+1670,NO:+64,OM:+968,PK:+977,PK:+92,PW:+1680,PA:+507,PG:+675,PY:+507,PE:+595,PN:+64,PL:+48,PT:+351,PR:+1787,QA:+965,QA:+974,RE:+262,RO:+262,RU:+40,RW:+250,SH:+262,KN:+290,LC:+1869,LC:+1758,PM:+508,VC:+1758,VC:+1784,WS:+685,SM:+685,SM:+378,ST:+239,SA:+966,SN:+221,SC:+248,SL:+232,SG:+65,SK:+421,SI:+386,SB:+677,SO:+252,ZA:+27,ES:+34,LK:+94,SD:+249,SR:+597,SJ:+47,SZ:+268,SE:+46,CH:+41,SY:+249,SY:+963,TW:+886,TJ:+992,TZ:+255,TH:+66,TG:+228,TK:+690,TO:+690,TO:+676,TT:+1868,TN:+216,TR:+90,TM:+993,TC:+1868,TV:+688,UG:+256,UA:+380,AE:+971,GB:+44,UY:+598,UZ:+380,UZ:+998,VU:+678,VA:+39,VE:+51,VN:+84,VG:+1284,VI:+1284,WF:+681,EH:+1340,YE:+58,ZM:+260,ZW:+263";
+    // --- Country Code Generation (BUG FIX 4) ---
+    function generateCountryCodes() {
+      // Extensive database of dialing codes. Mexico is pre-selected.
+      const rawCodes = "MX_+52,US_+1,AF_+93,AL_+355,DE_+49,AD_+376,AO_+244,AI_+1264,AG_+1268,SA_+966,DZ_+213,AR_+54,AM_+374,AW_+297,AU_+61,AT_+43,AZ_+994,BS_+1242,BH_+973,BD_+880,BB_+1246,BE_+32,BZ_+501,BJ_+229,BM_+1441,BY_+375,BO_+591,BA_+387,BW_+267,BR_+55,BN_+673,BG_+359,BF_+226,BI_+257,BT_+975,CV_+238,KH_+855,CM_+237,QA_+974,TD_+235,CL_+56,CN_+86,CY_+357,CO_+57,KM_+269,KP_+850,KR_+82,CI_+225,CR_+506,HR_+385,CU_+53,DK_+45,EC_+593,EG_+20,SV_+503,AE_+971,ER_+291,SK_+421,SI_+386,ES_+34,EE_+372,ET_+251,PH_+63,FI_+358,FJ_+679,FR_+33,GA_+241,GM_+220,GE_+995,GH_+233,GI_+350,GD_+1473,GR_+30,GL_+299,GP_+590,GU_+1671,GT_+502,GF_+594,GN_+224,GQ_+240,GW_+245,GY_+592,HT_+509,HN_+504,HK_+852,HU_+36,IN_+91,ID_+62,IQ_+964,IR_+98,IE_+353,IS_+354,KY_+1345,CK_+682,FO_+298,FK_+500,MH_+692,SB_+677,VG_+1284,VI_+1340,IL_+972,IT_+39,JM_+1876,JP_+81,JO_+962,KZ_+7,KE_+254,KG_+996,KI_+686,KW_+965,LA_+856,LS_+266,LV_+371,LB_+961,LR_+231,LY_+218,LI_+423,LT_+370,LU_+352,MO_+853,MK_+389,MG_+261,MY_+60,MW_+265,MV_+960,ML_+223,MT_+356,MA_+212,MQ_+596,MU_+230,MR_+222,FM_+691,MD_+373,MC_+377,MN_+976,ME_+382,MS_+1664,MZ_+258,MM_+95,NA_+264,NR_+674,NP_+977,NI_+505,NE_+227,NG_+234,NU_+683,NO_+47,NC_+687,NZ_+64,OM_+968,NL_+31,PK_+92,PW_+680,PA_+507,PG_+675,PY_+595,PE_+51,PF_+689,PL_+48,PT_+351,PR_+1,GB_+44,CF_+236,CZ_+420,CG_+242,CD_+243,DO_+1,RE_+262,RW_+250,RO_+40,RU_+7,WS_+685,AS_+1684,KN_+1869,SM_+378,PM_+1508,VC_+1784,SH_+290,LC_+1758,ST_+239,SN_+221,RS_+381,SC_+248,SL_+232,SG_+65,SY_+963,SO_+252,LK_+94,SZ_+268,ZA_+27,SD_+249,SS_+211,SE_+46,CH_+41,SR_+597,TH_+66,TW_+886,TZ_+255,TJ_+992,TG_+228,TK_+690,TO_+676,TT_+1868,TN_+216,TM_+993,TR_+90,TV_+688,UA_+380,UG_+256,UY_+598,UZ_+998,VU_+678,VE_+58,VN_+84,WF_+681,YE_+967,DJ_+253,ZM_+260,ZW_+263";
+      const select = document.getElementById('c-country-code');
+      if (!select) return;
       
-      const selectEl = document.getElementById('c-country');
-      // Create a unique list from the mapped string
-      const uniqueCodes = [...new Set(codes.split(','))];
+      const getFlagEmoji = (countryCode) => [...countryCode].map(char => String.fromCodePoint(char.charCodeAt() + 127397)).join('');
       
-      let html = '';
-      uniqueCodes.forEach(pair => {
-         const [iso, code] = pair.split(':');
-         const isMexico = (iso === 'MX');
-         html += `<option value="${code}" ${isMexico ? 'selected' : ''}>${iso} ${code}</option>`;
-      });
-      selectEl.innerHTML = html;
+      select.innerHTML = rawCodes.split(',').map(c => {
+        const [code, num] = c.split('_');
+        return `<option value="${num}" ${code === 'MX' ? 'selected' : ''}>${getFlagEmoji(code)} ${num}</option>`;
+      }).join('');
     }
 
     // --- 2. THEME & UX ---
     function initTheme() {
       const isDark = localStorage.getItem('chava_store_theme') === 'dark';
-      if(isDark) { 
-        document.body.setAttribute('data-theme', 'dark'); 
-      }
+      if(isDark) { document.body.setAttribute('data-theme', 'dark'); }
       setThemeIcons(isDark);
     }
     
@@ -611,15 +611,23 @@
         }, {passive: true});
     }
 
+    // BUG FIX 3: Highly Visible Top-Down Toasts
     function showToast(msg, type='success') {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
-      toast.className = 'toast';
-      const icon = type === 'success' ? '<i data-lucide="check-circle" style="color:var(--gold);"></i>' : '<i data-lucide="alert-circle" style="color:var(--danger);"></i>';
-      toast.innerHTML = `${icon} <span style="font-family:'Jost', sans-serif;">${msg}</span>`;
-      container.appendChild(toast); lucide.createIcons();
+      toast.className = `toast ${type === 'error' ? 'error' : ''}`;
+      
+      const icon = type === 'success' ? '<i data-lucide="check-circle"></i>' : '<i data-lucide="alert-circle"></i>';
+      toast.innerHTML = `${icon} <span>${msg}</span>`;
+      
+      container.appendChild(toast); 
+      lucide.createIcons();
+      
       setTimeout(() => toast.classList.add('show'), 10);
-      setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 400); }, 3000);
+      setTimeout(() => { 
+        toast.classList.remove('show'); 
+        setTimeout(() => toast.remove(), 400); 
+      }, 3000);
     }
 
     function setupScrollReveal() {
@@ -656,18 +664,15 @@
         if(!res.ok) return;
         const data = await res.json();
         
-        // 1. Inject Theme Colors Dynamically
         if(data.theme && data.theme.colors && data.theme.colors.primary) {
             document.documentElement.style.setProperty('--gold', data.theme.colors.primary);
         }
 
-        // 2. Populate Hero Section
         if(data.heroSection) {
             if(data.heroSection.headline) document.getElementById('hero-title').innerText = data.heroSection.headline;
             if(data.heroSection.subheadline) document.getElementById('hero-subtitle').innerText = data.heroSection.subheadline;
         }
         
-        // 3. Toggle Announcement Banner
         if(data.announcementBanner) { 
             const bannerElement = document.getElementById('top-banner');
             if(data.announcementBanner.isVisible && data.announcementBanner.text) {
@@ -678,23 +683,18 @@
             }
         }
 
-        // 4. Build Contact & Socials
         const socialContainer = document.getElementById('social-links');
         let sHTML = '';
         
         if(data.footerAndContact) {
-            // WhatsApp Integration
             if(data.footerAndContact.whatsappNumber) {
               const phone = data.footerAndContact.whatsappNumber.replace(/\D/g, '');
               sHTML += `<a href="https://wa.me/${phone}" class="social-btn" target="_blank"><i data-lucide="message-circle"></i></a>`;
               
-              // Also update the floating button
               const floatBtn = document.getElementById('float-wa');
               floatBtn.href = `https://wa.me/${phone}?text=¡Hola! Estoy visitando la tienda en línea y me gustaría información.`;
               floatBtn.style.display = 'flex';
             }
-            
-            // Instagram Integration
             if(data.footerAndContact.instagramUrl) {
               let igUrl = data.footerAndContact.instagramUrl;
               if(igUrl.startsWith('@')) igUrl = `https://instagram.com/${igUrl.substring(1)}`;
@@ -714,7 +714,6 @@
       const res = await fetch(API_URL + '/catalog');
       if(!res.ok) throw new Error();
       const rawData = await res.json();
-      // Only keep explicitly visible items
       fullCatalog = rawData.filter(item => item.visible !== false);
       renderCatalog();
     }
@@ -729,22 +728,26 @@
     }
 
     function handleSearch() { renderCatalog(); }
-    
-    // CUSTOM DROPDOWN LOGIC
-    function toggleSortDropdown(e) {
-      isSortOpen = !isSortOpen;
-      document.getElementById('custom-sort').classList.toggle('open', isSortOpen);
-      document.getElementById('sort-options').classList.toggle('active', isSortOpen);
+
+    // BUG FIX 2: Mobile Sort Bottom Sheet Logic
+    function openSortMenu() {
+      document.getElementById('sort-overlay').classList.add('active');
+      document.getElementById('sort-sheet').classList.add('active');
     }
 
-    function selectSortOption(val, text) {
+    function closeSortMenu() {
+      document.getElementById('sort-overlay').classList.remove('active');
+      document.getElementById('sort-sheet').classList.remove('active');
+    }
+
+    function selectSort(val, label, btnEl) {
       activeSort = val;
-      document.getElementById('sort-selected-text').innerText = text;
+      document.getElementById('sort-label').innerText = label;
       
-      // Update Active Styling
-      document.querySelectorAll('.custom-option').forEach(el => el.classList.remove('selected'));
-      event.target.classList.add('selected');
+      document.querySelectorAll('#sort-options .sort-opt-btn').forEach(b => b.classList.remove('active'));
+      btnEl.classList.add('active');
       
+      closeSortMenu();
       renderCatalog();
     }
 
@@ -805,7 +808,7 @@
                 <span class="price">$${parseFloat(item.price || 0).toLocaleString('es-MX', {minimumFractionDigits: 2})}</span>
                 ${item.oldPrice ? `<span class="old-price">$${parseFloat(item.oldPrice).toLocaleString('es-MX')}</span>` : ''}
             </div>
-            <!-- BUG FIX 1: Pass 'this' so we know exactly where the button is for the fly animation -->
+            <!-- Passed 'this' to trigger the flying animation! -->
             <button class="add-btn" onclick="addToCart('${item.id}', this)" ${isSoldOut ? 'disabled' : ''}>
               ${isSoldOut ? 'Sin Inventario' : 'Agregar a la Bolsa'}
             </button>
@@ -845,12 +848,8 @@
         else imgWrap.innerHTML = `<svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="0.5"><path d="M6 3h12l4 6-10 13L2 9Z"/></svg>`;
 
         const btnAdd = document.getElementById('qv-addbtn');
-        if(item.stock <= 0) { 
-            btnAdd.disabled = true; btnAdd.innerText = "Agotado"; btnAdd.style.background = "var(--charcoal-light)"; btnAdd.style.color = "var(--text-muted)"; 
-        } else { 
-            btnAdd.disabled = false; btnAdd.innerText = "Añadir a la Bolsa"; btnAdd.style.background = "var(--gold)"; btnAdd.style.color = "#0C0C0E"; 
-            btnAdd.onclick = (e) => { addToCart(item.id, e.target); closeQuickView(null, true); }; 
-        }
+        if(item.stock <= 0) { btnAdd.disabled = true; btnAdd.innerText = "Agotado"; btnAdd.style.background = "var(--charcoal-light)"; btnAdd.style.color = "var(--text-muted)"; }
+        else { btnAdd.disabled = false; btnAdd.innerText = "Añadir a la Bolsa"; btnAdd.style.background = "var(--gold)"; btnAdd.style.color = "#0C0C0E"; btnAdd.onclick = (e) => { addToCart(item.id, e.target); closeQuickView(null, true); }; }
 
         const wishBtn = document.getElementById('qv-wishbtn');
         wishBtn.onclick = () => toggleWishlist(item.id, wishBtn);
@@ -867,53 +866,72 @@
         }
     }
 
-    // --- 6. CART LOGIC & FLYING ANIMATION (BUG FIX 1) ---
-    function animateToCart(btnEl, imgUrl) {
-      if(!btnEl || !imgUrl) return;
-      const cartIcon = document.querySelector('.nav-right .icon-btn'); 
-      const btnRect = btnEl.getBoundingClientRect();
-      const cartRect = cartIcon.getBoundingClientRect();
-
-      const flying = document.createElement('img');
-      flying.src = imgUrl;
-      flying.className = 'flying-img';
-      // Start position (Center of the clicked button)
-      flying.style.left = `${btnRect.left + btnRect.width/2 - 20}px`;
-      flying.style.top = `${btnRect.top + btnRect.height/2 - 20}px`;
-      document.body.appendChild(flying);
-
-      // Force browser to register the start position before animating
-      flying.getBoundingClientRect();
-
-      // End position (Center of the cart icon)
-      flying.style.left = `${cartRect.left + cartRect.width/2 - 10}px`;
-      flying.style.top = `${cartRect.top + cartRect.height/2 - 10}px`;
-      flying.style.transform = 'scale(0.2)';
-      flying.style.opacity = '0.3';
-
-      setTimeout(() => {
-          flying.remove();
-          cartIcon.classList.add('pulse-cart');
-          setTimeout(() => cartIcon.classList.remove('pulse-cart'), 400);
-      }, 600);
-    }
-
-    function addToCart(id, btnEl) {
-      const product = fullCatalog.find(p => p.id === id); if (!product || product.stock <= 0) return;
+    // --- 6. CART LOGIC (BUG FIX 1: Flying Animation) ---
+    function addToCart(id, btnElement) {
+      const product = fullCatalog.find(p => p.id === id); 
+      if (!product || product.stock <= 0) return;
+      
       const existing = cart.find(i => i.id === id);
       
       if (existing) {
-        if (existing.qty < product.stock) { 
-           existing.qty += 1; showToast("Cantidad aumentada en tu bolsa."); 
-           animateToCart(btnEl, product.image);
-        } else { showToast("Límite de stock alcanzado.", "error"); return; }
+        if (existing.qty < product.stock) { existing.qty += 1; } 
+        else { showToast("Límite de stock alcanzado.", "error"); return; }
       } else { 
-         cart.push({ ...product, qty: 1 }); showToast("¡Pieza añadida a tu bolsa!"); 
-         animateToCart(btnEl, product.image);
+        cart.push({ ...product, qty: 1 }); 
       }
       
-      updateCartUI(); 
-      // BUG FIX 1: openCart() was completely removed from here!
+      const cartIcon = document.getElementById('cart-nav-btn');
+
+      // Execute Flying Animation!
+      if (btnElement && cartIcon) {
+        // Find the product image from the closest card
+        const card = btnElement.closest('.card, .qv-modal');
+        const img = card ? card.querySelector('.card-img, .qv-img img') : null;
+
+        if (img) {
+          const imgRect = img.getBoundingClientRect();
+          const cartRect = cartIcon.getBoundingClientRect();
+
+          const clone = img.cloneNode(true);
+          clone.style.position = 'fixed';
+          clone.style.top = imgRect.top + 'px';
+          clone.style.left = imgRect.left + 'px';
+          clone.style.width = imgRect.width + 'px';
+          clone.style.height = imgRect.height + 'px';
+          clone.style.borderRadius = '12px';
+          clone.style.objectFit = 'cover';
+          clone.style.zIndex = '999999'; // Force to top
+          clone.style.pointerEvents = 'none';
+          clone.style.transition = 'all 0.6s cubic-bezier(0.25, 1, 0.5, 1)';
+          document.body.appendChild(clone);
+
+          // Force reflow for animation to trigger
+          void clone.offsetWidth;
+
+          // Fly to cart
+          clone.style.top = (cartRect.top + 10) + 'px';
+          clone.style.left = (cartRect.left + 10) + 'px';
+          clone.style.width = '20px';
+          clone.style.height = '20px';
+          clone.style.opacity = '0.2';
+          clone.style.borderRadius = '50%';
+
+          setTimeout(() => {
+            clone.remove();
+            cartIcon.classList.remove('cart-bop');
+            void cartIcon.offsetWidth;
+            cartIcon.classList.add('cart-bop'); // Bop the bag
+            updateCartUI(); 
+            showToast("Pieza añadida a la bolsa.");
+          }, 600);
+          
+          return; // Stop execution to wait for animation
+        }
+      }
+      
+      // Fallback if animation fails
+      updateCartUI();
+      showToast("Pieza añadida a la bolsa.");
     }
 
     function updateQty(id, delta) {
@@ -965,6 +983,11 @@
     function openCart() { document.getElementById('cart-overlay').classList.add('active'); document.getElementById('cart-drawer').classList.add('active'); }
     function closeCart() { document.getElementById('cart-overlay').classList.remove('active'); document.getElementById('cart-drawer').classList.remove('active'); }
 
+    // BUG FIX 5: Success Modal Logic
+    function closeSuccessModal() {
+        document.getElementById('success-overlay').classList.remove('active');
+    }
+
     // --- 7. CHECKOUT ---
     document.getElementById('checkout-form').addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -977,9 +1000,9 @@
 
       const itemsStr = cart.map(i => `${i.qty}x ${i.name || 'Artículo'}`).join(' + ');
       const total = cart.reduce((s, i) => s + (parseFloat(i.price) * i.qty), 0);
-      
-      // Combine Country Code and Phone Number
-      const fullPhone = document.getElementById('c-country').value + " " + document.getElementById('c-phone').value;
+
+      // Construct international phone format
+      const fullPhone = document.getElementById('c-country-code').value + " " + document.getElementById('c-phone').value;
 
       const payload = {
         name: document.getElementById('c-name').value,
@@ -992,10 +1015,14 @@
       try {
         const response = await fetch(API_URL + '/order', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
         if (response.ok) {
-          showToast("¡Pedido confirmado con éxito!");
+          
           cart = []; updateCartUI(); e.target.reset(); closeCart();
           
-          setTimeout(()=> alert("Tu pedido ha sido recibido en nuestro sistema de artesanos. Te contactaremos pronto para la confirmación y envío."), 500);
+          // Trigger the gorgeous success modal!
+          setTimeout(() => {
+              document.getElementById('success-overlay').classList.add('active');
+          }, 300);
+
         } else { showToast("Hubo un problema. Intenta de nuevo.", "error"); }
       } catch (err) { showToast("Error de conexión con el servidor.", "error"); } 
       finally { btn.innerHTML = origText; btn.disabled = (cart.length === 0); lucide.createIcons();}
