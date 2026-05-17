@@ -85,7 +85,7 @@
     .icon-btn:hover { color: var(--gold); transform: scale(1.1); }
     .cart-badge { position: absolute; top: -6px; right: -8px; background: var(--gold); color: #0C0C0E; font-size: 0.65rem; font-weight: 700; width: 18px; height: 18px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
 
-    /* BUG FIX 1: Cart Icon Bop */
+    /* Cart Icon Bop */
     @keyframes cartBop {
       0% { transform: scale(1); }
       40% { transform: scale(1.4) rotate(5deg); }
@@ -99,8 +99,8 @@
     .mobile-overlay { position: fixed; inset: 0; background: var(--overlay); backdrop-filter: blur(5px); z-index: 1998; visibility: hidden; opacity: 0; transition: opacity 0.3s, visibility 0.3s; }
     .mobile-overlay.active { visibility: visible; opacity: 1; }
     
-    .mobile-drawer { position: fixed; top: 0; left: -100%; width: 80%; max-width: 300px; height: 100vh; height: 100dvh; background: var(--charcoal); z-index: 1999; transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1); padding: 2rem; border-right: 1px solid var(--border); box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
-    .mobile-drawer.active { left: 0; }
+    .mobile-drawer { position: fixed; top: 0; left: -100%; width: 80%; max-width: 300px; height: 100vh; height: 100dvh; background: var(--charcoal); z-index: 1999; transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s; padding: 2rem; border-right: 1px solid var(--border); box-shadow: none; }
+    .mobile-drawer.active { left: 0; box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
     .mobile-drawer .nav-links { flex-direction: column; gap: 2rem; margin-top: 3rem; display: flex; }
     .mobile-drawer .nav-links a { font-size: 1.2rem; }
 
@@ -136,13 +136,12 @@
     
     .search-sort { display: flex; gap: 15px; align-items: center; }
     
-    /* MODIFIED: Fixed search box CSS. Targeted svg instead of i, and improved aesthetics */
     .search-box { position: relative; display: flex; align-items: center; }
     .search-box input { background: var(--charcoal); border: 1px solid var(--border); color: var(--ivory); padding: 10px 15px 10px 42px; border-radius: 30px; outline: none; font-family: 'Jost'; font-size: 0.9rem; width: 220px; transition: all 0.3s; }
     .search-box input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(200,169,110,0.15); width: 240px; }
     .search-box svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 18px; height: 18px; pointer-events: none; }
     
-    /* BUG FIX 2: Mobile Bottom Sheet for Sorting */
+    /* Mobile Bottom Sheet for Sorting */
     .dropdown-btn { background: var(--charcoal); border: 1px solid var(--border); color: var(--ivory); padding: 10px 18px; border-radius: 30px; font-family: 'Jost'; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: border-color 0.3s; }
     .dropdown-btn:hover { border-color: var(--gold); }
     
@@ -211,8 +210,8 @@
     .cart-overlay { position: fixed; inset: 0; background: var(--overlay); backdrop-filter: blur(5px); z-index: 2000; visibility: hidden; opacity: 0; transition: opacity 0.4s, visibility 0.4s; }
     .cart-overlay.active { visibility: visible; opacity: 1; }
     
-    .cart-drawer { position: fixed; top: 0; right: -100%; width: 100%; max-width: 450px; height: 100vh; height: 100dvh; background: var(--charcoal); border-left: 1px solid var(--border); z-index: 2001; display: flex; flex-direction: column; transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: -20px 0 50px rgba(0,0,0,0.5); }
-    .cart-drawer.active { right: 0; }
+    .cart-drawer { position: fixed; top: 0; right: -100%; width: 100%; max-width: 450px; height: 100vh; height: 100dvh; background: var(--charcoal); border-left: 1px solid var(--border); z-index: 2001; display: flex; flex-direction: column; transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s; box-shadow: none; }
+    .cart-drawer.active { right: 0; box-shadow: -20px 0 50px rgba(0,0,0,0.5); }
     .cart-header { padding: 1.5rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--obsidian); flex-shrink: 0;}
     .cart-header h2 { color: var(--gold); font-size: 2rem; margin:0; }
 
@@ -235,7 +234,7 @@
     .checkout-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(200,169,110,0.3); }
     .checkout-btn:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; transform: none; box-shadow: none; }
 
-    /* BUG FIX 5: Full Success Modal Overlay */
+    /* Full Success Modal Overlay */
     .success-overlay { position: fixed; inset: 0; background: var(--overlay); backdrop-filter: blur(5px); z-index: 5000; display: flex; align-items: center; justify-content: center; visibility: hidden; opacity: 0; transition: all 0.3s; }
     .success-overlay.active { visibility: visible; opacity: 1; }
     .success-modal { background: var(--charcoal); width: 90%; max-width: 400px; padding: 30px; border-radius: 20px; border: 1px solid var(--border); text-align: center; transform: scale(0.9); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 20px 50px rgba(0,0,0,0.3); }
@@ -251,7 +250,7 @@
     .social-btn:hover { color: var(--gold); border-color: var(--gold); transform: translateY(-3px); background: rgba(200,169,110,0.05);}
     .footer-bottom { border-top: 1px solid var(--border); padding-top: 2rem; color: var(--text-muted); font-size: 0.8rem; letter-spacing: 0.1em; }
 
-    /* BUG FIX 3: Solid Top-Down Premium Toasts! */
+    /* Solid Top-Down Premium Toasts! */
     .toast-container { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 99999; display: flex; flex-direction: column; gap: 10px; pointer-events: none; width: 90%; max-width: 400px; }
     .toast { background: var(--gold); color: #111; border-radius: 12px; padding: 16px 20px; font-size: 0.95rem; font-weight: 600; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); opacity: 0; transform: translateY(-30px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); font-family: 'Jost', sans-serif; }
     .toast.error { background: var(--danger); color: #fff; }
@@ -404,7 +403,7 @@
           <input type="text" id="searchInput" placeholder="Buscar pieza..." oninput="handleSearch()">
         </div>
         
-        <!-- BUG FIX 2: Trigger for Bottom Sheet Sort -->
+        <!-- Trigger for Bottom Sheet Sort -->
         <button class="dropdown-btn" onclick="openSortMenu()">
           <span id="sort-label">Recomendados</span>
           <i data-lucide="sliders-horizontal" style="width:16px;"></i>
@@ -436,7 +435,7 @@
     </div>
   </footer>
 
-  <!-- BUG FIX 2: Modern Mobile Sort Bottom Sheet -->
+  <!-- Modern Mobile Sort Bottom Sheet -->
   <div class="sort-overlay" id="sort-overlay" onclick="closeSortMenu()"></div>
   <div class="sort-sheet" id="sort-sheet">
      <div class="sort-header">
@@ -465,7 +464,6 @@
       <form class="checkout-form" id="checkout-form">
         <input type="text" id="c-name" class="checkout-input" placeholder="Nombre completo" required>
         
-        <!-- BUG FIX 4: 249+ Country Codes injected dynamically! -->
         <div style="display: flex; gap: 10px;">
           <select id="c-country-code" class="checkout-input" style="width: 130px; padding: 12px 5px; cursor: pointer;"></select>
           <input type="tel" id="c-phone" class="checkout-input" style="flex: 1;" placeholder="WhatsApp / Teléfono" required>
@@ -505,7 +503,7 @@
     </div>
   </div>
 
-  <!-- BUG FIX 5: SUCCESS MODAL -->
+  <!-- SUCCESS MODAL -->
   <div class="success-overlay" id="success-overlay" onclick="closeSuccessModal()">
     <div class="success-modal" onclick="event.stopPropagation()">
       <div class="success-icon"><i data-lucide="check" style="width:40px; height:40px;"></i></div>
@@ -515,10 +513,15 @@
     </div>
   </div>
 
-  <!-- BUG FIX 3: MODERN SOLID TOASTS & FLOATS -->
+  <!-- MODERN SOLID TOASTS & FLOATS -->
   <div class="toast-container" id="toast-container"></div>
   
-  <a href="#" class="floating-wa" id="float-wa" target="_blank" style="display:none;" title="Chat WhatsApp"><i data-lucide="message-circle"></i></a>
+  <!-- UPGRADED FLOATING WHATSAPP BUTTON (Using official hardcoded SVG) -->
+  <a href="#" class="floating-wa" id="float-wa" target="_blank" style="display:none;" title="Chat WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+    </svg>
+  </a>
   <button class="btn-top" id="btn-top" onclick="window.scrollTo(0,0)"><i data-lucide="arrow-up"></i></button>
 
   <script>
@@ -558,9 +561,8 @@
       }, 500);
     });
 
-    // --- Country Code Generation (BUG FIX 4) ---
+    // --- Country Code Generation ---
     function generateCountryCodes() {
-      // Extensive database of dialing codes. Mexico is pre-selected.
       const rawCodes = "MX_+52,US_+1,AF_+93,AL_+355,DE_+49,AD_+376,AO_+244,AI_+1264,AG_+1268,SA_+966,DZ_+213,AR_+54,AM_+374,AW_+297,AU_+61,AT_+43,AZ_+994,BS_+1242,BH_+973,BD_+880,BB_+1246,BE_+32,BZ_+501,BJ_+229,BM_+1441,BY_+375,BO_+591,BA_+387,BW_+267,BR_+55,BN_+673,BG_+359,BF_+226,BI_+257,BT_+975,CV_+238,KH_+855,CM_+237,QA_+974,TD_+235,CL_+56,CN_+86,CY_+357,CO_+57,KM_+269,KP_+850,KR_+82,CI_+225,CR_+506,HR_+385,CU_+53,DK_+45,EC_+593,EG_+20,SV_+503,AE_+971,ER_+291,SK_+421,SI_+386,ES_+34,EE_+372,ET_+251,PH_+63,FI_+358,FJ_+679,FR_+33,GA_+241,GM_+220,GE_+995,GH_+233,GI_+350,GD_+1473,GR_+30,GL_+299,GP_+590,GU_+1671,GT_+502,GF_+594,GN_+224,GQ_+240,GW_+245,GY_+592,HT_+509,HN_+504,HK_+852,HU_+36,IN_+91,ID_+62,IQ_+964,IR_+98,IE_+353,IS_+354,KY_+1345,CK_+682,FO_+298,FK_+500,MH_+692,SB_+677,VG_+1284,VI_+1340,IL_+972,IT_+39,JM_+1876,JP_+81,JO_+962,KZ_+7,KE_+254,KG_+996,KI_+686,KW_+965,LA_+856,LS_+266,LV_+371,LB_+961,LR_+231,LY_+218,LI_+423,LT_+370,LU_+352,MO_+853,MK_+389,MG_+261,MY_+60,MW_+265,MV_+960,ML_+223,MT_+356,MA_+212,MQ_+596,MU_+230,MR_+222,FM_+691,MD_+373,MC_+377,MN_+976,ME_+382,MS_+1664,MZ_+258,MM_+95,NA_+264,NR_+674,NP_+977,NI_+505,NE_+227,NG_+234,NU_+683,NO_+47,NC_+687,NZ_+64,OM_+968,NL_+31,PK_+92,PW_+680,PA_+507,PG_+675,PY_+595,PE_+51,PF_+689,PL_+48,PT_+351,PR_+1,GB_+44,CF_+236,CZ_+420,CG_+242,CD_+243,DO_+1,RE_+262,RW_+250,RO_+40,RU_+7,WS_+685,AS_+1684,KN_+1869,SM_+378,PM_+1508,VC_+1784,SH_+290,LC_+1758,ST_+239,SN_+221,RS_+381,SC_+248,SL_+232,SG_+65,SY_+963,SO_+252,LK_+94,SZ_+268,ZA_+27,SD_+249,SS_+211,SE_+46,CH_+41,SR_+597,TH_+66,TW_+886,TZ_+255,TJ_+992,TG_+228,TK_+690,TO_+676,TT_+1868,TN_+216,TM_+993,TR_+90,TV_+688,UA_+380,UG_+256,UY_+598,UZ_+998,VU_+678,VE_+58,VN_+84,WF_+681,YE_+967,DJ_+253,ZM_+260,ZW_+263";
       const select = document.getElementById('c-country-code');
       if (!select) return;
@@ -611,7 +613,6 @@
         }, {passive: true});
     }
 
-    // BUG FIX 3: Highly Visible Top-Down Toasts
     function showToast(msg, type='success') {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
@@ -689,7 +690,10 @@
         if(data.footerAndContact) {
             if(data.footerAndContact.whatsappNumber) {
               const phone = data.footerAndContact.whatsappNumber.replace(/\D/g, '');
-              sHTML += `<a href="https://wa.me/${phone}" class="social-btn" target="_blank"><i data-lucide="message-circle"></i></a>`;
+              
+              sHTML += `<a href="https://wa.me/${phone}" class="social-btn" target="_blank">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+              </a>`;
               
               const floatBtn = document.getElementById('float-wa');
               floatBtn.href = `https://wa.me/${phone}?text=¡Hola! Estoy visitando la tienda en línea y me gustaría información.`;
@@ -699,7 +703,10 @@
               let igUrl = data.footerAndContact.instagramUrl;
               if(igUrl.startsWith('@')) igUrl = `https://instagram.com/${igUrl.substring(1)}`;
               else if(!igUrl.startsWith('http')) igUrl = `https://instagram.com/${igUrl}`;
-              sHTML += `<a href="${igUrl}" class="social-btn" target="_blank"><i data-lucide="instagram"></i></a>`;
+              
+              sHTML += `<a href="${igUrl}" class="social-btn" target="_blank">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line></svg>
+              </a>`;
             }
         }
         
@@ -729,7 +736,6 @@
 
     function handleSearch() { renderCatalog(); }
 
-    // BUG FIX 2: Mobile Sort Bottom Sheet Logic
     function openSortMenu() {
       document.getElementById('sort-overlay').classList.add('active');
       document.getElementById('sort-sheet').classList.add('active');
@@ -808,7 +814,6 @@
                 <span class="price">$${parseFloat(item.price || 0).toLocaleString('es-MX', {minimumFractionDigits: 2})}</span>
                 ${item.oldPrice ? `<span class="old-price">$${parseFloat(item.oldPrice).toLocaleString('es-MX')}</span>` : ''}
             </div>
-            <!-- Passed 'this' to trigger the flying animation! -->
             <button class="add-btn" onclick="addToCart('${item.id}', this)" ${isSoldOut ? 'disabled' : ''}>
               ${isSoldOut ? 'Sin Inventario' : 'Agregar a la Bolsa'}
             </button>
@@ -866,7 +871,7 @@
         }
     }
 
-    // --- 6. CART LOGIC (BUG FIX 1: Flying Animation) ---
+    // --- 6. CART LOGIC ---
     function addToCart(id, btnElement) {
       const product = fullCatalog.find(p => p.id === id); 
       if (!product || product.stock <= 0) return;
@@ -882,9 +887,7 @@
       
       const cartIcon = document.getElementById('cart-nav-btn');
 
-      // Execute Flying Animation!
       if (btnElement && cartIcon) {
-        // Find the product image from the closest card
         const card = btnElement.closest('.card, .qv-modal');
         const img = card ? card.querySelector('.card-img, .qv-img img') : null;
 
@@ -900,15 +903,13 @@
           clone.style.height = imgRect.height + 'px';
           clone.style.borderRadius = '12px';
           clone.style.objectFit = 'cover';
-          clone.style.zIndex = '999999'; // Force to top
+          clone.style.zIndex = '999999';
           clone.style.pointerEvents = 'none';
           clone.style.transition = 'all 0.6s cubic-bezier(0.25, 1, 0.5, 1)';
           document.body.appendChild(clone);
 
-          // Force reflow for animation to trigger
           void clone.offsetWidth;
 
-          // Fly to cart
           clone.style.top = (cartRect.top + 10) + 'px';
           clone.style.left = (cartRect.left + 10) + 'px';
           clone.style.width = '20px';
@@ -920,16 +921,15 @@
             clone.remove();
             cartIcon.classList.remove('cart-bop');
             void cartIcon.offsetWidth;
-            cartIcon.classList.add('cart-bop'); // Bop the bag
+            cartIcon.classList.add('cart-bop');
             updateCartUI(); 
             showToast("Pieza añadida a la bolsa.");
           }, 600);
           
-          return; // Stop execution to wait for animation
+          return; 
         }
       }
       
-      // Fallback if animation fails
       updateCartUI();
       showToast("Pieza añadida a la bolsa.");
     }
@@ -980,10 +980,19 @@
       lucide.createIcons();
     }
 
-    function openCart() { document.getElementById('cart-overlay').classList.add('active'); document.getElementById('cart-drawer').classList.add('active'); }
-    function closeCart() { document.getElementById('cart-overlay').classList.remove('active'); document.getElementById('cart-drawer').classList.remove('active'); }
+    // BUG FIX 1: Lock body scrolling when Cart is open
+    function openCart() { 
+      document.getElementById('cart-overlay').classList.add('active'); 
+      document.getElementById('cart-drawer').classList.add('active'); 
+      document.body.style.overflow = 'hidden'; 
+    }
+    
+    function closeCart() { 
+      document.getElementById('cart-overlay').classList.remove('active'); 
+      document.getElementById('cart-drawer').classList.remove('active'); 
+      document.body.style.overflow = ''; 
+    }
 
-    // BUG FIX 5: Success Modal Logic
     function closeSuccessModal() {
         document.getElementById('success-overlay').classList.remove('active');
     }
@@ -1001,7 +1010,6 @@
       const itemsStr = cart.map(i => `${i.qty}x ${i.name || 'Artículo'}`).join(' + ');
       const total = cart.reduce((s, i) => s + (parseFloat(i.price) * i.qty), 0);
 
-      // Construct international phone format
       const fullPhone = document.getElementById('c-country-code').value + " " + document.getElementById('c-phone').value;
 
       const payload = {
@@ -1018,7 +1026,6 @@
           
           cart = []; updateCartUI(); e.target.reset(); closeCart();
           
-          // Trigger the gorgeous success modal!
           setTimeout(() => {
               document.getElementById('success-overlay').classList.add('active');
           }, 300);
